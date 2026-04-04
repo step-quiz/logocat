@@ -78,12 +78,18 @@
   <!-- Right: Editor -->
   <div class="code-col">
     <div id="ref-panel" class="ref-panel" role="complementary" aria-label="Referència ràpida"></div>
+
+    <!-- Error help post-it -->
+    <div id="error-help-panel" class="error-help-panel" role="alert"></div>
+
     <div class="editor-wrap">
       <div id="line-numbers"></div>
       <div class="editor-inner">
         <div  id="line-bg"        aria-hidden="true"></div>
         <pre  id="code-highlight" aria-hidden="true"></pre>
         <textarea id="code-editor" spellcheck="false"></textarea>
+        <!-- Autocomplete dropdown -->
+        <div id="autocomplete-panel" class="autocomplete-panel" style="display:none" role="listbox"></div>
       </div>
     </div>
     <div id="log-wrap">
@@ -159,6 +165,49 @@
   </div>
 </div>
 
-<script src="logo.js"></script>
+<!--
+  ┌─────────────────────────────────────────────────────┐
+  │  Mòduls — ordre de dependència obligatori            │
+  │                                                      │
+  │  constants ─── namespace L, utilitats, mapes          │
+  │       ↓                                              │
+  │  i18n ──────── traduccions (usa L.state a runtime)   │
+  │       ↓                                              │
+  │  state ─────── L.state centralitzat                  │
+  │       ↓                                              │
+  │  tokenizer ─── LogoSyntaxError, tokenize()           │
+  │       ↓        (usa L.CMD_MAP, L.KW_MAP)             │
+  │  parser ────── parse()                               │
+  │       ↓        (usa L.LogoSyntaxError, L.NEEDS_ARG)  │
+  │  interpreter ─ interpret()                           │
+  │       ↓        (usa L.findSuggestion, L.CMD_MAP)     │
+  │  canvas ────── setupCanvases, applyTurtleCommand     │
+  │       ↓        (usa L.tokenize, L.parse)             │
+  │  editor ────── highlighting, autocompletat            │
+  │       ↓        (usa L.hideErrorHelp a runtime)       │
+  │  help ──────── post-it d'errors                      │
+  │       ↓                                              │
+  │  ui ────────── modals, tema, log, onboarding         │
+  │       ↓        (usa L.redrawAll, L.openChallenges)   │
+  │  execution ─── run, step, stop, reset                │
+  │       ↓        (usa L.tokenize→parse→interpret)      │
+  │  challenges ── llistat, validació, pistes             │
+  │       ↓        (usa L.executeGoalCode, L.resetCanvas) │
+  │  main ──────── IIFE d'inicialització (tot connectat) │
+  └─────────────────────────────────────────────────────┘
+-->
+<script src="js/constants.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/tokenizer.js"></script>
+<script src="js/parser.js"></script>
+<script src="js/interpreter.js"></script>
+<script src="js/canvas.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/help.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/execution.js"></script>
+<script src="js/challenges.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

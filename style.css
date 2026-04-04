@@ -1,9 +1,10 @@
 /* ════════════════════════════════════════════════════════
-   LOGOcat — Style
+   LOGOcat — Style v2.0
    Estètica: retro-terminal verd, inspirat en Logo clàssic
+   Novetat: autocompletat, post-it d'errors contextuals
    ════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@800&display=swap');
+/* FIX: @import eliminat — les fonts es carreguen via <link> a l'HTML */
 
 /* ── VARIABLES ───────────────────────────────────────── */
 :root {
@@ -90,6 +91,31 @@ body {
 .hint-panel { margin-top: 6px; padding: 0; max-height: 0; overflow: hidden; transition: max-height .25s, padding .25s; font-size: .68rem; color: var(--muted); background: rgba(0,230,118,.04); border-radius: 4px; line-height: 1.6; }
 .hint-panel.visible { max-height: 200px; padding: 8px 10px; border: 1px solid rgba(0,230,118,.12); }
 
+/* ── ERROR HELP PANEL (post-it) ──────────────────────── */
+.error-help-panel {
+  display: none; padding: 0; font-size: .7rem;
+  background: var(--error-dim); border-bottom: 1px solid rgba(224,85,85,.3);
+  line-height: 1.7; color: var(--text); position: relative;
+  overflow: hidden; max-height: 0;
+  transition: max-height .3s ease, padding .3s ease;
+}
+.error-help-panel.visible {
+  display: block; max-height: 200px; padding: 10px 14px;
+}
+.error-help-content {
+  padding-right: 24px;
+}
+.error-help-content code {
+  color: var(--accent); font-family: var(--mono); font-size: .68rem;
+  background: rgba(0,0,0,.2); padding: 1px 4px; border-radius: 2px;
+}
+.error-help-close {
+  position: absolute; top: 6px; right: 8px;
+  background: none; border: none; color: var(--muted);
+  font-size: .8rem; cursor: pointer; padding: 2px;
+}
+.error-help-close:hover { color: var(--text); }
+
 /* ── EDITOR ──────────────────────────────────────────── */
 .editor-wrap {
   flex: 1; display: flex; min-height: 0; position: relative;
@@ -108,7 +134,8 @@ body {
 .editor-inner::-webkit-scrollbar { display: none; }
 
 #line-bg { position: absolute; top: 0; left: 0; right: 0; pointer-events: none; z-index: 0; }
-.line-mark { position: absolute; left: 0; right: 0; height: 1.58em; pointer-events: none; border-radius: 2px; }
+.line-mark { position: absolute; left: 0; right: 0; pointer-events: none; border-radius: 2px; }
+/* MILLORA: height i top es configuren des de JS amb getComputedStyle */
 .line-mark.exec    { background: rgba(0,230,118,.10); }
 .line-mark.err     { background: rgba(224,85,85,.15); }
 
@@ -131,6 +158,35 @@ body {
 .hl-cm  { color: #546e54; font-style: italic; }
 .hl-fn  { color: #4fc3f7; }
 .hl-br  { color: #888; }
+
+/* ── AUTOCOMPLETE PANEL ──────────────────────────────── */
+.autocomplete-panel {
+  position: absolute; z-index: 50;
+  background: var(--surface); border: 1px solid var(--accent);
+  border-radius: 5px; min-width: 170px; max-width: 240px;
+  max-height: 160px; overflow-y: auto;
+  box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  scrollbar-width: thin;
+}
+.ac-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px; cursor: pointer; font-size: .72rem;
+  transition: background .08s;
+}
+.ac-item:hover, .ac-item.selected {
+  background: var(--accent-dim);
+}
+.ac-item.selected {
+  border-left: 2px solid var(--accent);
+}
+.ac-kind {
+  font-size: .6rem; flex-shrink: 0; width: 18px; text-align: center;
+}
+.ac-label {
+  color: var(--text); font-family: var(--mono);
+}
+.ac-cmd .ac-label { color: #66bb6a; }
+.ac-kw .ac-label  { color: #ba68c8; }
 
 /* ── LOG ─────────────────────────────────────────────── */
 #log-wrap {
@@ -245,6 +301,8 @@ body.light .goal-instructions { background: rgba(0,0,0,.04); }
 body.light #goal-canvas { background: #f0f4f0; }
 body.light .lang-btn.active { background: var(--accent); color: #fff; }
 body.light .hl-cm { color: #8a9a8a !important; }
+body.light .autocomplete-panel { background: #f2f5f2; border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+body.light .error-help-content code { background: rgba(0,0,0,.08); }
 
 
 /* ── RESPONSIVE ──────────────────────────────────────── */
