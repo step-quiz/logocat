@@ -1,0 +1,168 @@
+/* LogoCat — estils. Aspecte de la família Cat (Space Mono, tema clar i fosc)
+   i «monitor» gris fosc de la tortuga. Disseny aprovat: docs/DECISIONS.md §7. */
+
+@font-face {
+  font-family: 'Space Mono'; font-weight: 400; font-style: normal; font-display: swap;
+  src: url('../fonts/space-mono-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Mono'; font-weight: 700; font-style: normal; font-display: swap;
+  src: url('../fonts/space-mono-700.woff2') format('woff2');
+}
+
+:root {
+  --bg: #ffffff; --surface: #f5f5f5; --border: #d0d0d0;
+  --text: #1a1a1a; --muted: #4b5563; --accent: #2563eb; --accent-dim: #e8efff;
+  --ok: #15803d; --ok-bg: #ecfdf3; --no: #b45309; --no-bg: #fff7ed; --bad: #b91c1c;
+  /* El monitor és igual en els dos temes. */
+  --mon: #2b2d31; --mon-line: #4a4e57; --mon-text: #ecebe6; --mon-muted: #a9abb3;
+  --mon-error: #ffa59c; --mon-hint: #a8c8ff;
+  --mono: 'Space Mono', 'Courier New', monospace;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --surface: #141414; --border: #2a2a2a;
+  --text: #ddddd8; --muted: #9a9a94; --accent: #a8a8a2; --accent-dim: #1f1f1f;
+  --ok: #4ade80; --ok-bg: #0d2216; --no: #f0b060; --no-bg: #2a2210; --bad: #ff8a80;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 15px; line-height: 1.7; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+/* ── Barra superior ── */
+.barra {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+  min-height: 46px; padding: 6px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.barra-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text); text-decoration: none; }
+.barra-logo svg { width: 24px; height: 24px; }
+.barra-titol { color: var(--muted); font-size: 13px; }
+.barra-espai { flex: 1 1 auto; }
+.fet { color: var(--ok); font-weight: 700; font-size: 13px; }
+
+.boto {
+  min-height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 3px;
+  background: var(--bg); color: var(--text); font-family: inherit; font-size: 16px; font-weight: 400; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.boto:hover:not(:disabled) { border-color: var(--accent); }
+.boto:disabled { color: var(--muted); cursor: default; opacity: 0.6; }
+.boto--principal { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+:root[data-theme="dark"] .boto--principal { color: #000000; }
+.boto--estat { font-size: 12.5px; font-weight: 700; }
+.boto--estat[aria-pressed="true"] { background: var(--accent-dim); border-color: var(--accent); }
+.boto--icona { min-width: 44px; padding: 0; }
+.boto--icona svg { width: 18px; height: 18px; }
+
+/* ── Pàgina de capítol ── */
+.capitol { max-width: 880px; margin: 0 auto; padding: 24px 16px 80px; display: flex; flex-direction: column; gap: 36px; }
+.capitol h1 { font-size: 26px; line-height: 1.25; margin: 0; }
+.capitol-num { color: var(--muted); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+.capitol section { display: flex; flex-direction: column; gap: 14px; }
+.capitol h2 { font-size: 19px; line-height: 1.3; margin: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.capitol p, .capitol ul, .capitol ol { margin: 0; max-width: 68ch; }
+.capitol ul, .capitol ol { padding-left: 1.4em; }
+.capitol li + li { margin-top: 4px; }
+code { font-family: var(--mono); background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; white-space: nowrap; }
+pre.codi {
+  margin: 0; padding: 10px 14px; border-radius: 4px; overflow-x: auto;
+  background: var(--mon); color: var(--mon-text); font-family: var(--mono); font-size: 14px; line-height: 1.6;
+}
+pre.codi .e { color: var(--mon-error); }
+pre.codi .p { color: var(--mon-hint); }
+.etiqueta { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.es-fet > h2::after { content: '✓ fet'; font-size: 13px; font-weight: 700; color: var(--ok); }
+.requadre { border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 4px; padding: 16px; background: var(--surface); }
+.taula-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; max-width: 68ch; font-size: 14px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.peu { border-top: 1px solid var(--border); padding-top: 16px; color: var(--muted); font-size: 13px; }
+
+/* ── Simulador (monitor) ── */
+.sim { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--bg); }
+.sim-barra { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 12px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.sim-espai { flex: 1 1 auto; }
+.sim-monitor { display: flex; flex-direction: column; background: var(--mon); color: var(--mon-text); }
+.sim-camp { display: flex; justify-content: center; padding: 8px; }
+.sim-camp canvas { display: block; border: 1px solid var(--mon-line); }
+.sim-llegenda { display: flex; flex-wrap: wrap; gap: 4px 20px; padding: 6px 16px; border-top: 1px solid var(--mon-line); font-size: 12px; color: #c9cbd1; }
+.sim-llegenda span { display: inline-flex; align-items: center; gap: 6px; }
+.ll { display: inline-block; width: 22px; height: 0; border-top: 2px solid #f2f2ee; }
+.ll--sobra { border-top: 4px solid #ff8f84; }
+.ll--falta { border-top: 2px dashed #a8c8ff; }
+.sim-text { padding: 8px 16px 0; border-top: 1px solid var(--mon-line); font-size: 14px; line-height: 1.7; max-height: 9.5em; overflow-y: auto; }
+.sim-text:empty { padding-top: 0; }
+.sim-linia { white-space: pre-wrap; overflow-wrap: anywhere; }
+.sim-error { color: var(--mon-error); }
+.sim-pista { color: var(--mon-hint); display: flex; align-items: flex-start; gap: 8px; padding-left: 2ch; }
+.sim-pista svg { width: 16px; height: 16px; flex: none; margin-top: 4px; }
+.sim-entrada { display: flex; align-items: center; gap: 1ch; padding: 0 16px 10px; font-size: 14px; }
+.sim-prompt { color: var(--mon-muted); }
+.sim-entrada input {
+  flex: 1 1 auto; min-width: 0; min-height: 44px; background: transparent; border: 0; border-bottom: 1px solid var(--mon-line);
+  color: var(--mon-text); font-family: inherit; font-size: 16px; text-transform: uppercase;
+}
+.sim-entrada input::placeholder { color: var(--mon-muted); text-transform: none; font-size: 14px; }
+.sim-entrada input:focus-visible { outline: none; border-bottom-color: var(--mon-hint); }
+.sim-resultat { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.sim-resultat--no, .sim-resultat--quasi { background: var(--no-bg); }
+.sim-resultat--no strong, .sim-resultat--quasi strong { color: var(--no); }
+.sim-resultat--si { background: var(--ok-bg); }
+.sim-resultat--si strong { color: var(--ok); }
+.sim:fullscreen { border: 0; border-radius: 0; overflow-y: auto; }
+.sim:fullscreen .sim-monitor { flex: 1 1 auto; }
+
+/* ── «Què dibuixarà?» ── */
+.prediu { display: flex; flex-direction: column; gap: 14px; }
+.prediu-opcions { display: flex; flex-wrap: wrap; gap: 12px; }
+.prediu-opcio {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 10px; cursor: pointer;
+  background: var(--mon); color: var(--mon-text); border: 3px solid var(--mon); border-radius: 6px; font-family: inherit; font-size: 15px; font-weight: 700;
+}
+.prediu-opcio svg { width: 132px; height: 110px; display: block; }
+.prediu-opcio:hover { border-color: var(--accent); }
+.prediu-opcio.es-bona { border-color: var(--ok); }
+.prediu-opcio.es-dolenta { border-color: var(--bad); }
+.mini-trac { fill: none; stroke: #f2f2ee; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.mini-tortuga { fill: none; stroke: #f2f2ee; stroke-width: 1.3; stroke-linejoin: round; }
+.mini-inici { fill: #a9abb3; }
+.prediu-resposta, .veredicte { font-weight: 700; }
+.es-bona.prediu-resposta, .es-bona.veredicte { color: var(--ok); }
+.es-dolenta.prediu-resposta, .es-dolenta.veredicte { color: var(--no); }
+
+/* ── Qüestionari ── */
+.quiz { display: flex; flex-direction: column; gap: 18px; }
+.pregunta { border: 1px solid var(--border); border-radius: 4px; padding: 12px 16px 14px; margin: 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pregunta legend { font-weight: 700; padding: 0 6px; }
+.pregunta label { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px; border-radius: 3px; cursor: pointer; }
+.pregunta label:hover { background: var(--surface); }
+.pregunta input { width: 18px; height: 18px; accent-color: var(--accent); flex: none; }
+.pregunta label.es-bona { background: var(--ok-bg); }
+.pregunta label.es-dolenta { background: var(--no-bg); }
+.explicacio { color: var(--muted); }
+
+/* ── Portada ── */
+.portada { max-width: 720px; margin: 0 auto; padding: 48px 16px 80px; display: flex; flex-direction: column; gap: 20px; }
+.portada h1 { font-size: 30px; line-height: 1.2; margin: 0; }
+.portada p { margin: 0; max-width: 62ch; }
+.llista-capitols { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.llista-capitols a, .llista-capitols span {
+  display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 6px 14px;
+  border: 1px solid var(--border); border-radius: 4px; text-decoration: none; color: var(--text);
+}
+.llista-capitols a:hover { border-color: var(--accent); }
+.llista-capitols span { color: var(--muted); }
+.llista-capitols b { color: var(--muted); font-weight: 400; min-width: 2ch; }
+
+@media (max-width: 560px) {
+  body { font-size: 14px; }
+  .boto { padding: 0 10px; font-size: 15px; }
+  .prediu-opcio svg { width: 96px; height: 80px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }

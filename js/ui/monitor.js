@@ -1,0 +1,382 @@
+// El «monitor»: dibuix de la tortuga, línies de text i línia d'ordres «?».
+// És la pantalla dels simuladors incrustats als capítols (sense panell de procediments).
+// Disseny aprovat: docs/DECISIONS.md §7.
+import { Interpreter } from '../logo/interpret.js';
+import { LogoError, describe } from '../logo/missatges.js';
+import { FIELD } from '../logo/tortuga.js';
+import { compareDrawings, comparePose } from '../logo/compara.js';
+
+const PEN = ['#111214', '#f2f2ee', '#3ddc6a', '#d66bff', '#ff8a4c', '#4cc9ff'];   // colors 0–5
+const BG = ['#232529', '#f2f2ee', '#1f5a34', '#4a2a5c', '#6b3a1e', '#1d4a66'];
+const BULB = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.3 1 2.1h5c0-.8.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>';
+
+const el = (tag, cls, text) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+};
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const frame = () => new Promise((r) => requestAnimationFrame(r));
+const DIRS = { 0: 'amunt', 90: 'cap a la dreta', 180: 'avall', 270: 'cap a l\'esquerra' };
+
+/** Executa un text de LOGO en net i en retorna el dibuix i l'estat final. */
+export function drawingOf(code) {
+  const I = new Interpreter({ rng: () => 0.5 });
+  const r = I.runSync(code);
+  return { segments: I.turtle.segments.slice(), pose: I.turtle.pose(), error: r.error };
+}
+
+export class Monitor {
+  /**
+   * opts: { exercise, solutions: [text], checkPose, failText, okText, onSolved }
+   */
+  constructor(root, opts = {}) {
+    this.root = root;
+    this.opts = opts;
+    this.I = new Interpreter();
+    this.undo = [];
+    this.history = []; this.histPos = 0;
+    this.busy = false; this.stepping = false; this.abort = false; this.resume = null;
+    this.shown = this.I.turtle.pose();        // on es dibuixa la tortuga ara (animació)
+    this.partial = null;                      // traç a mig fer durant una animació
+    this.hideFrom = null;                     // segments encara no mostrats
+    this.diff = null; this.goalVisible = true;
+    this.targets = (opts.solutions || []).map(drawingOf);
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.build();
+    this.draw();
+  }
+
+  // ── Construcció ──
+  build() {
+    const r = this.root;
+    r.classList.add('sim');
+    r.textContent = '';
+    const bar = el('div', 'sim-barra');
+    const btn = (label, cls, fn) => { const b = el('button', 'boto ' + (cls || ''), label); b.type = 'button'; b.addEventListener('click', fn); bar.appendChild(b); return b; };
+    if (this.opts.exercise) this.bCheck = btn('Comprova', 'boto--principal', () => this.check());
+    this.bStep = btn('Pas', '', () => this.onStep());
+    this.bCont = btn('Continua', '', () => this.onContinue()); this.bCont.hidden = true;
+    this.bStop = btn('Atura', '', () => this.onStop()); this.bStop.hidden = true;
+    this.bUndo = btn('Desfés', '', () => this.onUndo());
+    this.bReset = btn('Reinicia', '', () => this.onReset());
+    bar.appendChild(el('span', 'sim-espai'));
+    if (this.opts.exercise) {
+      this.bGoal = btn('Objectiu: visible', 'boto--estat', () => {
+        this.goalVisible = !this.goalVisible;
+        this.bGoal.textContent = 'Objectiu: ' + (this.goalVisible ? 'visible' : 'amagat');
+        this.bGoal.setAttribute('aria-pressed', String(this.goalVisible));
+        this.draw();
+      });
+      this.bGoal.setAttribute('aria-pressed', 'true');
+    }
+    if (r.requestFullscreen) btn('Pantalla completa', '', () => {
+      if (document.fullscreenElement) document.exitFullscreen(); else r.requestFullscreen().catch(() => {});
+    });
+    r.appendChild(bar);
+
+    const mon = el('div', 'sim-monitor');
+    const wrap = el('div', 'sim-camp');
+    this.canvas = el('canvas');
+    this.canvas.setAttribute('role', 'img');
+    this.canvas.setAttribute('aria-label', 'Dibuix de la tortuga');
+    wrap.appendChild(this.canvas);
+    mon.appendChild(wrap);
+
+    this.legend = el('div', 'sim-llegenda');
+    this.legend.innerHTML = '<span><i class="ll ll--ok"></i>coincideix</span><span><i class="ll ll--sobra"></i>sobra</span><span><i class="ll ll--falta"></i>falta</span>';
+    this.legend.hidden = true;
+    mon.appendChild(this.legend);
+
+    this.log = el('div', 'sim-text');
+    this.log.setAttribute('aria-live', 'polite');
+    mon.appendChild(this.log);
+
+    const row = el('div', 'sim-entrada');
+    const id = 'ordre-' + Math.random().toString(36).slice(2, 8);
+    this.promptLabel = el('label', 'sim-prompt', '?'); this.promptLabel.htmlFor = id;
+    this.input = el('input'); this.input.id = id; this.input.type = 'text';
+    this.input.autocomplete = 'off'; this.input.spellcheck = false;
+    this.input.setAttribute('autocapitalize', 'characters'); this.input.setAttribute('autocorrect', 'off');
+    this.input.placeholder = 'escriu una ordre i prem Retorn';
+    this.input.addEventListener('keydown', (e) => this.onKey(e));
+    row.appendChild(this.promptLabel); row.appendChild(this.input);
+    mon.appendChild(row);
+    r.appendChild(mon);
+
+    this.result = el('div', 'sim-resultat'); this.result.setAttribute('role', 'status'); this.result.hidden = true;
+    r.appendChild(this.result);
+
+    if (window.ResizeObserver) new ResizeObserver(() => this.draw()).observe(wrap);
+    document.addEventListener('fullscreenchange', () => this.draw());
+  }
+
+  // ── Text ──
+  line(text, cls) {
+    const d = el('div', 'sim-linia ' + (cls || ''), text);
+    this.log.appendChild(d);
+    while (this.log.childElementCount > 200) this.log.firstElementChild.remove();
+    this.log.scrollTop = this.log.scrollHeight;
+    return d;
+  }
+  hint(text) {
+    const d = el('div', 'sim-linia sim-pista');
+    d.innerHTML = BULB; d.appendChild(el('span', null, text));
+    this.log.appendChild(d); this.log.scrollTop = this.log.scrollHeight;
+  }
+  showError(err) {
+    const m = describe(err, this.I.knownWords());
+    this.line(m.line1, 'sim-error');
+    m.hints.forEach((h) => this.hint(h));
+  }
+
+  // ── Entrada ──
+  onKey(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const text = this.input.value;
+      if (!text.trim() || this.busy) return;
+      this.input.value = '';
+      this.submit(text, false);
+    } else if (e.key === 'ArrowUp') {
+      if (this.histPos > 0) { this.histPos--; this.input.value = this.history[this.histPos]; e.preventDefault(); }
+    } else if (e.key === 'ArrowDown') {
+      if (this.histPos < this.history.length) { this.histPos++; this.input.value = this.history[this.histPos] || ''; e.preventDefault(); }
+    }
+  }
+
+  setBusy(on) {
+    this.busy = on;
+    this.bStop.hidden = !on;
+    this.bCont.hidden = !(on && this.stepping);
+    this.bUndo.disabled = on; this.bReset.disabled = on;
+    if (this.bCheck) this.bCheck.disabled = on;
+    this.input.disabled = on;
+    this.input.placeholder = on ? (this.stepping ? 'prem Pas o Continua' : 'la tortuga està treballant…') : 'escriu una ordre i prem Retorn';
+    if (!on) this.input.focus({ preventScroll: true });
+  }
+
+  /** Executa una línia. Retorna una promesa que es resol quan acaba. */
+  async submit(text, stepMode) {
+    if (this.busy) return;
+    this.line(this.promptLabel.textContent + ' ' + text.toUpperCase(), 'sim-eco');
+    this.history.push(text); if (this.history.length > 50) this.history.shift();
+    this.histPos = this.history.length;
+    this.undo.push(this.I.snapshot()); if (this.undo.length > 50) this.undo.shift();
+    this.clearFeedback();
+    this.stepping = stepMode; this.abort = false;
+    this.setBusy(true);
+    let events = 0, printBuf = '';
+    try {
+      const gen = this.I.runLine(text);
+      for (;;) {
+        if (this.abort) throw new LogoError('stopped');
+        const { value: ev, done } = gen.next();
+        if (done) break;
+        if (ev.type === 'turtle') {
+          events++;
+          const factor = this.reduced ? 0 : this.stepping ? 1 : events > 150 ? 0 : events > 40 ? 0.3 : 1;
+          await this.animate(ev, factor);
+          if (factor === 0 && events % 40 === 0) { this.draw(); await frame(); }
+          if (this.stepping) {
+            this.draw();
+            await new Promise((r) => { this.resume = r; });
+            this.resume = null;
+          }
+        } else if (ev.type === 'print') {
+          printBuf += ev.text;
+          if (ev.newline) { this.line(printBuf); printBuf = ''; }
+        } else if (ev.type === 'note') {
+          this.note(ev);
+        } else if (ev.type === 'wait') {
+          this.draw(); await sleep(Math.min(ev.ms, 5000));
+        } else if (ev.type === 'prompt') {
+          this.promptLabel.textContent = ev.value;
+        }
+      }
+    } catch (e) {
+      if (!(e instanceof LogoError)) { this.setBusy(false); throw e; }
+      this.I.pending = null; this.promptLabel.textContent = '?';
+      this.showError(e);
+    }
+    if (printBuf) this.line(printBuf);
+    this.partial = null; this.hideFrom = null;
+    this.shown = this.I.turtle.pose();
+    this.stepping = false;
+    this.setBusy(false);
+    this.draw();
+  }
+
+  note(ev) {
+    const key = 'logocat-nota-' + ev.key;
+    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (e) { /* sense emmagatzematge */ }
+    this.hint(ev.text);
+  }
+
+  // ── Botons ──
+  onStep() {
+    if (this.busy) { if (this.resume) this.resume(); return; }
+    const text = this.input.value;
+    if (!text.trim()) { this.hint('Escriu una ordre i prem Pas per veure-la instrucció a instrucció.'); return; }
+    this.input.value = '';
+    this.submit(text, true);
+  }
+  onContinue() { this.stepping = false; this.bCont.hidden = true; if (this.resume) this.resume(); }
+  onStop() { this.abort = true; if (this.resume) this.resume(); }
+  onUndo() {
+    if (this.busy || !this.undo.length) return;
+    this.I.restore(this.undo.pop());
+    this.promptLabel.textContent = '?';
+    this.shown = this.I.turtle.pose();
+    this.clearFeedback(); this.draw();
+    this.line('(última línia desfeta)', 'sim-eco');
+  }
+  onReset() {
+    if (this.busy) return;
+    this.I.resetAll(); this.undo = [];
+    this.promptLabel.textContent = '?';
+    this.log.textContent = '';
+    this.shown = this.I.turtle.pose();
+    this.clearFeedback(); this.draw();
+  }
+  clearFeedback() {
+    this.diff = null; this.legend.hidden = true;
+    this.result.hidden = true; this.result.textContent = '';
+  }
+
+  // ── Correcció ──
+  check() {
+    if (this.busy) return;
+    const T = this.I.turtle;
+    const say = (kind, title, text) => {
+      this.result.className = 'sim-resultat sim-resultat--' + kind;
+      this.result.textContent = '';
+      this.result.appendChild(el('strong', null, title));
+      this.result.appendChild(el('span', null, text));
+      this.result.hidden = false;
+    };
+    if (!T.segments.length) { say('no', 'Encara no.', 'Encara no has dibuixat res.'); return false; }
+    let best = null, target = null;
+    for (const t of this.targets) {
+      const r = compareDrawings(T.segments, t.segments);
+      if (!best || r.error < best.error) { best = r; target = t; }
+    }
+    if (!best.ok) {
+      this.diff = best; this.legend.hidden = false; this.draw();
+      say('no', 'Encara no.', this.opts.failText || 'Mira quins traços sobren i quins falten.');
+      return false;
+    }
+    if (this.opts.checkPose) {
+      const p = comparePose(T.pose(), target.pose);
+      if (!p.position) { say('quasi', 'Gairebé.', 'El dibuix és correcte. Només falta que la tortuga acabi on ha començat.'); return false; }
+      if (!p.heading) {
+        const dir = DIRS[Math.round(target.pose.heading)] || 'com a l\'objectiu';
+        say('quasi', 'Gairebé.', `El dibuix és correcte. Només falta que la tortuga acabi mirant ${dir}.`);
+        return false;
+      }
+    }
+    say('si', 'Correcte!', this.opts.okText || 'Has dibuixat exactament el que es demanava.');
+    if (this.opts.onSolved) this.opts.onSolved();
+    return true;
+  }
+
+  // ── Animació ──
+  async animate(ev, factor) {
+    const T = this.I.turtle;
+    if (factor === 0) { this.shown = ev.to; this.partial = null; this.hideFrom = null; return; }
+    if (ev.kind === 'state') { this.shown = ev.to; this.draw(); return; }
+    if (ev.kind === 'turn') {
+      const ms = Math.min(450, Math.abs(ev.delta) * 3) * factor;
+      await this.tween(ms, (p) => { this.shown = { x: ev.from.x, y: ev.from.y, heading: ev.from.heading + ev.delta * p }; });
+      this.shown = ev.to; this.draw();
+      return;
+    }
+    const path = ev.path || [];
+    const lens = path.map((s) => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
+    const total = lens.reduce((a, b) => a + b, 0);
+    if (total < 1e-6) { this.shown = ev.to; this.draw(); return; }
+    const drawing = ev.segs.length > 0;
+    const pen = { color: T.color, erase: T.pen === 'erase' };
+    this.hideFrom = T.segments.length - ev.segs.length;
+    await this.tween(Math.min(700, total * 5) * factor, (p) => {
+      let left = total * p; const done = [];
+      let pos = { x: path[0].x1, y: path[0].y1 };
+      for (let i = 0; i < path.length; i++) {
+        const s = path[i];
+        if (left >= lens[i]) { done.push(s); left -= lens[i]; pos = { x: s.x2, y: s.y2 }; continue; }
+        const q = lens[i] ? left / lens[i] : 0;
+        pos = { x: s.x1 + (s.x2 - s.x1) * q, y: s.y1 + (s.y2 - s.y1) * q };
+        done.push({ x1: s.x1, y1: s.y1, x2: pos.x, y2: pos.y });
+        break;
+      }
+      this.partial = drawing ? done.map((s) => ({ ...s, ...pen })) : null;
+      this.shown = { x: pos.x, y: pos.y, heading: ev.from.heading };
+    });
+    this.partial = null; this.hideFrom = null; this.shown = ev.to; this.draw();
+  }
+
+  tween(ms, apply) {
+    if (ms <= 0) { apply(1); return Promise.resolve(); }
+    return new Promise((resolve) => {
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = this.abort ? 1 : Math.min(1, (now - t0) / ms);
+        apply(p); this.draw();
+        if (p < 1) requestAnimationFrame(tick); else resolve();
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // ── Dibuix ──
+  draw() {
+    const c = this.canvas, box = c.parentElement;
+    const full = document.fullscreenElement === this.root;
+    const maxH = full ? Math.max(200, window.innerHeight - 260) : 320;
+    const cssW = Math.max(120, Math.min(box.clientWidth, maxH * FIELD.w / FIELD.h));
+    const cssH = cssW * FIELD.h / FIELD.w;
+    const dpr = window.devicePixelRatio || 1;
+    if (c.width !== Math.round(cssW * dpr) || c.height !== Math.round(cssH * dpr)) {
+      c.width = Math.round(cssW * dpr); c.height = Math.round(cssH * dpr);
+      c.style.width = cssW + 'px'; c.style.height = cssH + 'px';
+    }
+    const g = c.getContext('2d');
+    const k = c.width / FIELD.w;
+    const X = (x) => (x - FIELD.xmin) * k, Y = (y) => (FIELD.ymax - y) * k;
+    const T = this.I.turtle;
+    const field = BG[T.bg] || BG[0];
+    g.fillStyle = field; g.fillRect(0, 0, c.width, c.height);
+    g.lineCap = 'round'; g.lineJoin = 'round';
+
+    const stroke = (s, color, width, dash) => {
+      g.beginPath(); g.setLineDash(dash || []);
+      g.strokeStyle = color; g.lineWidth = width;
+      g.moveTo(X(s.x1), Y(s.y1)); g.lineTo(X(s.x2), Y(s.y2)); g.stroke();
+    };
+    const base = Math.max(1.5, k * 1.1);
+
+    if (this.opts.exercise && this.goalVisible && !this.diff && this.targets[0]) {
+      for (const s of this.targets[0].segments) stroke(s, 'rgba(168,200,255,0.75)', base, [k * 3, k * 2.5]);
+    }
+    const segs = this.hideFrom == null ? T.segments : T.segments.slice(0, this.hideFrom);
+    for (const s of segs.concat(this.partial || [])) {
+      if (s.erase) stroke(s, field, base * 2.4); else stroke(s, PEN[s.color] || PEN[1], base);
+    }
+    if (this.diff) {
+      for (const s of this.diff.extra) stroke(s, '#ff8f84', base * 2);
+      for (const s of this.diff.missing) stroke(s, '#a8c8ff', base, [k * 3, k * 2.5]);
+    }
+    g.setLineDash([]);
+
+    if (T.visible) {
+      const p = this.shown, rad = p.heading * Math.PI / 180;
+      const pt = (px, py) => [X(p.x + px * Math.cos(rad) + py * Math.sin(rad)), Y(p.y - px * Math.sin(rad) + py * Math.cos(rad))];
+      g.beginPath();
+      [[0, 11], [-6, -5], [6, -5]].forEach(([a, b], i) => { const [sx, sy] = pt(a, b); if (i) g.lineTo(sx, sy); else g.moveTo(sx, sy); });
+      g.closePath();
+      g.fillStyle = field; g.fill();
+      g.strokeStyle = PEN[1]; g.lineWidth = base; g.stroke();
+    }
+  }
+}

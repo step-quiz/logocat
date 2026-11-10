@@ -1,0 +1,1 @@
+{ "type": "module", "private": true, "name": "logocat", "description": "LogoCat. El web no té dependències; aquest fitxer només fa que Node tracti els .js com a mòduls ES.", "scripts": { "test": "node --test tests/unit/*.test.mjs" } }

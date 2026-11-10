@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 1 · Coneix la tortuga — LogoCat</title>
+<meta name="description" content="Primer capítol de LogoCat: mou la tortuga amb AVANÇA, RECULA, GIRA.D i GIRA.E.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <span class="barra-titol">Capítol 1</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 1</p>
+    <h1>Coneix la tortuga</h1>
+  </div>
+
+  <section>
+    <h2>La tortuga i la pantalla</h2>
+    <p>La tortuga és el triangle que veus al mig de la pantalla. La punta assenyala cap on mira: ara mateix, amunt.</p>
+    <p>La pantalla té dues parts. A dalt hi ha l'espai on la tortuga dibuixa. A sota hi ha les línies de text: allà, després del signe <code>?</code>, és on escrius tu.</p>
+    <p>Tu li escrius una ordre, prems Retorn, i ella la fa al moment.</p>
+    <p>Aquest llenguatge es diu LOGO i té més anys que tu. Als anys 80, a escoles de Catalunya ja es programava la tortuga amb aquestes mateixes paraules.</p>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2>La primera ordre: AVANÇA</h2>
+    <p>Una ordre és una paraula i un nombre, separats per un espai. Escriu això i prem Retorn:</p>
+    <pre class="codi">AVANÇA 50</pre>
+    <p>La tortuga ha caminat 50 passos cap on mirava i ha deixat un traç. Prova-ho ara amb un altre nombre: com més gran, més lluny va.</p>
+    <div class="simulador"></div>
+    <p>Fixa't que AVANÇA s'escriu amb ç. Pots escriure en majúscules o en minúscules: la tortuga ho entén igual.</p>
+    <p>Si t'equivoques, no passa res. LOGO t'avisa i t'ajuda:</p>
+    <pre class="codi">? AVANCA 50
+<span class="e">NO SÉ COM FER AVANCA</span>
+<span class="p">  Volies dir AVANÇA?</span></pre>
+  </section>
+
+  <section>
+    <h2>Girar: GIRA.D i GIRA.E</h2>
+    <p>La tortuga també pot girar. <code>GIRA.D</code> la fa girar cap a la dreta i <code>GIRA.E</code>, cap a l'esquerra. Les dues paraules s'escriuen amb un punt al mig, sense espais.</p>
+    <p>El nombre diu quant gira, en graus: 90 graus són un angle recte.</p>
+    <p>Girar no és avançar. Quan gira, la tortuga canvia cap on mira, però no es mou de lloc ni dibuixa res.</p>
+    <pre class="codi">GIRA.D 90
+AVANÇA 50
+GIRA.E 90
+AVANÇA 50</pre>
+    <div class="simulador"></div>
+    <p>Compte: la D i la E són la dreta i l'esquerra de la tortuga, no les teves. Quan ella mira avall, la seva dreta és la teva esquerra. Si dubtes, posa't al seu lloc: imagina que ets tu qui camina per la pantalla.</p>
+    <p>Abans d'escriure una ordre, pregunta't sempre cap on mira la tortuga.</p>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>La tortuga és al centre i mira amunt. Sense executar res, pensa quin dibuix faran aquestes tres ordres i tria'l.</p>
+    <div class="prediu" data-id="cap1-prediu">
+      <pre class="codi">AVANÇA 60
+GIRA.D 90
+AVANÇA 30</pre>
+      <script type="text/logo" data-correcta data-perque="Primer avança 60 cap amunt. Després gira cap a la seva dreta i avança 30.">AVANÇA 60
+GIRA.D 90
+AVANÇA 30</script>
+      <script type="text/logo" data-perque="En aquest dibuix la tortuga gira cap a l'esquerra, i l'ordre és GIRA.D.">AVANÇA 60
+GIRA.E 90
+AVANÇA 30</script>
+      <script type="text/logo" data-perque="Aquí la tortuga gira abans d'avançar. Les ordres es fan en l'ordre en què estan escrites.">GIRA.D 90
+AVANÇA 60
+GIRA.E 90
+AVANÇA 30</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Recular, tornar a començar i escriure menys</h2>
+    <p><code>RECULA</code> fa anar la tortuga enrere, sense girar-se. També dibuixa.</p>
+    <pre class="codi">RECULA 20</pre>
+    <p>Quan vulguis tornar a començar, escriu <code>INI.DIB</code>. Esborra el dibuix i torna la tortuga al centre, mirant amunt.</p>
+    <pre class="codi">INI.DIB</pre>
+    <p>Tres ajudes per escriure menys:</p>
+    <ul>
+      <li>Pots posar diverses ordres en una sola línia, separades per espais: <code>AVANÇA 50 GIRA.D 90 AVANÇA 50</code>.</li>
+      <li>La tecla de la fletxa amunt recupera l'última línia que has escrit.</li>
+      <li>El botó «Desfés» esborra l'efecte de l'última línia.</li>
+    </ul>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> L'escala</h2>
+    <p>Dibuixa una escala de 3 graons. Cada graó puja 30 passos i avança 30 cap a la dreta.</p>
+    <p>Quan la tinguis, prem «Comprova».</p>
+    <div class="simulador" data-id="cap1-escala" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten. Després de cada gir, cap on mira la tortuga?">
+      <script type="text/logo">AVANÇA 30 GIRA.D 90 AVANÇA 30 GIRA.E 90
+AVANÇA 30 GIRA.D 90 AVANÇA 30 GIRA.E 90
+AVANÇA 30 GIRA.D 90 AVANÇA 30 GIRA.E 90</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quant he de girar?</h2>
+    <p>Els girs es mesuren en graus. Tres girs que convé saber de memòria:</p>
+    <div class="taula-wrap">
+      <table>
+        <thead><tr><th>Gir</th><th>Graus</th><th>Què passa</th></tr></thead>
+        <tbody>
+          <tr><td>Un quart de volta</td><td>90</td><td>La tortuga mira cap a un costat</td></tr>
+          <tr><td>Mitja volta</td><td>180</td><td>Mira cap enrere</td></tr>
+          <tr><td>Una volta sencera</td><td>360</td><td>Torna a mirar igual que abans</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Prova <code>GIRA.D 360</code>: la tortuga fa tota la volta i queda igual que estava.</p>
+    <p>Un gir es desfà amb el mateix nombre cap a l'altre costat. Després de <code>GIRA.D 45</code>, l'ordre <code>GIRA.E 45</code> la deixa com al principi.</p>
+    <p>No tots els girs són de 90. Prova'n d'altres: 45, 30, 120.</p>
+    <pre class="codi">GIRA.D 45
+AVANÇA 40
+GIRA.E 45</pre>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes d'angles</h2>
+    <div class="quiz" data-id="cap1-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. La tortuga mira amunt. Escrius GIRA.D 90 dues vegades. Cap on mira ara?</legend>
+        <label><input type="radio"> Amunt</label>
+        <label><input type="radio"> Avall</label>
+        <label><input type="radio"> A la dreta</label>
+        <p class="explicacio" hidden>Dos quarts de volta fan mitja volta, perquè 90 + 90 = 180.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>2. Quina ordre deixa la tortuga mirant igual que abans?</legend>
+        <label><input type="radio"> GIRA.D 180</label>
+        <label><input type="radio"> GIRA.D 360</label>
+        <label><input type="radio"> GIRA.E 90</label>
+        <p class="explicacio" hidden>360 graus són una volta sencera.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. La tortuga ha fet GIRA.D 30. Quina ordre desfà aquest gir?</legend>
+        <label><input type="radio"> GIRA.D 30</label>
+        <label><input type="radio"> GIRA.E 30</label>
+        <label><input type="radio"> RECULA 30</label>
+        <p class="explicacio" hidden>El mateix nombre cap a l'altre costat. RECULA mou la tortuga, però no la gira.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section class="requadre">
+    <h2>Fora de la pantalla</h2>
+    <p>La pantalla de la tortuga fa 280 passos d'ample i 240 d'alt. Què passa si la tortuga arriba a la vora? Prova-ho:</p>
+    <pre class="codi">AVANÇA 300</pre>
+    <p>La tortuga surt per dalt i torna a entrar per baix. No s'ha perdut: la pantalla fa la volta.</p>
+    <p>Si no saps on ha anat a parar, <code>CENTRE</code> la torna al mig, mirant amunt, sense esborrar el dibuix.</p>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El quadrat</h2>
+    <p>Dibuixa un quadrat de costat 50. En acabar, la tortuga ha de ser on ha començat i ha de mirar amunt.</p>
+    <p>Pista: un quadrat té quatre costats iguals i quatre angles rectes.</p>
+    <div class="simulador" data-id="cap1-quadrat" data-clau data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. Un quadrat té quatre costats iguals i quatre angles rectes.">
+      <script type="text/logo">AVANÇA 50 GIRA.D 90
+AVANÇA 50 GIRA.D 90
+AVANÇA 50 GIRA.D 90
+AVANÇA 50 GIRA.D 90</script>
+      <script type="text/logo">AVANÇA 50 GIRA.E 90
+AVANÇA 50 GIRA.E 90
+AVANÇA 50 GIRA.E 90
+AVANÇA 50 GIRA.E 90</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <div class="taula-wrap">
+      <table>
+        <thead><tr><th>Ordre</th><th>Què fa</th></tr></thead>
+        <tbody>
+          <tr><td><code>AVANÇA 50</code></td><td>La tortuga camina 50 passos cap on mira, i dibuixa</td></tr>
+          <tr><td><code>RECULA 20</code></td><td>Camina 20 passos enrere, sense girar-se</td></tr>
+          <tr><td><code>GIRA.D 90</code></td><td>Gira 90 graus cap a la seva dreta</td></tr>
+          <tr><td><code>GIRA.E 90</code></td><td>Gira 90 graus cap a la seva esquerra</td></tr>
+          <tr><td><code>INI.DIB</code></td><td>Esborra el dibuix i torna la tortuga al centre, mirant amunt</td></tr>
+          <tr><td><code>CENTRE</code></td><td>Torna la tortuga al centre, mirant amunt, sense esborrar</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Per fer el quadrat has escrit el mateix quatre vegades. Al capítol següent aprendràs a dir-ho una sola vegada.</p>
+  </section>
+
+  <p class="peu">Capítol 2 · Repeteix: en preparació.</p>
+
+</main>
+</body>
+</html>

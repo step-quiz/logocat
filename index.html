@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LogoCat — Aprèn LOGO amb la tortuga, en català</title>
+<meta name="description" content="Curs interactiu per aprendre a programar amb LOGO i la tortuga, en català, com a les escoles dels anys 80.">
+<link rel="icon" href="img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/logocat.css">
+<script>
+(function () {
+  var t = null;
+  try { t = localStorage.getItem("logocat-tema"); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+</head>
+<body>
+<header class="barra">
+  <a class="barra-logo" href="index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+</header>
+<main class="portada">
+  <h1>Aprèn LOGO amb la tortuga, en català</h1>
+  <p>Escriu ordres, i la tortuga les dibuixa al moment. Sense instal·lar res i amb les mateixes paraules que es feien servir a les escoles catalanes dels anys 80.</p>
+  <ul class="llista-capitols">
+    <li><a href="curs/capitol-1.html"><b>1</b> Coneix la tortuga</a></li>
+    <li><span><b>2</b> Repeteix (en preparació)</span></li>
+  </ul>
+</main>
+</body>
+</html>
