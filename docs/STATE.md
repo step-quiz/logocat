@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-10 (v0.1, first delivery).
+> Last update: 2026-11-10 (v0.2: Editor lliure).
 
 ## What exists
 
@@ -23,26 +23,38 @@
   running the option code through the engine; options are shuffled) and the quiz.
 - **Chapter 1** (`curs/capitol-1.html`): approved text, 6 free simulators, 4 activities.
   "El quadrat" awards the chapter tick and accepts the square drawn to either side.
+- **Editor lliure** (`simulador.html`, `js/ui/editor.js`): the hybrid screen of the
+  approved mockup. Left: procedures panel (a textarea under a syntax-coloured layer with
+  line numbers), autosaved to `localStorage` (`logocat-editor-procediments`), parsed on
+  every change; a syntax problem is shown under the panel and the previous definitions
+  stay loaded. Right: the monitor. Toolbar: Pas / Continua / Atura (18 px), Desfés /
+  Reinicia (16 px), speed slider (6 positions, the last is instant, no text label),
+  turtle status (orientation, pen, colour name). Step mode pauses BEFORE each action:
+  the line is tinted, the next instruction outlined, the calling instructions underlined,
+  and the box shows "Ara farà", "On som" (call path with loop counters) and "Valors".
+  A procedure typed at `?` is appended to the panel; `OBLIDA.PROC` removes it from the
+  panel; `EDITA "NOM` moves the cursor there (creating an empty procedure if needed).
+  An error inside a procedure tints its line red. On narrow screens the monitor goes
+  above the panel.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 33 passing (`node --test tests/unit/*.test.mjs`). A manual browser smoke run
-  (Chrome, desktop and 390 px wide) passed on 2026-11-10: commands, the three day-one
-  messages, both exercises, activities, step mode, procedure definition at the prompt,
-  runaway recursion stop; no console errors, no external requests.
+- **Tests**: 39 passing (`node --test tests/unit/*.test.mjs`). Manual browser smoke runs
+  (Chrome, 1360 px and 390 px wide) passed on 2026-11-10 for chapter 1 and for the Editor
+  lliure (panel colouring, run, step mode matching the mockup scenario, stop, error line,
+  panel syntax warning, define/forget/edit from the prompt, undo, persistence after
+  reload); no console errors, no external requests.
 
 ## Not built yet
 
-- **Editor lliure** (the hybrid screen with the procedures panel, speed slider, turtle
-  status readout and the step-mode box). Design approved: `docs/DECISIONS.md` §7. The
-  engine already supports it (`defineAll`, call frames); source ranges for highlighting
-  the next instruction are not tracked yet.
 - **Chapters 2–12**, glossary, teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
   seen; LogoCat must be registered there first.
 - **Browser tests in CI.** Only Node unit tests run in CI.
-- **Workspace autosave** per simulator (spec §4): drawings and procedures are lost on
-  reload. Only progress, theme and the one-time note persist.
+- **Workspace autosave** (spec §4) is partial: the Editor lliure keeps its procedures;
+  drawings, variables and command history are lost on reload everywhere, and embedded
+  simulators keep nothing.
+- Top-bar entries of the mockup that have no page yet (Reptes, Glossari) are not shown.
 
 ## Known deviations and open points
 
@@ -56,3 +68,7 @@
   of `docs/LANGUAGE-SPEC.md` §8.
 - OPEN (owner): confirm that "El quadrat" accepts the mirrored square (currently yes).
 - `FES.XY` in wrap mode draws a straight stroke without wrapping.
+- Panel parsing is all-or-nothing: with a syntax problem anywhere in the panel, the
+  last good set of procedures stays active (the spec asks for per-procedure isolation).
+- In the Editor lliure, Desfés does not undo panel edits (by design); after an undo or a
+  reset the procedures are reloaded from the panel.

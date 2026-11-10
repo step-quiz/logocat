@@ -30,6 +30,12 @@ export function drawingOf(code) {
 export class Monitor {
   /**
    * opts: { exercise, solutions: [text], checkPose, failText, okText, onSolved }
+   * Per a l'Editor lliure, que posa els seus propis botons i panell:
+   *   toolbar: false     no construeix la barra de botons
+   *   maxHeight          alçada màxima del dibuix, en píxels
+   *   speed()            multiplicador del temps d'animació (0 = instantani)
+   *   stepOnBefore       el pas a pas s'atura ABANS de cada acció (i avisa amb onBefore)
+   *   onBusy(busy, stepping), onBefore(ev), onEvent(ev), onDraw(), onError(err), afterRestore()
    */
   constructor(root, opts = {}) {
     this.root = root;
@@ -53,8 +59,14 @@ export class Monitor {
     const r = this.root;
     r.classList.add('sim');
     r.textContent = '';
+    const withBar = this.opts.toolbar !== false;
     const bar = el('div', 'sim-barra');
     const btn = (label, cls, fn) => { const b = el('button', 'boto ' + (cls || ''), label); b.type = 'button'; b.addEventListener('click', fn); bar.appendChild(b); return b; };
+    if (withBar) this.buildBar(r, bar, btn);
+    this.buildScreen(r);
+  }
+
+  buildBar(r, bar, btn) {
     if (this.opts.exercise) this.bCheck = btn('Comprova', 'boto--principal', () => this.check());
     this.bStep = btn('Pas', '', () => this.onStep());
     this.bCont = btn('Continua', '', () => this.onContinue()); this.bCont.hidden = true;
@@ -75,7 +87,9 @@ export class Monitor {
       if (document.fullscreenElement) document.exitFullscreen(); else r.requestFullscreen().catch(() => {});
     });
     r.appendChild(bar);
+  }
 
+  buildScreen(r) {
     const mon = el('div', 'sim-monitor');
     const wrap = el('div', 'sim-camp');
     this.canvas = el('canvas');
@@ -129,6 +143,7 @@ export class Monitor {
     const m = describe(err, this.I.knownWords());
     this.line(m.line1, 'sim-error');
     m.hints.forEach((h) => this.hint(h));
+    if (this.opts.onError) this.opts.onError(err);
   }
 
   // ── Entrada ──
@@ -148,10 +163,13 @@ export class Monitor {
 
   setBusy(on) {
     this.busy = on;
-    this.bStop.hidden = !on;
-    this.bCont.hidden = !(on && this.stepping);
-    this.bUndo.disabled = on; this.bReset.disabled = on;
+    if (this.bStop) {
+      this.bStop.hidden = !on;
+      this.bCont.hidden = !(on && this.stepping);
+      this.bUndo.disabled = on; this.bReset.disabled = on;
+    }
     if (this.bCheck) this.bCheck.disabled = on;
+    if (this.opts.onBusy) this.opts.onBusy(on, this.stepping);
     this.input.disabled = on;
     this.input.placeholder = on ? (this.stepping ? 'prem Pas o Continua' : 'la tortuga està treballant…') : 'escriu una ordre i prem Retorn';
     if (!on) this.input.focus({ preventScroll: true });
@@ -160,6 +178,7 @@ export class Monitor {
   /** Executa una línia. Retorna una promesa que es resol quan acaba. */
   async submit(text, stepMode) {
     if (this.busy) return;
+    if (this.opts.beforeRun) this.opts.beforeRun();
     this.line(this.promptLabel.textContent + ' ' + text.toUpperCase(), 'sim-eco');
     this.history.push(text); if (this.history.length > 50) this.history.shift();
     this.histPos = this.history.length;
@@ -174,12 +193,22 @@ export class Monitor {
         if (this.abort) throw new LogoError('stopped');
         const { value: ev, done } = gen.next();
         if (done) break;
-        if (ev.type === 'turtle') {
+        if (ev.type === 'before') {
+          if (this.stepping && this.opts.stepOnBefore) {
+            this.draw();
+            if (this.opts.onBefore) this.opts.onBefore(ev);
+            await new Promise((r) => { this.resume = r; });
+            this.resume = null;
+            if (this.opts.onBefore) this.opts.onBefore(null);
+          }
+        } else if (ev.type === 'turtle') {
           events++;
-          const factor = this.reduced ? 0 : this.stepping ? 1 : events > 150 ? 0 : events > 40 ? 0.3 : 1;
+          const user = this.opts.speed ? this.opts.speed() : 1;
+          const auto = this.stepping ? 1 : events > 150 ? 0 : events > 40 ? 0.3 : 1;
+          const factor = this.reduced ? 0 : user * auto;
           await this.animate(ev, factor);
           if (factor === 0 && events % 40 === 0) { this.draw(); await frame(); }
-          if (this.stepping) {
+          if (this.stepping && !this.opts.stepOnBefore) {
             this.draw();
             await new Promise((r) => { this.resume = r; });
             this.resume = null;
@@ -193,6 +222,8 @@ export class Monitor {
           this.draw(); await sleep(Math.min(ev.ms, 5000));
         } else if (ev.type === 'prompt') {
           this.promptLabel.textContent = ev.value;
+        } else if (this.opts.onEvent) {
+          this.opts.onEvent(ev);
         }
       }
     } catch (e) {
@@ -222,11 +253,17 @@ export class Monitor {
     this.input.value = '';
     this.submit(text, true);
   }
-  onContinue() { this.stepping = false; this.bCont.hidden = true; if (this.resume) this.resume(); }
+  onContinue() {
+    this.stepping = false;
+    if (this.bCont) this.bCont.hidden = true;
+    if (this.opts.onBusy) this.opts.onBusy(this.busy, false);
+    if (this.resume) this.resume();
+  }
   onStop() { this.abort = true; if (this.resume) this.resume(); }
   onUndo() {
     if (this.busy || !this.undo.length) return;
     this.I.restore(this.undo.pop());
+    if (this.opts.afterRestore) this.opts.afterRestore();
     this.promptLabel.textContent = '?';
     this.shown = this.I.turtle.pose();
     this.clearFeedback(); this.draw();
@@ -235,6 +272,7 @@ export class Monitor {
   onReset() {
     if (this.busy) return;
     this.I.resetAll(); this.undo = [];
+    if (this.opts.afterRestore) this.opts.afterRestore();
     this.promptLabel.textContent = '?';
     this.log.textContent = '';
     this.shown = this.I.turtle.pose();
@@ -333,7 +371,7 @@ export class Monitor {
   draw() {
     const c = this.canvas, box = c.parentElement;
     const full = document.fullscreenElement === this.root;
-    const maxH = full ? Math.max(200, window.innerHeight - 260) : 320;
+    const maxH = full ? Math.max(200, window.innerHeight - 260) : (this.opts.maxHeight || 320);
     const cssW = Math.max(120, Math.min(box.clientWidth, maxH * FIELD.w / FIELD.h));
     const cssH = cssW * FIELD.h / FIELD.w;
     const dpr = window.devicePixelRatio || 1;
@@ -378,5 +416,6 @@ export class Monitor {
       g.fillStyle = field; g.fill();
       g.strokeStyle = PEN[1]; g.lineWidth = base; g.stroke();
     }
+    if (this.opts.onDraw) this.opts.onDraw(this);
   }
 }

@@ -179,8 +179,9 @@ Editable draft: Claude Docs doc "LogoCat · Capítol 1 · Coneix la tortuga"
 
 ## 9. Next step
 
-v0.1 delivered (engine, monitor, chapter 1). Candidates, for the owner to choose: the
-Editor lliure screen, or the script of chapter 2 (same review flow as chapter 1).
+v0.2 delivered (engine, monitor, chapter 1, Editor lliure). Next candidate: the script
+of chapter 2 (same review flow as chapter 1), then family integration once
+`step-quiz-commons` is available.
 
 ## 10. Sources and records
 

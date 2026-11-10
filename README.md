@@ -12,10 +12,13 @@ requests.
 | Path | What |
 |---|---|
 | `index.html` | Landing page with the chapter list |
+| `simulador.html` | Editor lliure: procedures panel + monitor, step mode |
 | `curs/capitol-N.html` | One page per chapter; text, simulators and activities |
 | `js/logo/` | The language: `lexer.js`, `interpret.js` (generator-based interpreter and primitives), `tortuga.js` (turtle and field), `missatges.js` (Catalan messages), `compara.js` (drawing validation) |
 | `js/ui/monitor.js` | The "monitor": turtle canvas, text lines, `?` prompt, toolbar, exercise checking |
+| `js/ui/editor.js` | Editor lliure logic (panel, colouring, step box) |
 | `js/ui/activitats.js` | "Què dibuixarà?" and quiz |
+| `js/ui/tema.js` | Light/dark theme toggle |
 | `js/curs/` | Page bootstrap (`pagina.js`) and progress in `localStorage` (`progres.js`) |
 | `css/logocat.css` | All styles, light and dark themes |
 | `fonts/` | Space Mono (OFL), self-hosted |

@@ -2,25 +2,7 @@
 import { Monitor } from '../ui/monitor.js';
 import { mountPredict, mountQuiz } from '../ui/activitats.js';
 import { isDone, markDone } from './progres.js';
-
-// ── Tema clar / fosc ──
-const THEME_KEY = 'logocat-tema';
-function applyTheme(t) { document.documentElement.dataset.theme = t; }
-function initTheme() {
-  let t = null;
-  try { t = localStorage.getItem(THEME_KEY); } catch (e) { /* sense emmagatzematge */ }
-  if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  applyTheme(t);
-  const b = document.getElementById('boto-tema');
-  if (!b) return;
-  const label = () => b.setAttribute('aria-label', document.documentElement.dataset.theme === 'dark' ? 'Canvia a tema clar' : 'Canvia a tema fosc');
-  label();
-  b.addEventListener('click', () => {
-    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    applyTheme(next); label();
-    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* sense emmagatzematge */ }
-  });
-}
+import { initTheme } from '../ui/tema.js';
 
 function tick(host, id) {
   const mark = () => host.classList.toggle('es-fet', isDone(id));
