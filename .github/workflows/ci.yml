@@ -1,0 +1,23 @@
+# Executa les proves de LogoCat a cada push i a cada pull request.
+# Resultats: pestanya «Actions» del repositori a GitHub.
+name: Comprova LogoCat
+
+on:
+  push:
+  pull_request:
+  # També el llança unzip-upload.yml després de desar un ZIP (un commit del
+  # bot no dispara cap workflow per si sol).
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Proves del motor i del curs
+        run: node --test tests/unit/*.test.mjs
