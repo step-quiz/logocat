@@ -64,6 +64,12 @@ export function describe(err, known = []) {
   switch (err.code) {
     case 'unknown': {
       line1 = `NO SÉ COM FER ${p.word}`;
+      // Els signes de classe per dividir i multiplicar (owner, 2026-11-11).
+      const N = '(\\d+(\\.\\d+)?)?';
+      if (new RegExp(`^${N}[:÷]${N}$`).test(p.word)) { hints = ['Per dividir, fes servir el signe /. Per exemple: 360 / 5']; break; }
+      if (new RegExp(`^${N}[·×]${N}$`).test(p.word) || /^\d+(\.\d+)?X\d+(\.\d+)?$/.test(p.word) || (p.word === 'X' && p.between)) {
+        hints = ['Per multiplicar, fes servir el signe *. Per exemple: 3 * 120']; break;
+      }
       const y = nearest(p.word, known);
       if (y) hints = [`Volies dir ${y}?`];
       break;

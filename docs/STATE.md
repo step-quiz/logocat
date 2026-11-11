@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.8: chapter 4, turtle shows pen state and colour).
+> Last update: 2026-11-11 (v0.9: chapter 5).
 
 ## What exists
 
@@ -58,6 +58,13 @@
   the final `LLAPIS`), key exercise "El carrer" (`CARRER` must use `TORRE`; `QUADRAT` and
   a state-restoring `TORRE` are given). Colour never counts in Comprova; the final pen
   state is not checked (owner rejected it).
+- **Chapter 5** (`curs/capitol-5.html`): approved script, 6 simulators with panel (3 for
+  examples, 3 exercises), "Què dibuixarà?", quiz, table of exterior/interior angles
+  (checked against the engine by the tests). Introduces infix arithmetic in inputs and
+  `ESCRIU` with numbers. Exercises: "El triangle" (`TRIANGLE`, drawing + pose, mirrored
+  solution accepted), find-the-bug "El pentàgon obert" (`PENTÀGON`, given panel), key
+  exercise "La casa" (`CASA` must use `TRIANGLE`, drawing + pose; the 30° turn is left
+  for the student to discover).
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
   Editor lliure included): filled triangle = pen down, hollow = pen up, dashed outline =
   eraser; the turtle takes the pen colour (if pen colour equals field colour, a
@@ -83,9 +90,9 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 58 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
-  headless Chrome on 2026-11-11: chapters 1–4 and the Editor lliure, no console errors, no
-  external requests. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+- **Tests**: 66 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+  headless Chrome on 2026-11-11: chapters 1–5 and the Editor lliure, no console errors, no
+  external requests. Chapter 5 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
@@ -93,7 +100,7 @@
 
 ## Not built yet
 
-- **Chapters 5–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
+- **Chapters 6–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
   go there, not in a chapter), teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
@@ -118,17 +125,20 @@
 - Simulator with panel: the owner approved a 38 % panel; it is built at 44 % because at
   38 % the longest line of chapter 3 (34 characters) needs a horizontal scrollbar. The
   drawing is unaffected (it is limited by height, not width). Pending owner confirmation.
-- Chapter text still mentions the 1980s in two places approved earlier
-  (`curs/capitol-1.html`, history sentence; `index.html`, intro and meta description).
-  The owner said "no text reference to the 80s" while reviewing chapter 3; whether that
-  also applies to those two is an open question. Do not change them without asking.
+- References to the 1980s: the two approved earlier stay (`curs/capitol-1.html`, history
+  sentence; `index.html`, intro and meta description) — owner, 2026-11-11. Do not add new
+  ones in chapter text (owner rejected one in chapter 3).
 - "El carrer" (chapter 4): the complete answer is 19 panel lines, so the panel shows its
   thin vertical scrollbar at 1366 × 625 (about 14 lines fit).
 - The spaced-word message was approved for `NO LLAPIS`; the same wording is applied to any
   dotted primitive typed with a space (`GIRA D 90`, `FES COLOR 2`, `INI DIB`). Pending
   owner confirmation of that extension.
-- Nested `REPETEIX` has no chapter assigned (rejected for chapters 2 and 3); propose it
-  again when scripting a chapter where it arises naturally.
+- Nested `REPETEIX` is taught in no regular chapter (rejected for chapters 2, 3 and 5). The
+  owner suggested it may fit a final extension / challenges chapter ("potser"): propose it
+  there when that chapter is scripted.
+- School signs: the hint for `:` `÷` (divide) and `X` `·` `×` (multiply) is raised before
+  anything on the line runs (`Interpreter._schoolSigns`); `X` counts only between two
+  numbers and when no procedure is called `X`.
 - Panel parsing is all-or-nothing: with a syntax problem anywhere in the panel, the
   last good set of procedures stays active (the spec asks for per-procedure isolation).
 - In the Editor lliure, Desfés does not undo panel edits (by design); after an undo or a

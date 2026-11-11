@@ -119,7 +119,7 @@ test('capítol 1: el qüestionari té 3 preguntes amb resposta i explicació', (
 });
 
 test('cap petició a tercers a les pàgines publicades', () => {
-  for (const f of ['curs/capitol-1.html', 'curs/capitol-2.html', 'curs/capitol-3.html', 'curs/capitol-4.html', 'index.html', 'simulador.html', '404.html', 'css/logocat.css']) {
+  for (const f of ['curs/capitol-1.html', 'curs/capitol-2.html', 'curs/capitol-3.html', 'curs/capitol-4.html', 'curs/capitol-5.html', 'index.html', 'simulador.html', '404.html', 'css/logocat.css']) {
     const text = readFileSync(new URL('../../' + f, import.meta.url), 'utf8');
     assert.equal(/https?:\/\//.test(text.replace(/http:\/\/www\.w3\.org\/2000\/svg/g, '')), false, f);
   }

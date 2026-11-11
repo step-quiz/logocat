@@ -25,6 +25,7 @@ const OPPOSITE = { 'AVANÇA': 'RECULA', 'RECULA': 'AVANÇA', 'GIRA.D': 'GIRA.E',
 
 export class Interpreter {
   constructor({ rng = Math.random } = {}) {
+    this._scanned = new WeakSet();   // llistes ja revisades per _schoolSigns
     this.rng = rng;
     this.turtle = new Turtle();
     this.procs = new Map();       // nom → { name, inputs, lines: [tokens], source: [text] }
@@ -163,7 +164,22 @@ export class Interpreter {
   }
 
   // ── Avaluació ──────────────────────────────────────────────
+  /** Signes de classe (: ÷ · × i la ics entre nombres): l'error surt abans d'executar res de la línia. */
+  _schoolSigns(tokens) {
+    if (this._scanned.has(tokens)) return;
+    tokens.forEach((t, i) => {
+      if (t.t === 'list') this._schoolSigns(t.v);
+      else if (t.t === 'word' && !this.prims[t.v] && !this.procs.has(t.v)) {
+        const a = tokens[i - 1], b = tokens[i + 1];
+        const between = !!(a && a.t === 'num' && b && b.t === 'num');
+        if (/[:÷·×]/.test(t.v) || /^\d+(\.\d+)?X\d+(\.\d+)?$/.test(t.v) || (t.v === 'X' && between)) throw new LogoError('unknown', { word: t.v, between });
+      }
+    });
+    this._scanned.add(tokens);
+  }
+
   *runList(tokens) {
+    this._schoolSigns(tokens);
     const cur = { toks: tokens, pos: 0, last: null, src: tokens.src || '' };
     while (cur.pos < tokens.length) {
       const v = yield* this.expr(cur, 0);
@@ -289,7 +305,12 @@ export class Interpreter {
     }
 
     const proc = this.procs.get(word);
-    if (!proc) throw new LogoError('unknown', { word });
+    if (!proc) {
+      // «3 X 120»: una ics entre dos nombres és una multiplicació escrita com a classe.
+      const before = cur.toks[cur.pos - 2];
+      const between = !!(before && before.t === 'num' && next && next.t === 'num');
+      throw new LogoError('unknown', { word, between });
+    }
     const argv = yield* this.args(word, proc.inputs.length, cur,
       () => new LogoError('proc_inputs', { word, n: proc.inputs.length }));
     if (this.frames.length >= MAX_DEPTH) throw new LogoError('limit');

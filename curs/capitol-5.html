@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 5 · Triangles i polígons — LogoCat</title>
+<meta name="description" content="Cinquè capítol de LogoCat: triangles i polígons regulars, l'angle que gira la tortuga i la regla de la volta sencera.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 5</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 5</p>
+    <h1>Triangles i polígons</h1>
+  </div>
+
+  <section>
+    <h2>El triangle que no tanca</h2>
+    <p>Un triangle amb els tres costats iguals té tres angles de 60 graus. Sembla, doncs, que n'hi ha prou amb girar 60. Prova-ho:</p>
+    <pre class="codi">REPETEIX 3 [AVANÇA 60 GIRA.D 60]</pre>
+    <p>No tanca. Prem «Reinicia» i prova-ho amb 120:</p>
+    <pre class="codi">REPETEIX 3 [AVANÇA 60 GIRA.D 120]</pre>
+    <p>Ara sí. Per què? Perquè la tortuga no gira l'angle de dins del triangle. Gira el que s'ha de desviar del seu camí: si no girés gens, continuaria recta.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El triangle</h2>
+    <p>Defineix un procediment que es digui <code>TRIANGLE</code>. Ha de dibuixar un triangle de tres costats iguals, de 50 passos, i ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>TRIANGLE</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap5-triangle" data-panell data-executa="TRIANGLE" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. Són tres costats de 50 passos, i a cada cantonada la tortuga gira 120.">
+      <script type="text/logo">
+PROC TRIANGLE
+  REPETEIX 3 [AVANÇA 50 GIRA.D 120]
+FI
+TRIANGLE
+</script>
+      <script type="text/logo">
+PROC TRIANGLE
+  REPETEIX 3 [AVANÇA 50 GIRA.E 120]
+FI
+TRIANGLE
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>La volta sencera</h2>
+    <p>Al quadrat, la tortuga gira 4 vegades 90: en total, 360. Al triangle, 3 vegades 120: també 360. No és casualitat.</p>
+    <p>És la regla de la volta sencera: si la tortuga fa tot el camí i acaba mirant com al principi, ha girat 360 graus en total, una volta sencera.</p>
+    <p>Per tant, en una figura de costats iguals, el gir de cada cantonada és 360 dividit pel nombre de costats.</p>
+    <pre class="codi">quadrat:    4 × 90  = 360      gir = 360 / 4 = 90
+triangle:   3 × 120 = 360      gir = 360 / 3 = 120
+pentàgon:   5 × ?   = 360      gir = 360 / 5</pre>
+  </section>
+
+  <section>
+    <h2>LOGO fa els comptes</h2>
+    <p>No cal que calculis tu quant fa 360 dividit per 5. Escriu el compte allà on aniria el nombre:</p>
+    <pre class="codi">REPETEIX 5 [AVANÇA 40 GIRA.D 360 / 5]</pre>
+    <p>LOGO coneix quatre signes: <code>+</code> suma, <code>-</code> resta, <code>*</code> multiplica i <code>/</code> divideix. Posa sempre un espai a cada banda del signe.</p>
+    <p>Si vols veure el resultat d'un compte, demana-l'hi amb <code>ESCRIU</code>:</p>
+    <pre class="codi">? ESCRIU 360 / 5
+72</pre>
+    <p>Prova amb 8, 10 i 12 costats. Com més costats, més s'assembla a un cercle.</p>
+    <pre class="codi">REPETEIX 8 [AVANÇA 25 GIRA.D 360 / 8]</pre>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>La tortuga és al centre i mira amunt. Sense executar res, tria què dibuixarà aquesta línia.</p>
+    <div class="prediu" data-id="cap5-prediu">
+      <pre class="codi">REPETEIX 6 [AVANÇA 30 GIRA.D 60]</pre>
+      <script type="text/logo" data-correcta data-perque="Sis costats i sis girs de 60: 6 × 60 = 360, una volta sencera. És un hexàgon.">REPETEIX 6 [AVANÇA 30 GIRA.D 60]</script>
+      <script type="text/logo" data-perque="Per fer un triangle la tortuga ha de girar 120, no 60. I aquí hi ha sis costats.">REPETEIX 3 [AVANÇA 30 GIRA.D 120]</script>
+      <script type="text/logo" data-perque="Això són només tres costats, i REPETEIX en fa sis.">REPETEIX 3 [AVANÇA 30 GIRA.D 60]</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El pentàgon obert</h2>
+    <p><code>PENTÀGON</code> hauria de dibuixar una figura tancada de cinc costats, però queda oberta. Escriu <code>PENTÀGON</code> a la línia <code>?</code> per veure-ho.</p>
+    <p>Troba l'error i corregeix-lo.</p>
+    <div class="simulador" data-id="cap5-error" data-panell data-executa="PENTÀGON" data-comprova="dibuix"
+         data-si-falla="Encara no tanca. El nombre de repeticions i el nombre que divideix 360 han de ser el mateix.">
+      <script type="text/logo-panell">
+PROC PENTÀGON
+  REPETEIX 5 [AVANÇA 40 GIRA.D 360 / 6]
+FI
+</script>
+      <script type="text/logo">REPETEIX 5 [AVANÇA 40 GIRA.D 360 / 5]</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>L'angle de fora i l'angle de dins</h2>
+    <p>L'angle que gira la tortuga es diu angle exterior. El de dins de la figura, angle interior. L'angle exterior i l'angle interior sempre sumen 180°.</p>
+    <p>Per això, al triangle de costats iguals, la tortuga gira 120 i l'angle de dins fa 60.</p>
+    <table>
+      <thead><tr><th>Costats</th><th>Gir de la tortuga</th><th>Angle interior</th></tr></thead>
+      <tbody>
+        <tr><td>3</td><td>120</td><td>60</td></tr>
+        <tr><td>4</td><td>90</td><td>90</td></tr>
+        <tr><td>5</td><td>72</td><td>108</td></tr>
+        <tr><td>6</td><td>60</td><td>120</td></tr>
+        <tr><td>8</td><td>45</td><td>135</td></tr>
+      </tbody>
+    </table>
+    <p>Pots comprovar qualsevol fila amb <code>ESCRIU</code>. Per exemple, l'angle interior del pentàgon:</p>
+    <pre class="codi">? ESCRIU 180 - 360 / 5
+108</pre>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap5-quiz">
+      <fieldset class="pregunta" data-correcta="0">
+        <legend>1. Quant ha de girar la tortuga a cada cantonada per dibuixar un polígon de 8 costats iguals?</legend>
+        <label><input type="radio"> 45</label>
+        <label><input type="radio"> 60</label>
+        <label><input type="radio"> 135</label>
+        <p class="explicacio" hidden>360 / 8 = 45. El 135 és l'angle interior.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>2. La tortuga dibuixa un polígon de 7 costats i acaba mirant com al principi. Quant ha girat en total?</legend>
+        <label><input type="radio"> 180</label>
+        <label><input type="radio"> 360</label>
+        <label><input type="radio"> 700</label>
+        <p class="explicacio" hidden>És la regla de la volta sencera: sempre 360, tingui els costats que tingui.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. L'angle interior d'un triangle de costats iguals fa 60. Quant gira la tortuga a cada cantonada?</legend>
+        <label><input type="radio"> 60</label>
+        <label><input type="radio"> 120</label>
+        <label><input type="radio"> 180</label>
+        <p class="explicacio" hidden>L'angle exterior i l'angle interior sumen 180: 180 - 60 = 120.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> La casa</h2>
+    <p>Al panell ja hi ha <code>QUADRAT</code> i <code>TRIANGLE</code>, tots dos de costat 50. Defineix <code>CASA</code>: el quadrat i, a sobre, el triangle fent de teulada.</p>
+    <p><code>CASA</code> ha de fer servir <code>TRIANGLE</code> i ha de deixar la tortuga com l'ha trobada. Quan premis «Comprova», la tortuga farà <code>CASA</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap5-casa" data-clau data-panell data-executa="CASA" data-comprova="dibuix+tortuga" data-exigeix="TRIANGLE"
+         data-si-falla="Abans de la teulada, la tortuga ha de girar una mica. Quant? Prova-ho a la línia ?">
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 50 GIRA.D 90]
+FI
+
+PROC TRIANGLE
+  REPETEIX 3 [AVANÇA 50 GIRA.D 120]
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 50 GIRA.D 90]
+FI
+PROC TRIANGLE
+  REPETEIX 3 [AVANÇA 50 GIRA.D 120]
+FI
+PROC CASA
+  QUADRAT
+  AVANÇA 50 GIRA.D 30
+  TRIANGLE
+  GIRA.E 30 RECULA 50
+FI
+CASA
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>La tortuga gira l'angle exterior, no el de dins de la figura.</li>
+      <li>La regla de la volta sencera: si acaba mirant com al principi, ha girat 360 en total.</li>
+      <li>En un polígon de costats iguals, el gir és 360 dividit pel nombre de costats.</li>
+      <li>LOGO fa els comptes: escriu el signe amb un espai a cada banda.</li>
+    </ul>
+    <p>Per fer un triangle més gran has de canviar el procediment. Al capítol següent, els procediments rebran la mida: n'hi haurà prou d'escriure TRIANGLE 80.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-4.html">← Capítol 4 · El llapis</a> · Capítol 6: en preparació.</p>
+
+</main>
+</body>
+</html>

@@ -50,7 +50,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 2 | Repeteix | `REPETEIX n [ ... ]` | Square, rectangle, right angle, perimeter; 4 × 90 = 360 |
 | 3 | Paraules noves | `PROC ... FI`, procedures calling procedures (`PROCS?` and `OBLIDA.PROC` work but are not taught: owner, 2026-11-11) | Decomposing figures; leave the turtle as you found it |
 | 4 | El llapis | `NO.LLAPIS`, `LLAPIS`, `GOMA`, `APAREIX`, `DESAPAREIX`, `FES.COLOR`, `FES.FONS` | Translation, friezes |
-| 5 | Triangles i polígons | Arithmetic in inputs (`GIRA.D 360 / 5`) | Exterior/interior angles, angle sums, Total Turtle Trip theorem |
+| 5 | Triangles i polígons | Arithmetic in inputs (`GIRA.D 360 / 5`); `ESCRIU` with numbers, moved here from chapter 11 (owner) | Exterior/interior angles, angle sums, Total Turtle Trip theorem |
 | 6 | Entrades | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
 | 7 | Dues entrades | `PROC POLIGON :N :COSTAT` | Generalising with 360 / N; star polygons and divisors |
 | 8 | Cercles i arcs | Student-built `CERCLE`, `ARC` (the 1985 vocabulary has no circle primitive) | Circle as many-sided polygon, circumference, π |
@@ -263,10 +263,30 @@ exercise "El carrer" → summary and bridge to chapter 5 (other angles, triangle
   un punt i sense espai.`; `A FES.COLOR NO LI AGRADA 9` / `Els colors van del 0 al 5`.
 - Edge modes left out of the chapter; figures are sized to stay inside the field.
 
+## 8e. Chapter 5 (script approved 2026-11-11; built)
+
+Review artifact "Revisió 7 del guió del capítol 5" (slug
+`5415372e-08be-4abf-ac31-e02a746f71f3`). Order: El triangle que no tanca (the student
+first hits the 60° error, then it is explained) → exercise "El triangle" → La volta
+sencera → LOGO fa els comptes (four signs, `ESCRIU`) → "Què dibuixarà?" (hexagon) →
+find-the-bug "El pentàgon obert" → L'angle de fora i l'angle de dins (table) → quiz → key
+exercise "La casa" → summary and bridge to chapter 6 (inputs: `TRIANGLE 80`).
+
+- Names (owner): "la regla de la volta sencera" for the Total Turtle Trip theorem, to be
+  reused in chapters 7–9; "angle exterior" / "angle interior".
+- Owner wording (frozen): "L'angle exterior i l'angle interior sempre sumen 180°."
+- Spacing rule taught: always one space on each side of an arithmetic sign (this hides the
+  `180 -60` unary-minus trap, which is not explained).
+- Owner-approved hints: `:` → `Per dividir, fes servir el signe /. Per exemple: 360 / 5`;
+  `X` or `·` between numbers → `Per multiplicar, fes servir el signe *. Per exemple: 3 * 120`.
+- "La casa": the statement does not give the 30° turn (owner approved leaving it to
+  discovery); the failure hint says to try it at the `?` line.
+- Nested `REPETEIX`: not in this chapter; maybe in a final extension / challenges chapter.
+
 ## 9. Next step
 
-Chapters 1–4 and the Editor lliure are delivered. Next: the script of chapter 5
-(«Triangles i polígons»), same review flow; then family integration once `step-quiz-commons` is
+Chapters 1–5 and the Editor lliure are delivered. Next: the script of chapter 6
+(«Entrades»: `PROC QUADRAT :COSTAT`), same review flow; then family integration once `step-quiz-commons` is
 available. Open questions for the owner are listed in `docs/STATE.md`.
 
 ## 10. Sources and records

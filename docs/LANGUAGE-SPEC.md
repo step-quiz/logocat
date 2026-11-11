@@ -189,6 +189,12 @@ Approved by the owner on 2026-11-11 (chapter 4): a dotted primitive typed with a
 primitive and `A` is either `NO` or not a known word. A colour outside 0–5 for
 `FES.COLOR` / `FES.FONS` → `A FES.COLOR NO LI AGRADA 9` / `Els colors van del 0 al 5`.
 
+Approved by the owner on 2026-11-11 (chapter 5): school signs. An unknown word containing
+`:` or `÷` (`360 : 5`, `360:5`) keeps `NO SÉ COM FER :` and gets the hint `Per dividir, fes
+servir el signe /. Per exemple: 360 / 5`; `·`, `×`, `3X120`, or a lone `X` between two
+numbers (when no procedure is named `X`) gets `Per multiplicar, fes servir el signe *. Per
+exemple: 3 * 120`. These are detected before the line runs, so nothing is printed or drawn.
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 
