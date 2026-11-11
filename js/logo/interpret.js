@@ -267,6 +267,11 @@ export class Interpreter {
 
     const startTok = cur.toks[cur.pos - 1];
     const prim = this.prims[word];
+    // «NO LLAPIS», «GIRA D 90»: una paraula amb punt escrita amb un espai al mig.
+    const next = cur.toks[cur.pos];
+    if (next && next.t === 'word' && this.prims[word + '.' + next.v] && (word === 'NO' || (!prim && !this.procs.has(word)))) {
+      throw new LogoError('spaced', { text: word + ' ' + next.v, word: word + '.' + next.v });
+    }
     if (prim) {
       const types = prim.types || '';
       const argv = yield* this.args(word, types.length, cur, (k) => new LogoError('missing_input', {
@@ -376,7 +381,7 @@ function buildPrimitives(I) {
   cmd('NO.LLAPIS', '', function* () { yield* state(() => { T.pen = 'up'; }); });
   cmd('GOMA', '', function* () { yield* state(() => { T.pen = 'erase'; }); });
   const colour = (word, n) => {
-    if (!Number.isInteger(n) || n < 0 || n > 5) throw new LogoError('bad_input', { word, value: fmtNum(n), want: 'n' });
+    if (!Number.isInteger(n) || n < 0 || n > 5) throw new LogoError('bad_input', { word, value: fmtNum(n), want: 'c' });
     return n;
   };
   cmd('FES.COLOR', 'n', function* ([n], w) { yield* state(() => { T.color = colour(w, n); }); }, { example: 'FES.COLOR 2' });

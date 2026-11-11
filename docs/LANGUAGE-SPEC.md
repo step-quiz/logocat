@@ -115,6 +115,9 @@ print rounded to at most 4 decimals, trailing zeros removed.
 - Wrap splits a stroke into segments at the edges. Fence: a move that would leave the
   field does not happen and raises `LA TORTUGA NO POT SORTIR DE LA PANTALLA`. Window:
   unbounded coordinates, nothing drawn outside.
+- Turtle rendering (owner, 2026-11-11): filled triangle when the pen is down, hollow when
+  up, dashed outline when erasing; drawn in the pen colour (contrast colour when it equals
+  the field colour). Intentional deviation from Apple Logo, which shows no pen state.
 - The drawing is a list of segments `{x1, y1, x2, y2, colour}` in field coordinates;
   this list (not pixels) is what validation compares.
 
@@ -179,6 +182,12 @@ Reviewed and approved by the owner on 2026-11-11 (panel messages): `A PROC LI FA
 / `Per exemple: PROC QUADRAT`; `X NO ÉS DINS DE CAP PROCEDIMENT` / `Aquí només hi van
 procediments (PROC … FI).` (text outside any procedure in the panel; the owner removed a
 second sentence from the hint).
+
+Approved by the owner on 2026-11-11 (chapter 4): a dotted primitive typed with a space
+(`NO LLAPIS`; by extension `GIRA D 90`, `FES COLOR 2`) → `NO SÉ COM FER NO LLAPIS` /
+`Volies dir NO.LLAPIS? S'escriu amb un punt i sense espai.` It fires when `A.B` is a
+primitive and `A` is either `NO` or not a known word. A colour outside 0–5 for
+`FES.COLOR` / `FES.FONS` → `A FES.COLOR NO LI AGRADA 9` / `Els colors van del 0 al 5`.
 
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.

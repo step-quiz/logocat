@@ -156,7 +156,15 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .prediu-opcio.es-dolenta { border-color: var(--bad); }
 .mini-trac { fill: none; stroke: #f2f2ee; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .mini-tortuga { fill: none; stroke: #f2f2ee; stroke-width: 1.3; stroke-linejoin: round; }
+.mini-tortuga--plena { fill: #f2f2ee; }                 /* llapis a baix: tortuga plena */
 .mini-inici { fill: #a9abb3; }
+/* Taula de colors del capítol 4: les mostres són els colors reals del llapis (js/ui/monitor.js, PEN). */
+.colors { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.colors li { display: inline-flex; align-items: center; gap: 8px; margin: 0; }
+.colors li + li { margin-top: 0; }
+.colors i { display: inline-block; width: 28px; height: 18px; border-radius: 3px; border: 1px solid var(--border); }
+.colors .c0 { background: #111214; } .colors .c1 { background: #f2f2ee; } .colors .c2 { background: #3ddc6a; }
+.colors .c3 { background: #d66bff; } .colors .c4 { background: #ff8a4c; } .colors .c5 { background: #4cc9ff; }
 .prediu-resposta, .veredicte { font-weight: 700; }
 .es-bona.prediu-resposta, .es-bona.veredicte { color: var(--ok); }
 .es-dolenta.prediu-resposta, .es-dolenta.veredicte { color: var(--no); }

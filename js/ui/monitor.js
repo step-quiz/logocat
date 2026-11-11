@@ -26,7 +26,7 @@ const DIRS = { 0: 'amunt', 90: 'cap a la dreta', 180: 'avall', 270: 'cap a l\'es
 export function drawingOf(code) {
   const I = new Interpreter({ rng: () => 0.5 });
   const r = I.runSync(code);
-  return { segments: I.turtle.segments.slice(), pose: I.turtle.pose(), error: r.error };
+  return { segments: I.turtle.segments.slice(), pose: I.turtle.pose(), pen: I.turtle.pen, error: r.error };
 }
 
 export class Monitor {
@@ -502,8 +502,12 @@ export class Monitor {
       g.beginPath();
       [[0, 11], [-6, -5], [6, -5]].forEach(([a, b], i) => { const [sx, sy] = pt(a, b); if (i) g.lineTo(sx, sy); else g.moveTo(sx, sy); });
       g.closePath();
-      g.fillStyle = field; g.fill();
-      g.strokeStyle = PEN[1]; g.lineWidth = base; g.stroke();
+      // La tortuga ensenya el llapis (owner, 2026-11-11): plena = a baix, buida = a dalt,
+      // vora discontínua = goma; i pren el color del llapis. Si el color és el del fons, contrast.
+      const ink = T.color === T.bg ? (T.bg === 1 ? PEN[0] : PEN[1]) : (PEN[T.color] || PEN[1]);
+      g.fillStyle = T.pen === 'down' ? ink : field; g.fill();
+      g.setLineDash(T.pen === 'erase' ? [k * 2.2, k * 1.8] : []);
+      g.strokeStyle = ink; g.lineWidth = base; g.stroke(); g.setLineDash([]);
     }
     if (this.opts.onDraw) this.opts.onDraw(this);
   }

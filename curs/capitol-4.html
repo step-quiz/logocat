@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 4 · El llapis — LogoCat</title>
+<meta name="description" content="Quart capítol de LogoCat: NO.LLAPIS, LLAPIS, GOMA i els colors, per separar les figures i fer sanefes.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 4</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 4</p>
+    <h1>El llapis</h1>
+  </div>
+
+  <section>
+    <h2>Aixeca el llapis</h2>
+    <p>Fins ara la tortuga ha dibuixat sempre que s'ha mogut. Per això totes les teves figures estaven enganxades.</p>
+    <p><code>NO.LLAPIS</code> aixeca el llapis: la tortuga es mou i no deixa traç. <code>LLAPIS</code> el torna a baixar. Cap de les dues porta nombre.</p>
+    <p>Fixa't en la tortuga: amb el llapis a baix és plena, i amb el llapis aixecat és buida.</p>
+    <p>Al panell ja hi tens <code>QUADRAT</code>. Escriu aquestes línies d'una en una:</p>
+    <pre class="codi">QUADRAT
+NO.LLAPIS
+GIRA.D 90 AVANÇA 50 GIRA.E 90
+LLAPIS
+QUADRAT</pre>
+    <p><code>NO.LLAPIS</code> s'escriu amb un punt i sense espai. I un truc: si la tortuga no dibuixa, escriu <code>LLAPIS</code>.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 30 GIRA.D 90]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>La tortuga és al centre i mira amunt. Sense executar res, tria què dibuixarà aquesta línia.</p>
+    <div class="prediu" data-id="cap4-prediu">
+      <pre class="codi">AVANÇA 30 NO.LLAPIS AVANÇA 30 LLAPIS AVANÇA 30</pre>
+      <script type="text/logo" data-correcta data-perque="Dos traços de 30 passos, i al mig un tros sense traç.">AVANÇA 30 NO.LLAPIS AVANÇA 30 LLAPIS AVANÇA 30</script>
+      <script type="text/logo" data-perque="Això passaria sense NO.LLAPIS. Amb el llapis aixecat, el tros del mig no es dibuixa.">AVANÇA 90</script>
+      <script type="text/logo" data-perque="El llapis no es queda aixecat per sempre: LLAPIS el torna a baixar, i l'últim tros sí que es dibuixa.">AVANÇA 30 NO.LLAPIS AVANÇA 60 LLAPIS</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> Els guions</h2>
+    <p>Defineix un procediment que es digui <code>GUIONS</code>. Ha de dibuixar, cap amunt, cinc traços de 10 passos separats per forats de 10 passos.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>GUIONS</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap4-guions" data-panell data-executa="GUIONS" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten. Cada traç fa 10 passos, i cada forat també.">
+      <script type="text/logo">
+PROC GUIONS
+  REPETEIX 5 [AVANÇA 10 NO.LLAPIS AVANÇA 10 LLAPIS]
+FI
+GUIONS
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Una sanefa</h2>
+    <p>Un procediment també pot servir només per moure la tortuga. <code>SALT</code> la porta 30 passos a la dreta sense dibuixar, i la deixa mirant amunt i amb el llapis a baix:</p>
+    <pre class="codi">PROC SALT
+  NO.LLAPIS
+  GIRA.D 90 AVANÇA 30 GIRA.E 90
+  LLAPIS
+FI</pre>
+    <p>Amb <code>QUADRAT</code> i <code>SALT</code>, una sanefa és una sola línia:</p>
+    <pre class="codi">PROC SANEFA
+  REPETEIX 4 [QUADRAT SALT]
+FI</pre>
+    <p>Cada quadrat és el mateix quadrat, mogut 30 passos a la dreta i sense girar. Moure una figura sense girar-la es diu translació.</p>
+    <p>La regla del capítol 3 ara té dues parts: un bon procediment deixa la tortuga mirant com l'ha trobada, i amb el llapis a baix.</p>
+    <p>Al panell ja hi ha <code>QUADRAT</code>. Afegeix-hi <code>SALT</code> i <code>SANEFA</code>, i prova-la.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 20 GIRA.D 90]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> La sanefa que s'acaba</h2>
+    <p><code>SANEFA</code> hauria de dibuixar quatre quadrats, però només en surt un. Escriu <code>SANEFA</code> a la línia <code>?</code> per veure-ho.</p>
+    <p>Troba l'error i corregeix-lo.</p>
+    <div class="simulador" data-id="cap4-error" data-panell data-executa="SANEFA" data-comprova="dibuix"
+         data-si-falla="Encara no són quatre quadrats. Mira com és la tortuga després del primer salt: plena o buida?">
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 20 GIRA.D 90]
+FI
+
+PROC SALT
+  NO.LLAPIS
+  GIRA.D 90 AVANÇA 30 GIRA.E 90
+FI
+
+PROC SANEFA
+  REPETEIX 4 [QUADRAT SALT]
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 20 GIRA.D 90]
+FI
+PROC SALT
+  NO.LLAPIS
+  GIRA.D 90 AVANÇA 30 GIRA.E 90
+  LLAPIS
+FI
+REPETEIX 4 [QUADRAT SALT]
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Colors</h2>
+    <p><code>FES.COLOR</code> i un nombre del 0 al 5 canvien el color del llapis. La tortuga es posa del mateix color: així saps amb quin dibuixaràs.</p>
+    <ul class="colors" aria-label="Els sis colors">
+      <li><i class="c0"></i><code>0</code> negre</li>
+      <li><i class="c1"></i><code>1</code> blanc</li>
+      <li><i class="c2"></i><code>2</code> verd</li>
+      <li><i class="c3"></i><code>3</code> violeta</li>
+      <li><i class="c4"></i><code>4</code> taronja</li>
+      <li><i class="c5"></i><code>5</code> blau</li>
+    </ul>
+    <p><code>FES.FONS</code> canvia el color de la pantalla. El que ja està dibuixat no canvia de color.</p>
+    <p>Amb <code>FES.FONS 1</code> la pantalla és blanca: canvia també el color del llapis, o no veuràs el traç.</p>
+    <p>Prova de dibuixar cada costat d'un quadrat d'un color:</p>
+    <pre class="codi">FES.COLOR 2 AVANÇA 50 GIRA.D 90
+FES.COLOR 4 AVANÇA 50 GIRA.D 90
+FES.COLOR 5 AVANÇA 50 GIRA.D 90
+FES.COLOR 3 AVANÇA 50 GIRA.D 90</pre>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2>La goma</h2>
+    <p><code>GOMA</code> canvia el llapis per una goma: per on passa la tortuga, esborra. Per tornar a dibuixar, <code>LLAPIS</code>.</p>
+    <p>El llapis té, doncs, tres estats, i la tortuga te'ls ensenya:</p>
+    <ul>
+      <li><code>LLAPIS</code>: dibuixa. La tortuga és plena.</li>
+      <li><code>NO.LLAPIS</code>: no fa res. La tortuga és buida.</li>
+      <li><code>GOMA</code>: esborra. La tortuga té la vora de ratlletes.</li>
+    </ul>
+    <p>Dibuixa un quadrat i esborra'n un costat:</p>
+    <pre class="codi">REPETEIX 4 [AVANÇA 50 GIRA.D 90]
+GOMA
+AVANÇA 50
+LLAPIS</pre>
+  </section>
+
+  <section>
+    <h2>Amaga la tortuga</h2>
+    <p><code>DESAPAREIX</code> amaga la tortuga, per veure el dibuix acabat sense que el tapi. No se n'ha anat: continua al mateix lloc i continua fent el que li dius.</p>
+    <p><code>APAREIX</code> la torna a ensenyar.</p>
+    <p>En aquest simulador pots provar la goma i amagar la tortuga.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap4-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. Quina ordre fa que la tortuga es mogui sense deixar traç?</legend>
+        <label><input type="radio"> LLAPIS</label>
+        <label><input type="radio"> NO.LLAPIS</label>
+        <label><input type="radio"> DESAPAREIX</label>
+        <p class="explicacio" hidden>NO.LLAPIS aixeca el llapis. DESAPAREIX només amaga la tortuga, que continua dibuixant.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="0">
+        <legend>2. Has escrit GOMA i has esborrat un costat. Què has d'escriure per tornar a dibuixar?</legend>
+        <label><input type="radio"> LLAPIS</label>
+        <label><input type="radio"> NO.GOMA</label>
+        <label><input type="radio"> APAREIX</label>
+        <p class="explicacio" hidden>LLAPIS torna a posar el llapis a baix, tant si estava aixecat com si era una goma.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. Has escrit DESAPAREIX i la tortuga no es veu. Què passa si ara escrius AVANÇA 50?</legend>
+        <label><input type="radio"> No passa res</label>
+        <label><input type="radio"> Dibuixa un traç de 50 passos, encara que no la vegis</label>
+        <label><input type="radio"> Surt un missatge d'error</label>
+        <p class="explicacio" hidden>La tortuga amagada continua al seu lloc i continua obeint.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El carrer</h2>
+    <p>Al panell ja hi ha <code>QUADRAT</code> i <code>TORRE</code>. Defineix <code>SALT</code>, que porta la tortuga 30 passos a la dreta sense dibuixar. Després defineix <code>CARRER</code>: tres torres, una al costat de l'altra.</p>
+    <p><code>CARRER</code> ha de fer servir <code>TORRE</code>. Quan premis «Comprova», la tortuga farà <code>CARRER</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap4-carrer" data-clau data-panell data-executa="CARRER" data-comprova="dibuix" data-exigeix="TORRE"
+         data-si-falla="Mira quins traços sobren i quins falten. Entre torre i torre, la tortuga ha de saltar 30 passos a la dreta sense dibuixar.">
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 20 GIRA.D 90]
+FI
+
+PROC TORRE
+  REPETEIX 3 [QUADRAT AVANÇA 20]
+  RECULA 60
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 20 GIRA.D 90]
+FI
+PROC TORRE
+  REPETEIX 3 [QUADRAT AVANÇA 20]
+  RECULA 60
+FI
+PROC SALT
+  NO.LLAPIS
+  GIRA.D 90 AVANÇA 30 GIRA.E 90
+  LLAPIS
+FI
+REPETEIX 3 [TORRE SALT]
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li><code>NO.LLAPIS</code> i <code>LLAPIS</code>: per moure la tortuga sense dibuixar, i tornar a dibuixar.</li>
+      <li><code>GOMA</code>: per esborrar.</li>
+      <li><code>FES.COLOR</code> i <code>FES.FONS</code>, amb un nombre del 0 al 5: el color del llapis i el de la pantalla.</li>
+      <li>Una figura repetida sense girar-la és una translació.</li>
+    </ul>
+    <p>Fins ara tots els teus girs han estat de 90 graus. Al capítol següent giraràs amb altres angles, i dibuixaràs triangles.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-3.html">← Capítol 3 · Paraules noves</a> · Capítol 5: en preparació.</p>
+
+</main>
+</body>
+</html>

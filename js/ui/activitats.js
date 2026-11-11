@@ -13,7 +13,7 @@ function thumbnail(d, box) {
   const p = d.pose, rad = p.heading * Math.PI / 180;
   const pts = [[0, 11], [-6, -5], [6, -5]].map(([a, b]) =>
     `${(p.x + a * Math.cos(rad) + b * Math.sin(rad)).toFixed(1)},${(-(p.y - a * Math.sin(rad) + b * Math.cos(rad))).toFixed(1)}`).join(' ');
-  svg.appendChild(svgEl('polygon', { points: pts, class: 'mini-tortuga' }));
+  svg.appendChild(svgEl('polygon', { points: pts, class: 'mini-tortuga' + (d.pen === 'down' ? ' mini-tortuga--plena' : '') }));
   return svg;
 }
 

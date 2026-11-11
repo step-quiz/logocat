@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.7: chapter 3, procedures panel inside chapter simulators).
+> Last update: 2026-11-11 (v0.8: chapter 4, turtle shows pen state and colour).
 
 ## What exists
 
@@ -51,6 +51,18 @@
   2 with given procedures, 3 exercises), "Què dibuixarà?", quiz. Exercises: "El graó"
   (`GRAÓ`, drawing + pose), find-the-bug "La finestra torta" (`FINESTRA`, given panel),
   key exercise "La torre" (`TORRE` must use `QUADRAT`; mirrored solution accepted).
+- **Chapter 4** (`curs/capitol-4.html`): approved script, 7 simulators with panel (4 for
+  examples, 3 exercises), "Què dibuixarà?", quiz, colour table (`.colors`, swatches equal
+  to the `PEN` array of `js/ui/monitor.js`). Exercises, all `data-comprova="dibuix"`:
+  "Els guions" (`GUIONS`), find-the-bug "La sanefa que s'acaba" (`SANEFA`; `SALT` lacks
+  the final `LLAPIS`), key exercise "El carrer" (`CARRER` must use `TORRE`; `QUADRAT` and
+  a state-restoring `TORRE` are given). Colour never counts in Comprova; the final pen
+  state is not checked (owner rejected it).
+- **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
+  Editor lliure included): filled triangle = pen down, hollow = pen up, dashed outline =
+  eraser; the turtle takes the pen colour (if pen colour equals field colour, a
+  contrasting white/black is used). Thumbnails of "Què dibuixarà?" fill the turtle when
+  the pen ends down.
 - **Editor lliure** (`simulador.html`, `js/ui/editor.js`): the hybrid screen of the
   approved mockup. Left: procedures panel (a textarea under a syntax-coloured layer with
   line numbers), autosaved to `localStorage` (`logocat-editor-procediments`), parsed on
@@ -71,16 +83,18 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 51 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
-  headless Chrome on 2026-11-11: chapters 1–3 and the Editor lliure, no console errors, no
-  external requests. Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
+- **Tests**: 58 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+  headless Chrome on 2026-11-11: chapters 1–4 and the Editor lliure, no console errors, no
+  external requests. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+  exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
   longest chapter line (34 characters) fits the panel without a horizontal scrollbar.
 
 ## Not built yet
 
-- **Chapters 4–12**, glossary, teacher guide, certificate.
+- **Chapters 5–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
+  go there, not in a chapter), teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
   seen; LogoCat must be registered there first.
@@ -108,6 +122,11 @@
   (`curs/capitol-1.html`, history sentence; `index.html`, intro and meta description).
   The owner said "no text reference to the 80s" while reviewing chapter 3; whether that
   also applies to those two is an open question. Do not change them without asking.
+- "El carrer" (chapter 4): the complete answer is 19 panel lines, so the panel shows its
+  thin vertical scrollbar at 1366 × 625 (about 14 lines fit).
+- The spaced-word message was approved for `NO LLAPIS`; the same wording is applied to any
+  dotted primitive typed with a space (`GIRA D 90`, `FES COLOR 2`, `INI DIB`). Pending
+  owner confirmation of that extension.
 - Nested `REPETEIX` has no chapter assigned (rejected for chapters 2 and 3); propose it
   again when scripting a chapter where it arises naturally.
 - Panel parsing is all-or-nothing: with a syntax problem anywhere in the panel, the

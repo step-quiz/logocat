@@ -49,7 +49,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 1 | Coneix la tortuga | Direct mode; `AVANÇA`, `RECULA`, `GIRA.D`, `GIRA.E`, `INI.DIB` | Turn as angle, degrees, estimation |
 | 2 | Repeteix | `REPETEIX n [ ... ]` | Square, rectangle, right angle, perimeter; 4 × 90 = 360 |
 | 3 | Paraules noves | `PROC ... FI`, procedures calling procedures (`PROCS?` and `OBLIDA.PROC` work but are not taught: owner, 2026-11-11) | Decomposing figures; leave the turtle as you found it |
-| 4 | El llapis | `NO.LLAPIS`, `LLAPIS`, `GOMA`, `APAREIX`, `DESAPAREIX`, `FES.COLOR`, `FES.FONS` | Translations, friezes |
+| 4 | El llapis | `NO.LLAPIS`, `LLAPIS`, `GOMA`, `APAREIX`, `DESAPAREIX`, `FES.COLOR`, `FES.FONS` | Translation, friezes |
 | 5 | Triangles i polígons | Arithmetic in inputs (`GIRA.D 360 / 5`) | Exterior/interior angles, angle sums, Total Turtle Trip theorem |
 | 6 | Entrades | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
 | 7 | Dues entrades | `PROC POLIGON :N :COSTAT` | Generalising with 360 / N; star polygons and divisors |
@@ -62,7 +62,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 Chapter 10 replaced an originally proposed "Coordenades" chapter. Coordinate words
 (`FES.XY`, `COOR.X` ...) are not taught; the engine may still implement them.
 Deferred beyond v1: words and lists (`PRIMER`, `ÚLTIM`, `FRASE` ...).
-`CENTRE` and the wrap phenomenon (the turtle re-entering from the opposite edge) are explained in chapter 1, where students first hit them; the three mode words (`M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`) are introduced in chapter 4 (delegated to Claude by the owner).
+`CENTRE` and the wrap phenomenon (the turtle re-entering from the opposite edge) are explained in chapter 1, where students first hit them; the three mode words (`M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`) are not taught in any chapter: they keep working and go to the glossary (owner, 2026-11-11).
 
 ## 4. Verified vocabulary (course subset)
 
@@ -240,10 +240,33 @@ finestra torta" (bug in `QUADRAT`, not in `FINESTRA`) → quiz → key exercise 
   assigned yet) and a box "Com es feia als anys 80" (owner: "No vull cap referència de
   text als anys 80"). `PROCS?` and `OBLIDA.PROC` are not taught.
 
+## 8d. Chapter 4 (script approved 2026-11-11; built)
+
+Review artifact "Revisió 6 del guió del capítol 4" (slug
+`4c60e499-42fd-4a5b-8c92-633923960a30`). Order: Aixeca el llapis (`QUADRAT` given) →
+"Què dibuixarà?" → exercise "Els guions" → Una sanefa (`SALT`, `SANEFA`; the word
+"translació"; rule: a good procedure leaves the turtle heading as found and the pen
+down) → find-the-bug "La sanefa que s'acaba" → Colors (table of six swatches) → La goma
+(three pen states) → Amaga la tortuga (shares the simulator with La goma) → quiz → key
+exercise "El carrer" → summary and bridge to chapter 5 (other angles, triangles).
+
+- **Pen indicator (owner).** The owner wants the pen state visible, also in chapters: not
+  showing it was a limitation of 1980s hardware, not something to preserve. Chosen in a
+  dialog: the turtle itself changes (filled = down, hollow = up, dashed outline = eraser)
+  and takes the pen colour. No status line in chapter simulators.
+- `INI.DIB` does not reset pen or colours (as the original); Reinicia and Comprova start
+  from pen down, white pen, dark field, visible turtle (owner).
+- Comprova compares strokes, not colours (owner). The final pen state is NOT part of the
+  checked final state (owner rejected the proposal); "Els guions" therefore does not ask
+  for it.
+- Owner-approved messages: `NO SÉ COM FER NO LLAPIS` / `Volies dir NO.LLAPIS? S'escriu amb
+  un punt i sense espai.`; `A FES.COLOR NO LI AGRADA 9` / `Els colors van del 0 al 5`.
+- Edge modes left out of the chapter; figures are sized to stay inside the field.
+
 ## 9. Next step
 
-Chapters 1–3 and the Editor lliure are delivered. Next: the script of chapter 4 («El
-llapis»), same review flow; then family integration once `step-quiz-commons` is
+Chapters 1–4 and the Editor lliure are delivered. Next: the script of chapter 5
+(«Triangles i polígons»), same review flow; then family integration once `step-quiz-commons` is
 available. Open questions for the owner are listed in `docs/STATE.md`.
 
 ## 10. Sources and records

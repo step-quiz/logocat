@@ -68,6 +68,7 @@ export function describe(err, known = []) {
       if (y) hints = [`Volies dir ${y}?`];
       break;
     }
+    case 'spaced': line1 = `NO SÉ COM FER ${p.text}`; hints = [`Volies dir ${p.word}? S'escriu amb un punt i sense espai.`]; break;   // (owner)
     case 'missing_input':
       if (p.want === 'l' && p.word === 'REPETEIX') { line1 = 'REPETEIX NECESSITA SABER QUÈ HA DE REPETIR'; hints = [`Per exemple: ${p.example}`]; }   // (owner)
       else if (p.want === 'l') { line1 = `${p.word} NECESSITA UNA LLISTA`; hints = [`Per exemple: ${p.example}`]; }
@@ -79,7 +80,8 @@ export function describe(err, known = []) {
       break;
     case 'bad_input':
       line1 = `A ${p.word} NO LI AGRADA ${p.value}`;
-      hints = [p.want === 'l' ? `${p.word} vol una llista entre claudàtors`
+      hints = [p.want === 'c' ? 'Els colors van del 0 al 5'                    // (owner)
+        : p.want === 'l' ? `${p.word} vol una llista entre claudàtors`
         : p.want === 'b' ? `${p.word} vol una condició, com ara :N > 10`
           : p.isList ? `${p.word} vol un nombre, sense claudàtor` : `${p.word} vol un nombre`];
       break;
