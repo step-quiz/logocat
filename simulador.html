@@ -47,24 +47,7 @@
 
 <main class="editor">
   <section class="panell" aria-label="Procediments">
-    <div class="panell-cap">
-      <h1>Procediments</h1>
-      <span id="desat">desat</span>
-    </div>
-    <div class="panell-codi">
-      <pre class="numeros" id="numeros" aria-hidden="true">1</pre>
-      <div class="pila">
-        <pre class="capa" id="capa" aria-hidden="true"></pre>
-        <textarea id="procediments" spellcheck="false" autocomplete="off" autocapitalize="characters" wrap="off"
-          aria-label="Procediments: escriu-hi els teus PROC … FI"
-          placeholder="Aquí van els teus procediments. Per exemple:
-
-PROC QUADRAT
-  REPETEIX 4 [AVANÇA 50 GIRA.D 90]
-FI"></textarea>
-      </div>
-    </div>
-    <p class="panell-avis" id="avis" role="status" hidden></p>
+    <div class="panell-bloc" id="panell"></div>
     <div class="pas-info" id="pas-info" hidden>
       <h2>Pas a pas</h2>
       <dl>

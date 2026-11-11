@@ -1,10 +1,12 @@
 // El «monitor»: dibuix de la tortuga, línies de text i línia d'ordres «?».
-// És la pantalla dels simuladors incrustats als capítols (sense panell de procediments).
+// És la pantalla dels simuladors incrustats als capítols i de l'Editor lliure.
+// A partir del capítol 3, els simuladors porten també el panell de procediments (opts.panel).
 // Disseny aprovat: docs/DECISIONS.md §7.
 import { Interpreter } from '../logo/interpret.js';
 import { LogoError, describe } from '../logo/missatges.js';
 import { FIELD } from '../logo/tortuga.js';
 import { compareDrawings, comparePose } from '../logo/compara.js';
+import { ProcPanel } from './panell.js';
 
 const PEN = ['#111214', '#f2f2ee', '#3ddc6a', '#d66bff', '#ff8a4c', '#4cc9ff'];   // colors 0–5
 const BG = ['#232529', '#f2f2ee', '#1f5a34', '#4a2a5c', '#6b3a1e', '#1d4a66'];
@@ -32,6 +34,9 @@ export class Monitor {
    * opts: { exercise, solutions: [text], checkPose, failText, okText, onSolved }
    *   require: 'REPETEIX'   l'exercici només es dona per fet si s'ha fet servir aquesta paraula
    *   preload: 'text'       línia que surt ja escrita a «?» (activitat «troba l'error»)
+   *   panel: { initial }    simulador amb panell de procediments a l'esquerra (capítol 3 endavant)
+   *   run: 'GRAÓ'           «Comprova» executa aquest procediment en una pantalla neta i en compara el resultat;
+   *                         amb `require`, el procediment `run` ha de fer servir aquesta paraula
    * Per a l'Editor lliure, que posa els seus propis botons i panell:
    *   toolbar: false     no construeix la barra de botons
    *   maxHeight          alçada màxima del dibuix, en píxels
@@ -54,7 +59,9 @@ export class Monitor {
     this.diff = null; this.goalVisible = true;
     this.targets = (opts.solutions || []).map(drawingOf);
     this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.panel = null; this.lastError = null; this.checking = false;
     this.build();
+    if (this.panel) this.panel.start(this);
     this.draw();
   }
 
@@ -68,7 +75,44 @@ export class Monitor {
     const bar = el('div', 'sim-barra');
     const btn = (label, cls, fn) => { const b = el('button', 'boto ' + (cls || ''), label); b.type = 'button'; b.addEventListener('click', fn); bar.appendChild(b); return b; };
     if (withBar) this.buildBar(r, bar, btn);
-    this.buildScreen(r);
+    let host = r;
+    if (this.opts.panel) {
+      r.classList.add('sim--panell');
+      host = el('div', 'sim-cos');
+      host.appendChild(this.buildPanel());
+      r.appendChild(host);
+    }
+    this.buildScreen(host);
+    this.result = el('div', 'sim-resultat'); this.result.setAttribute('role', 'status'); this.result.hidden = true;
+    r.appendChild(this.result);
+  }
+
+  /** Columna esquerra dels simuladors amb panell: procediments i requadre del pas a pas. */
+  buildPanel() {
+    const side = el('div', 'sim-panell');
+    const block = el('div', 'panell-bloc');
+    side.appendChild(block);
+    this.panel = new ProcPanel(block, { initial: this.opts.panel.initial || '' });
+    const box = el('div', 'pas-info'); box.hidden = true;
+    box.appendChild(el('h2', null, 'Pas a pas'));
+    const dl = el('dl');
+    const now = el('dd', 'pas-ara'), where = el('dd');
+    dl.appendChild(el('dt', null, 'Ara farà')); dl.appendChild(now);
+    dl.appendChild(el('dt', null, 'On som')); dl.appendChild(where);
+    box.appendChild(dl); side.appendChild(box);
+    const h = this.panel.hooks();
+    this.opts = {
+      ...this.opts, ...h,
+      onBefore: (ev) => {
+        h.onBefore(ev);
+        if (!ev) return;
+        now.textContent = ev.text;
+        where.textContent = this.I.stepInfo().path || 'a la línia que has escrit';
+        box.hidden = false;
+      },
+      onBusy: (busy, stepping) => { if (!busy) box.hidden = true; h.onBusy(busy, stepping); },
+    };
+    return side;
   }
 
   buildBar(r, bar, btn) {
@@ -124,9 +168,6 @@ export class Monitor {
     row.appendChild(this.promptLabel); row.appendChild(this.input);
     mon.appendChild(row);
     r.appendChild(mon);
-
-    this.result = el('div', 'sim-resultat'); this.result.setAttribute('role', 'status'); this.result.hidden = true;
-    r.appendChild(this.result);
 
     if (window.ResizeObserver) new ResizeObserver(() => this.draw()).observe(wrap);
     document.addEventListener('fullscreenchange', () => this.draw());
@@ -191,7 +232,7 @@ export class Monitor {
     this.undo.push(this.I.snapshot()); if (this.undo.length > 50) this.undo.shift();
     this.lines.push(text.toUpperCase()); if (this.lines.length > 50) this.lines.shift();
     this.clearFeedback();
-    this.stepping = stepMode; this.abort = false;
+    this.stepping = stepMode; this.abort = false; this.lastError = null;
     this.setBusy(true);
     let events = 0, printBuf = '';
     try {
@@ -212,7 +253,7 @@ export class Monitor {
           events++;
           const user = this.opts.speed ? this.opts.speed() : 1;
           const auto = this.stepping ? 1 : events > 150 ? 0 : events > 40 ? 0.3 : 1;
-          const factor = this.reduced ? 0 : user * auto;
+          const factor = this.reduced ? 0 : user * auto * (this.checking ? 0.4 : 1);
           await this.animate(ev, factor);
           if (factor === 0 && events % 40 === 0) { this.draw(); await frame(); }
           if (this.stepping && !this.opts.stepOnBefore) {
@@ -236,6 +277,7 @@ export class Monitor {
     } catch (e) {
       if (!(e instanceof LogoError)) { this.setBusy(false); throw e; }
       this.I.pending = null; this.promptLabel.textContent = '?';
+      this.lastError = e;
       this.showError(e);
     }
     if (printBuf) this.line(printBuf);
@@ -292,17 +334,40 @@ export class Monitor {
   }
 
   // ── Correcció ──
-  check() {
-    if (this.busy) return;
+  say(kind, title, text) {
+    this.result.className = 'sim-resultat sim-resultat--' + kind;
+    this.result.textContent = '';
+    this.result.appendChild(el('strong', null, title));
+    this.result.appendChild(el('span', null, text));
+    this.result.hidden = false;
+  }
+
+  /** «Comprova» d'un exercici de procediment: l'executa en una pantalla neta, a la vista de l'alumne. */
+  async runForCheck() {
+    const name = this.opts.run;
+    this.panel.flush();
+    if (!this.panel.warn.hidden) { this.say('no', 'Encara no.', 'Al panell hi ha un error. Llegeix l\'avís de sota dels procediments i corregeix-lo.'); return false; }
+    if (!this.I.procs.has(name)) { this.say('no', 'Encara no.', `Encara no has definit ${name}.`); return false; }
+    if (this.I.procs.get(name).inputs.length) { this.say('no', 'Encara no.', `${name} no ha de tenir entrades.`); return false; }
+    this.I.turtle.reset(); this.I.globals.clear();
+    this.undo = []; this.lines = []; this.log.textContent = '';
+    this.shown = this.I.turtle.pose(); this.clearFeedback(); this.draw();
+    this.checking = true;
+    try { await this.submit(name, false); } finally { this.checking = false; }
+    if (this.lastError) {
+      const stopped = this.lastError.code === 'stopped';
+      this.say('no', 'Encara no.', stopped ? `Has aturat ${name} abans que acabés.` : `${name} s'ha aturat amb un error. Llegeix el missatge i corregeix el procediment.`);
+      return false;
+    }
+    return true;
+  }
+
+  async check() {
+    if (this.busy) return false;
+    if (this.opts.run && !(await this.runForCheck())) return false;
     const T = this.I.turtle;
-    const say = (kind, title, text) => {
-      this.result.className = 'sim-resultat sim-resultat--' + kind;
-      this.result.textContent = '';
-      this.result.appendChild(el('strong', null, title));
-      this.result.appendChild(el('span', null, text));
-      this.result.hidden = false;
-    };
-    if (!T.segments.length) { say('no', 'Encara no.', 'Encara no has dibuixat res.'); return false; }
+    const say = (kind, title, text) => this.say(kind, title, text);
+    if (!T.segments.length) { say('no', 'Encara no.', this.opts.run ? `${this.opts.run} no ha dibuixat res.` : 'Encara no has dibuixat res.'); return false; }
     let best = null, target = null;
     for (const t of this.targets) {
       const r = compareDrawings(T.segments, t.segments);
@@ -315,7 +380,11 @@ export class Monitor {
     }
     if (this.opts.checkPose) {
       const p = comparePose(T.pose(), target.pose);
-      if (!p.position) { say('quasi', 'Gairebé.', 'El dibuix és correcte. Només falta que la tortuga acabi on ha començat.'); return false; }
+      if (!p.position) {
+        const home = Math.hypot(target.pose.x, target.pose.y) < 1.5;
+        say('quasi', 'Gairebé.', 'El dibuix és correcte. Només falta que la tortuga acabi ' + (home ? 'on ha començat.' : 'al final del dibuix.'));
+        return false;
+      }
       if (!p.heading) {
         const dir = DIRS[Math.round(target.pose.heading)] || 'com a l\'objectiu';
         say('quasi', 'Gairebé.', `El dibuix és correcte. Només falta que la tortuga acabi mirant ${dir}.`);
@@ -323,11 +392,16 @@ export class Monitor {
       }
     }
     const need = this.opts.require;
-    if (need && !this.lines.some((l) => l.split(/[\s\[\]()]+/).includes(need))) {
+    if (need && this.opts.run) {
+      if (!this.I.procUses(this.opts.run, need)) {
+        say('si', 'Molt bé!', `El dibuix és correcte. Ara fes que ${this.opts.run} faci servir ${need}.`);
+        return false;
+      }
+    } else if (need && !this.lines.some((l) => l.split(/[\s\[\]()]+/).includes(need))) {
       say('si', 'Molt bé!', `El dibuix és correcte. Ara prova de fer-lo amb ${need}: amb una sola línia n'hi ha prou.`);
       return false;
     }
-    say('si', 'Correcte!', this.opts.okText || 'Has dibuixat exactament el que es demanava.');
+    say('si', 'Correcte!', this.opts.okText || (this.opts.run ? `${this.opts.run} fa exactament el que es demanava.` : 'Has dibuixat exactament el que es demanava.'));
     if (this.opts.onSolved) this.opts.onSolved();
     return true;
   }

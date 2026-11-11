@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 3 · Paraules noves — LogoCat</title>
+<meta name="description" content="Tercer capítol de LogoCat: PROC i FI, per posar nom a un dibuix i ensenyar paraules noves a la tortuga.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 3</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 3</p>
+    <h1>Paraules noves</h1>
+  </div>
+
+  <section>
+    <h2>Posar nom a un dibuix</h2>
+    <p>La línia del quadrat l'has escrit moltes vegades. Ara li posaràs nom.</p>
+    <p>A partir d'aquest capítol, els simuladors tenen un panell a l'esquerra que es diu «Procediments». Escriu-hi això:</p>
+    <pre class="codi">PROC QUADRAT
+  REPETEIX 4 [AVANÇA 50 GIRA.D 90]
+FI</pre>
+    <p>Un procediment és una llista d'ordres amb nom. Comença amb <code>PROC</code> i el nom, i acaba amb <code>FI</code>.</p>
+    <p>Ara ves a la línia <code>?</code>, escriu <code>QUADRAT</code> i prem Retorn. Des d'aquest moment, <code>QUADRAT</code> és una ordre més, com <code>AVANÇA</code>. Has ensenyat una paraula nova a la tortuga.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2>Les regles d'un procediment</h2>
+    <ul>
+      <li>Comença amb <code>PROC</code> i el nom.</li>
+      <li>Acaba amb <code>FI</code>.</li>
+      <li>El nom és una sola paraula, i no pot ser una ordre de LOGO.</li>
+    </ul>
+    <p>Si en falla alguna, l'avís surt sota el panell. Per exemple, si et deixes el <code>FI</code>:</p>
+    <pre class="codi"><span class="e">FALTA FI</span> · <span class="p">Cada PROC acaba amb FI</span></pre>
+    <p>Si l'error és a dins del procediment, LOGO te'l diu quan el fas servir. Et diu a quina línia és i te la marca en vermell:</p>
+    <pre class="codi">? QUADRAT
+<span class="e">NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'</span>
+<span class="p">  Volies dir AVANÇA?</span></pre>
+    <p>Aquest <code>QUADRAT</code> té un error. Escriu <code>QUADRAT</code> a la línia <code>?</code>, mira què diu LOGO i corregeix-lo al panell.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 4 [AVANSA 50 GIRA.D 90]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El graó</h2>
+    <p>Defineix un procediment que es digui <code>GRAÓ</code>. Ha de pujar 20 passos i avançar-ne 20 cap a la dreta. En acabar, la tortuga ha de mirar amunt.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>GRAÓ</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap3-grao" data-panell data-executa="GRAÓ" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. El graó puja 20 i avança 20 cap a la dreta.">
+      <script type="text/logo">
+PROC GRAÓ
+  AVANÇA 20 GIRA.D 90
+  AVANÇA 20 GIRA.E 90
+FI
+GRAÓ
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Una paraula nova en fa servir una altra</h2>
+    <p>Dins d'un procediment hi pot anar qualsevol ordre, també les que has inventat tu. Una escala són cinc graons:</p>
+    <pre class="codi">PROC ESCALA
+  REPETEIX 5 [GRAÓ]
+FI</pre>
+    <p>Al panell hi pot haver tants procediments com vulguis, un sota l'altre. Aquí ja hi tens <code>GRAÓ</code>: afegeix-hi <code>ESCALA</code> i prova-la.</p>
+    <p>Per fer una figura gran, pensa primer de quines peces està feta.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC GRAÓ
+  AVANÇA 20 GIRA.D 90
+  AVANÇA 20 GIRA.E 90
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p><code>QUADRAT</code> dibuixa un quadrat de costat 40 i deixa la tortuga com estava. Sense executar res, tria què dibuixarà <code>FINESTRA</code>.</p>
+    <div class="prediu" data-id="cap3-prediu">
+      <pre class="codi">PROC FINESTRA
+  REPETEIX 4 [QUADRAT GIRA.D 90]
+FI</pre>
+      <script type="text/logo" data-correcta data-perque="Quatre quadrats, un a cada quart de volta.">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 40 GIRA.D 90]
+FI
+REPETEIX 4 [QUADRAT GIRA.D 90]
+</script>
+      <script type="text/logo" data-perque="Això passaria sense el gir: els quatre quadrats quedarien un sobre l'altre.">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 40 GIRA.D 90]
+FI
+REPETEIX 4 [QUADRAT]
+</script>
+      <script type="text/logo" data-perque="Això són només dues voltes, i REPETEIX en fa quatre.">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 40 GIRA.D 90]
+FI
+REPETEIX 2 [QUADRAT GIRA.D 90]
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Deixa la tortuga com l'has trobada</h2>
+    <p>La finestra surt bé perquè <code>QUADRAT</code> acaba on ha començat i mirant cap al mateix lloc. Per això fa l'últim gir, encara que el quadrat ja estigui tancat.</p>
+    <p>Un bon procediment deixa la tortuga com l'ha trobada. Així el pots combinar amb d'altres sense sorpreses.</p>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> La finestra torta</h2>
+    <p><code>FINESTRA</code> hauria de dibuixar quatre quadrats, però surt una altra cosa. Escriu <code>FINESTRA</code> a la línia <code>?</code> per veure-ho.</p>
+    <p>L'error no és a <code>FINESTRA</code>. Troba'l i corregeix-lo.</p>
+    <div class="simulador" data-id="cap3-error" data-panell data-executa="FINESTRA" data-comprova="dibuix"
+         data-si-falla="Encara no són quatre quadrats. Fes QUADRAT tot sol i mira cap on queda mirant la tortuga.">
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 3 [AVANÇA 40 GIRA.D 90]
+  AVANÇA 40
+FI
+
+PROC FINESTRA
+  REPETEIX 4 [QUADRAT GIRA.D 90]
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 40 GIRA.D 90]
+FI
+REPETEIX 4 [QUADRAT GIRA.D 90]
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap3-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. Amb quina paraula acaba sempre un procediment?</legend>
+        <label><input type="radio"> PROC</label>
+        <label><input type="radio"> FI</label>
+        <label><input type="radio"> ACABA</label>
+        <p class="explicacio" hidden>PROC obre el procediment i FI el tanca.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>2. Has definit QUADRAT. Com el fas servir?</legend>
+        <label><input type="radio"> Escrivint PROC QUADRAT</label>
+        <label><input type="radio"> Escrivint QUADRAT</label>
+        <label><input type="radio"> Escrivint REPETEIX QUADRAT</label>
+        <p class="explicacio" hidden>Un procediment es fa servir pel seu nom, com qualsevol altra ordre.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="2">
+        <legend>3. ESCALA fa REPETEIX 5 [GRAÓ], i GRAÓ dibuixa 2 traços. Quants traços dibuixa ESCALA?</legend>
+        <label><input type="radio"> 5</label>
+        <label><input type="radio"> 7</label>
+        <label><input type="radio"> 10</label>
+        <p class="explicacio" hidden>Cinc graons de dos traços cadascun: 5 × 2 = 10.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> La torre</h2>
+    <p>Defineix <code>QUADRAT</code>, de costat 30. Després defineix <code>TORRE</code>: tres quadrats, un sobre l'altre.</p>
+    <p><code>TORRE</code> ha de fer servir <code>QUADRAT</code>. Quan premis «Comprova», la tortuga farà <code>TORRE</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap3-torre" data-clau data-panell data-executa="TORRE" data-comprova="dibuix" data-exigeix="QUADRAT"
+         data-si-falla="Mira quins traços sobren i quins falten. Després de cada quadrat, la tortuga ha de pujar fins on comença el següent.">
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 30 GIRA.D 90]
+FI
+PROC TORRE
+  REPETEIX 3 [QUADRAT AVANÇA 30]
+FI
+TORRE
+</script>
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 30 GIRA.E 90]
+FI
+PROC TORRE
+  REPETEIX 3 [QUADRAT AVANÇA 30]
+FI
+TORRE
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li><code>PROC</code>, un nom, les ordres i <code>FI</code>: així s'ensenya una paraula nova a la tortuga.</li>
+      <li>Una paraula nova en pot fer servir d'altres.</li>
+      <li>Un bon procediment deixa la tortuga com l'ha trobada.</li>
+    </ul>
+    <p>A l'<a href="../simulador.html">Editor lliure</a>, els procediments que escrius es queden desats: és un bon lloc per guardar-hi els teus.</p>
+    <p>Totes les teves figures estan enganxades, perquè la tortuga sempre dibuixa. Al capítol següent aprendràs a aixecar el llapis.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-2.html">← Capítol 2 · Repeteix</a> · Capítol 4: en preparació.</p>
+
+</main>
+</body>
+</html>

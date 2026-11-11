@@ -48,7 +48,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 |---|---|---|---|
 | 1 | Coneix la tortuga | Direct mode; `AVANÇA`, `RECULA`, `GIRA.D`, `GIRA.E`, `INI.DIB` | Turn as angle, degrees, estimation |
 | 2 | Repeteix | `REPETEIX n [ ... ]` | Square, rectangle, right angle, perimeter; 4 × 90 = 360 |
-| 3 | Paraules noves | `PROC ... FI`, procedures calling procedures, `PROCS?`, `OBLIDA.PROC` | Decomposing figures; leave the turtle as you found it |
+| 3 | Paraules noves | `PROC ... FI`, procedures calling procedures (`PROCS?` and `OBLIDA.PROC` work but are not taught: owner, 2026-11-11) | Decomposing figures; leave the turtle as you found it |
 | 4 | El llapis | `NO.LLAPIS`, `LLAPIS`, `GOMA`, `APAREIX`, `DESAPAREIX`, `FES.COLOR`, `FES.FONS` | Translations, friezes |
 | 5 | Triangles i polígons | Arithmetic in inputs (`GIRA.D 360 / 5`) | Exterior/interior angles, angle sums, Total Turtle Trip theorem |
 | 6 | Entrades | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
@@ -195,7 +195,7 @@ Editable draft: Claude Docs doc "LogoCat · Capítol 1 · Coneix la tortuga"
   `AVANÇA NECESSITA UN NOMBRE` / `Per exemple: AVANÇA 50`;
   `NO SÉ QUÈ FER AMB 50` / `Escriu una ordre, com per exemple AVANÇA 50`.
 - `CENTRE` never draws, even with the pen down (owner decision).
-- OPEN: whether "El quadrat" also accepts the mirrored square drawn with `GIRA.E` (proposed yes).
+- "El quadrat" accepts the mirrored square drawn with `GIRA.E` (owner, 2026-11-11).
 
 ## 8b. Chapter 2 (script approved 2026-11-11; built)
 
@@ -204,21 +204,47 @@ Review artifact "Revisió 4 del guió del capítol 2" (slug
 (the owner rejected saying where the bracket keys are) → "Què dibuixarà?" → Canvia els
 nombres (rectangle) → exercise "El rectangle" → Quatre vegades 90 (4 × 90 = 360,
 perimeter) → quiz → find-the-bug "El quadrat que no tanca" (line pre-written at `?`) →
-key exercise "L'escala llarga" → summary. Nested `REPETEIX` was moved to chapter 3.
+key exercise "L'escala llarga" → summary. Nested `REPETEIX` was left out (see §8c).
 
 - Owner wording: `REPETEIX NECESSITA SABER QUÈ HA DE REPETIR`.
+- Course-wide rule (owner, 2026-11-11): an exercise accepts the mirrored figure too (the
+  square or rectangle drawn to the left with `GIRA.E`); each such exercise lists both
+  reference solutions.
 - Course-wide rule (owner): when an exercise requires a construct and the student gets
   the right drawing without it, tell them they did it right and encourage the construct
   ("Molt bé! El dibuix és correcte. Ara prova de fer-lo amb REPETEIX: amb una sola línia
   n'hi ha prou."), in the success style. The exercise is marked done only with the
   construct.
 
+## 8c. Chapter 3 (script approved 2026-11-11; built)
+
+Review artifact "Revisió 5 del guió del capítol 3" (slug
+`6fb22f5f-6d5e-40a8-8c48-619765f267cd`). Words: `PROC` and `FI` only; no inputs until
+chapter 6. Right-angle figures only (the house waits for chapter 5, after the triangle).
+Order: Posar nom a un dibuix (first procedure typed in the panel, not at `?`) → Les
+regles d'un procediment (panel warning; error line inside a procedure) → exercise "El
+graó" → Una paraula nova en fa servir una altra (`ESCALA` = five `GRAÓ`) → "Què
+dibuixarà?" (`FINESTRA`) → Deixa la tortuga com l'has trobada → find-the-bug "La
+finestra torta" (bug in `QUADRAT`, not in `FINESTRA`) → quiz → key exercise "La torre"
+→ summary, invitation to the Editor lliure, bridge to chapter 4 (the pen).
+
+- Simulators with a procedures panel from this chapter on; each simulator is independent
+  and carries any procedure it needs already written (owner).
+- Comprova on a procedure exercise runs the named procedure on a clean screen, in view
+  of the student (owner).
+- Procedure names follow the diacritics rule: `GRAÓ`, with accent (owner).
+- Owner wording: the hint of `X NO ÉS DINS DE CAP PROCEDIMENT` is only `Aquí només hi van
+  procediments (PROC … FI).`; `A PROC LI FALTA EL NOM` / `Per exemple: PROC QUADRAT`
+  approved.
+- Rejected: a box on nested `REPETEIX` (off-topic in a chapter about naming; no chapter
+  assigned yet) and a box "Com es feia als anys 80" (owner: "No vull cap referència de
+  text als anys 80"). `PROCS?` and `OBLIDA.PROC` are not taught.
+
 ## 9. Next step
 
-Chapters 1–2 and the Editor lliure are delivered. Next: the script of chapter 3
-(«Paraules noves»: `PROC … FI`, the procedures panel inside chapter simulators, nested
-`REPETEIX`), same review flow; then family integration once `step-quiz-commons` is
-available.
+Chapters 1–3 and the Editor lliure are delivered. Next: the script of chapter 4 («El
+llapis»), same review flow; then family integration once `step-quiz-commons` is
+available. Open questions for the owner are listed in `docs/STATE.md`.
 
 ## 10. Sources and records
 

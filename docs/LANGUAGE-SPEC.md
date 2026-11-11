@@ -171,11 +171,14 @@ Additions made while implementing (same voice; NOT yet reviewed by the owner):
 `X NECESSITA UNA LLISTA` (missing list input, for words other than `REPETEIX`; for
 `REPETEIX` the owner wrote `REPETEIX NECESSITA SABER QUÈ HA DE REPETIR` /
 `Per exemple: REPETEIX 4 [AVANÇA 50 GIRA.D 90]`, approved); `FALTA TANCAR UN PARÈNTESI` / `Cada ( necessita el seu )`; `SOBRA UN PARÈNTESI` /
-`Hi ha un ) sense el seu (`; `A PROC LI FALTA EL NOM` / `Per exemple: PROC QUADRAT`;
-`X NO ÉS DINS DE CAP PROCEDIMENT` / `Aquí només hi van procediments (PROC … FI). Les
-ordres soltes s'escriuen a la línia ?` (text outside any procedure in the panel);
+`Hi ha un ) sense el seu (`;
 hint variants for wrong input type: `X vol una llista entre claudàtors`,
 `X vol una condició, com ara :N > 10`, `X vol un nombre` (when the value is not a list).
+
+Reviewed and approved by the owner on 2026-11-11 (panel messages): `A PROC LI FALTA EL NOM`
+/ `Per exemple: PROC QUADRAT`; `X NO ÉS DINS DE CAP PROCEDIMENT` / `Aquí només hi van
+procediments (PROC … FI).` (text outside any procedure in the panel; the owner removed a
+second sentence from the hint).
 
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.

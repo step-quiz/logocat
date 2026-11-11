@@ -122,6 +122,27 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .sim:fullscreen { border: 0; border-radius: 0; overflow-y: auto; }
 .sim:fullscreen .sim-monitor { flex: 1 1 auto; }
 
+/* ── Simulador amb panell de procediments (capítol 3 endavant) ──
+   Panell a l'esquerra i monitor a la dreta. El panell fa 44 % perquè la línia més llarga dels
+   capítols (34 caràcters) hi càpiga sense barra horitzontal; el dibuix no hi perd res. */
+.sim-cos { display: flex; align-items: stretch; min-height: 0; }
+.sim-cos > .sim-monitor { flex: 1 1 0; min-width: 0; }
+.sim-panell { flex: 0 0 44%; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--bg); }
+.sim-panell .panell-cap { padding: 8px 12px; }
+.sim-panell .panell-codi { font-size: 14px; min-height: 0; }
+.sim-panell .numeros { width: 34px; padding-right: 8px; }
+.sim-panell .pila { margin: 8px 8px 8px 0; }
+.sim-panell .capa, .sim-panell .pila textarea { padding: 4px 8px 8px 8px; }
+.sim-panell .panell-avis, .sim-panell .pas-info { padding: 8px 12px; }
+.sim-panell .pas-info dl { grid-template-columns: 5.5em minmax(0, 1fr); }
+.pas-ara { font-weight: 700; }
+.sim:fullscreen .sim-cos { flex: 1 1 auto; }
+@media (max-width: 720px) {
+  .sim-cos { flex-direction: column; }
+  .sim-cos > .sim-monitor { flex: none; }
+  .sim-panell { order: 2; flex: none; height: 300px; border-right: 0; border-top: 1px solid var(--border); }
+}
+
 /* ── «Què dibuixarà?» ── */
 .prediu { display: flex; flex-direction: column; gap: 14px; }
 .prediu-opcions { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -203,8 +224,9 @@ html:has(.pagina-editor) { height: 100%; }
 .sim--ajusta .sim-camp { flex: 1 1 auto; min-height: 0; position: relative; padding: 0; overflow: hidden; }
 .sim--ajusta .sim-camp canvas { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 .panell-cap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
-.panell-cap h1 { margin: 0; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
 .panell-cap span { color: var(--muted); font-size: 12px; }
+.panell-cap .panell-titol { color: var(--text); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.panell-bloc { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
 /* Base 0: l'alçada la dona la finestra, no la quantitat de codi (els números de línia no empenyen). */
 .panell-codi { flex: 1 1 0; display: flex; min-height: 120px; overflow: hidden; font-size: 15px; line-height: 1.75; }
 .numeros { margin: 0; padding: 12px 12px 12px 0; width: 44px; flex: none; text-align: right; color: var(--muted); overflow: hidden; font: inherit; user-select: none; }

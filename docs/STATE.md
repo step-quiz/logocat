@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.6: chapter 2).
+> Last update: 2026-11-11 (v0.7: chapter 3, procedures panel inside chapter simulators).
 
 ## What exists
 
@@ -14,8 +14,8 @@
 - **Drawing validation** (`js/logo/compara.js`): ink comparison by line and interval,
   order- and direction-independent, erase-aware; reports matching, extra and missing
   strokes; final pose check.
-- **Monitor** (`js/ui/monitor.js`): the simulator embedded in chapters, monitor only
-  (no procedures panel). Animated turtle, `?` prompt with history (arrow keys), `>` prompt
+- **Monitor** (`js/ui/monitor.js`): the simulator embedded in chapters and the screen of
+  the Editor lliure. Animated turtle, `?` prompt with history (arrow keys), `>` prompt
   while defining a procedure, buttons Pas / Continua / Atura / Desfés / Reinicia /
   Pantalla completa; in exercises also Comprova and the goal toggle, with the
   white / red / dashed feedback and legend.
@@ -28,6 +28,29 @@
   drawing without it gets praise plus encouragement and is not marked done) and
   `data-ordre="…"` (line pre-written at `?`, restored by Reinicia; used by find-the-bug).
   "L'escala llarga" awards the chapter tick.
+- **Procedures panel** (`js/ui/panell.js`, class `ProcPanel`): one component used by the
+  Editor lliure and by chapter simulators. Textarea under a syntax-coloured layer with
+  line numbers; parses on every change (400 ms debounce, and always before a run); a
+  syntax problem is shown under the panel; `hooks()` returns the Monitor options that
+  wire step marks, the red error line, define/forget/edit events and read-only while
+  running. Optional `storageKey` (only the Editor lliure persists).
+- **Simulator with panel** (chapter 3 onwards; `data-panell` on `.simulador`): toolbar on
+  top, panel on the left (44 %), monitor on the right, and a compact "Pas a pas" box
+  ("Ara farà", "On som") under the panel while stepping; step mode pauses BEFORE each
+  action, as in the Editor lliure. Below 720 px the panel goes under the monitor
+  (300 px high). No placeholder text. Each simulator is independent; an activity that
+  needs a known procedure carries it in `<script type="text/logo-panell">`. Reinicia
+  clears the screen and keeps the panel text (reloading the page restores the given
+  text). `data-executa="NOM"`: Comprova clears the screen, runs that procedure in view
+  of the student (animation at 0.4 × duration) and compares drawing and, if asked, final
+  pose. Verdicts before comparing: panel syntax problem; `Encara no has definit NOM.`;
+  procedure with inputs; run stopped by an error. With `data-exigeix="PEÇA"` the
+  procedure must call that word directly (`Interpreter.procUses`); otherwise praise plus
+  encouragement, not marked done.
+- **Chapter 3** (`curs/capitol-3.html`): approved script, 6 simulators with panel (1 empty,
+  2 with given procedures, 3 exercises), "Què dibuixarà?", quiz. Exercises: "El graó"
+  (`GRAÓ`, drawing + pose), find-the-bug "La finestra torta" (`FINESTRA`, given panel),
+  key exercise "La torre" (`TORRE` must use `QUADRAT`; mirrored solution accepted).
 - **Editor lliure** (`simulador.html`, `js/ui/editor.js`): the hybrid screen of the
   approved mockup. Left: procedures panel (a textarea under a syntax-coloured layer with
   line numbers), autosaved to `localStorage` (`logocat-editor-procediments`), parsed on
@@ -48,15 +71,16 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 44 passing (`node --test tests/unit/*.test.mjs`). Manual browser smoke runs
-  (Chrome, 1360 px and 390 px wide) passed on 2026-11-10 for chapter 1 and for the Editor
-  lliure (panel colouring, run, step mode matching the mockup scenario, stop, error line,
-  panel syntax warning, define/forget/edit from the prompt, undo, persistence after
-  reload); no console errors, no external requests.
+- **Tests**: 51 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+  headless Chrome on 2026-11-11: chapters 1–3 and the Editor lliure, no console errors, no
+  external requests. Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
+  three exercises, step mode with panel marks, error line, panel warning, chapter tick)
+  and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
+  longest chapter line (34 characters) fits the panel without a horizontal scrollbar.
 
 ## Not built yet
 
-- **Chapters 3–12**, glossary, teacher guide, certificate.
+- **Chapters 4–12**, glossary, teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
   seen; LogoCat must be registered there first.
@@ -76,8 +100,16 @@
   runs accelerate automatically (after 40 actions, then instant after 150).
 - Messages added during implementation and pending owner review: see the note at the end
   of `docs/LANGUAGE-SPEC.md` §8.
-- OPEN (owner): confirm that "El quadrat" accepts the mirrored square (currently yes).
 - `FES.XY` in wrap mode draws a straight stroke without wrapping.
+- Simulator with panel: the owner approved a 38 % panel; it is built at 44 % because at
+  38 % the longest line of chapter 3 (34 characters) needs a horizontal scrollbar. The
+  drawing is unaffected (it is limited by height, not width). Pending owner confirmation.
+- Chapter text still mentions the 1980s in two places approved earlier
+  (`curs/capitol-1.html`, history sentence; `index.html`, intro and meta description).
+  The owner said "no text reference to the 80s" while reviewing chapter 3; whether that
+  also applies to those two is an open question. Do not change them without asking.
+- Nested `REPETEIX` has no chapter assigned (rejected for chapters 2 and 3); propose it
+  again when scripting a chapter where it arises naturally.
 - Panel parsing is all-or-nothing: with a syntax problem anywhere in the panel, the
   last good set of procedures stays active (the spec asks for per-procedure isolation).
 - In the Editor lliure, Desfés does not undo panel edits (by design); after an undo or a

@@ -49,6 +49,13 @@ export class Interpreter {
   /** Botó «Reinicia»: tot com al principi. */
   resetAll() { this.turtle.reset(); this.globals.clear(); this.procs.clear(); this.frames = []; this.trail = []; this.pending = null; }
 
+  /** El procediment `name` fa servir directament la paraula `word`? (exercicis que exigeixen una peça) */
+  procUses(name, word) {
+    const p = this.procs.get(name);
+    const has = (ts) => ts.some((t) => (t.t === 'word' && t.v === word) || (t.t === 'list' && has(t.v)));
+    return !!p && p.lines.some(has);
+  }
+
   /** On som i quant valen les entrades, per al requadre del pas a pas. */
   stepInfo() {
     const parts = [];

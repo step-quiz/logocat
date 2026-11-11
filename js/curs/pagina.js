@@ -16,6 +16,9 @@ function init() {
   document.querySelectorAll('.simulador').forEach((node) => {
     const id = node.dataset.id;
     const solutions = [...node.querySelectorAll('script[type="text/logo"]')].map((s) => s.textContent);
+    // Amb data-panell, el simulador porta el panell de procediments; el text inicial és opcional.
+    const given = node.querySelector('script[type="text/logo-panell"]');
+    const panel = node.hasAttribute('data-panell') ? { initial: given ? given.textContent.replace(/^\n+|\s+$/g, '') + '\n' : '' } : null;
     const exercise = solutions.length > 0;
     const host = node.closest('section') || node;
     new Monitor(node, {
@@ -23,6 +26,7 @@ function init() {
       checkPose: node.dataset.comprova === 'dibuix+tortuga',
       failText: node.dataset.siFalla, okText: node.dataset.siEncerta,
       require: node.dataset.exigeix, preload: node.dataset.ordre,
+      panel, run: node.dataset.executa,
       onSolved: () => { if (id) markDone(id); },
     });
     if (exercise && id) tick(host, id);

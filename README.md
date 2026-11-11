@@ -15,8 +15,9 @@ requests.
 | `simulador.html` | Editor lliure: procedures panel + monitor, step mode |
 | `curs/capitol-N.html` | One page per chapter; text, simulators and activities |
 | `js/logo/` | The language: `lexer.js`, `interpret.js` (generator-based interpreter and primitives), `tortuga.js` (turtle and field), `missatges.js` (Catalan messages), `compara.js` (drawing validation) |
-| `js/ui/monitor.js` | The "monitor": turtle canvas, text lines, `?` prompt, toolbar, exercise checking |
-| `js/ui/editor.js` | Editor lliure logic (panel, colouring, step box) |
+| `js/ui/monitor.js` | The "monitor": turtle canvas, text lines, `?` prompt, toolbar, exercise checking; with `panel`, the simulator with procedures panel |
+| `js/ui/panell.js` | Procedures panel component (`ProcPanel`): colouring, line numbers, parsing, step and error marks |
+| `js/ui/editor.js` | Editor lliure wiring (panel + monitor + button column + step box) |
 | `js/ui/activitats.js` | "Què dibuixarà?" and quiz |
 | `js/ui/tema.js` | Light/dark theme toggle |
 | `js/curs/` | Page bootstrap (`pagina.js`) and progress in `localStorage` (`progres.js`) |
@@ -49,3 +50,19 @@ ES modules need a web server: opening the files with `file://` does not work.
 heading). `data-clau` marks the exercise that awards the chapter tick. `data-exigeix="REPETEIX"`
 requires that word; `data-ordre="…"` pre-writes a line at the `?` prompt. See
 `curs/capitol-1.html` for `.prediu` and `.quiz`.
+
+Simulator with the procedures panel (chapter 3 onwards):
+
+```html
+<div class="simulador" data-panell></div>             <!-- free, empty panel -->
+
+<div class="simulador" data-id="cap3-torre" data-panell data-executa="TORRE"
+     data-comprova="dibuix" data-exigeix="QUADRAT">
+  <script type="text/logo-panell">PROC … FI</script>    <!-- optional: text given in the panel -->
+  <script type="text/logo">PROC … FI … TORRE</script>   <!-- solution: definitions, then the call -->
+</div>
+```
+
+`data-executa="NOM"`: Comprova clears the screen, runs that procedure and compares the
+result. With `data-executa`, `data-exigeix="PEÇA"` means the procedure must call `PEÇA`.
+See `curs/capitol-3.html`.
