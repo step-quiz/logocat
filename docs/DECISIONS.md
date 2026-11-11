@@ -51,8 +51,8 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 3 | Paraules noves | `PROC ... FI`, procedures calling procedures (`PROCS?` and `OBLIDA.PROC` work but are not taught: owner, 2026-11-11) | Decomposing figures; leave the turtle as you found it |
 | 4 | El llapis | `NO.LLAPIS`, `LLAPIS`, `GOMA`, `APAREIX`, `DESAPAREIX`, `FES.COLOR`, `FES.FONS` | Translation, friezes |
 | 5 | Triangles i polígons | Arithmetic in inputs (`GIRA.D 360 / 5`); `ESCRIU` with numbers, moved here from chapter 11 (owner) | Exterior/interior angles, angle sums, Total Turtle Trip theorem |
-| 6 | Entrades | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
-| 7 | Dues entrades | `PROC POLIGON :N :COSTAT` | Generalising with 360 / N; star polygons and divisors |
+| 6 | Variables | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
+| 7 | Dues variables | `PROC POLÍGON :N :COSTAT` | Generalising with 360 / N; star polygons and divisors |
 | 8 | Cercles i arcs | Student-built `CERCLE`, `ARC` (the 1985 vocabulary has no circle primitive) | Circle as many-sided polygon, circumference, π |
 | 9 | Simetria | No new words; swap `GIRA.D`/`GIRA.E` | Rotational and mirror symmetry, tessellations |
 | 10 | Triangles i quadrilàters | `ARREL2` | Classify and construct: isosceles, right triangle, parallelogram, rhombus, trapezoid, kite; opposite/supplementary angles; Pythagoras for the diagonal |
@@ -184,7 +184,7 @@ Editable draft: Claude Docs doc "LogoCat · Capítol 1 · Coneix la tortuga"
   → summary table + bridge to chapter 2. No free/unvalidated challenge (rejected).
 - Size: one class session, ~500 words, 6 example simulators (monitor only), 4 activities.
 - Voice (course-wide): informal "tu", short present-tense sentences, the turtle is "ella";
-  say "ordre" and "nombre", not "primitiva" / "entrada" (the latter arrives in chapter 6).
+  say "ordre" and "nombre", not "primitiva". From chapter 6 on, `:COSTAT` is a "variable" (see §8f).
 - Course-wide principle (owner): the student must always know where the turtle is
   heading, not only what was drawn. Exercises check final heading whenever meaningful.
   "El quadrat" requires the 4th turn (turtle back at start, heading up) and awards the
@@ -283,10 +283,36 @@ exercise "La casa" → summary and bridge to chapter 6 (inputs: `TRIANGLE 80`).
   discovery); the failure hint says to try it at the `?` line.
 - Nested `REPETEIX`: not in this chapter; maybe in a final extension / challenges chapter.
 
+## 8f. Chapter 6 «Variables» (script approved 2026-11-11; built)
+
+Review artifact "Revisió 8 del guió del capítol 6" (slug
+`901366e7-80ed-4930-8c25-29b13263b4b0`), plus a three-question dialog. Order: Un quadrat
+de cada mida → Les regles d'una variable → "Què dibuixarà?" → exercise "El triangle de
+qualsevol mida" → Figures semblants (`PERÍMETRE`) → find-the-bug "El quadrat que no
+creix" → La variable passa d'un procediment a un altre (`DOS.QUADRATS`) → quiz → key
+exercise "La casa de qualsevol mida" → summary and bridge to chapter 7.
+
+- **Terminology (owner, binding everywhere).** `:COSTAT` is always a "variable". Never
+  "entrada", never "capsa" (the owner rejected the box metaphor): in chapter prose, in
+  LOGO messages and in UI texts. Chapters 6 and 7 are titled «Variables» and «Dues
+  variables». The already-approved hint of `:X NO TÉ CAP VALOR` was reworded to `És una
+  variable del procediment? Mira la línia PROC`.
+- **Comprova with one value (owner).** The proposal to test a procedure with two values
+  was rejected. Comprova runs one call, named in the statement (`TRIANGLE 70`); pick a
+  value different from the 50 students tend to leave inside.
+- The step box of chapter simulators shows a third row, "Valors" (owner).
+- Panel and monitor share the simulator half and half (owner), so the 39-character line
+  `  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]` needs no horizontal scrollbar.
+- Owner-approved messages (with "variables"): `Volies dir :COSTAT? Les variables
+  s'escriuen amb dos punts al davant.`; `Els dos punts van enganxats al nom, sense espai:
+  :COSTAT`; `LES VARIABLES DE PROC PORTEN DOS PUNTS` / `Per exemple: PROC QUADRAT :COSTAT`.
+- Maths vocabulary: "figures semblants"; the variable goes to lengths, never to turns.
+- The landing page shows the delivered version at the bottom-right (owner request).
+
 ## 9. Next step
 
-Chapters 1–5 and the Editor lliure are delivered. Next: the script of chapter 6
-(«Entrades»: `PROC QUADRAT :COSTAT`), same review flow; then family integration once `step-quiz-commons` is
+Chapters 1–6 and the Editor lliure are delivered. Next: the script of chapter 7
+(«Dues variables»: `PROC POLÍGON :N :COSTAT`), same review flow; then family integration once `step-quiz-commons` is
 available. Open questions for the owner are listed in `docs/STATE.md`.
 
 ## 10. Sources and records

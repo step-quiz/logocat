@@ -64,6 +64,9 @@ export function describe(err, known = []) {
   switch (err.code) {
     case 'unknown': {
       line1 = `NO SÉ COM FER ${p.word}`;
+      // Variables sense els dos punts, o amb un espai després dels dos punts (owner, 2026-11-11).
+      if (p.isVar) { hints = [`Volies dir :${p.word}? Les variables s'escriuen amb dos punts al davant.`]; break; }
+      if (p.colonName) { hints = [`Els dos punts van enganxats al nom, sense espai: :${p.colonName}`]; break; }
       // Els signes de classe per dividir i multiplicar (owner, 2026-11-11).
       const N = '(\\d+(\\.\\d+)?)?';
       if (new RegExp(`^${N}[:÷]${N}$`).test(p.word)) { hints = ['Per dividir, fes servir el signe /. Per exemple: 360 / 5']; break; }
@@ -95,7 +98,7 @@ export function describe(err, known = []) {
     case 'stray_bracket': line1 = 'SOBRA UN CLAUDÀTOR'; hints = ['Hi ha un ] sense el seu [']; break;
     case 'missing_paren': line1 = 'FALTA TANCAR UN PARÈNTESI'; hints = ['Cada ( necessita el seu )']; break;
     case 'stray_paren': line1 = 'SOBRA UN PARÈNTESI'; hints = ['Hi ha un ) sense el seu (']; break;
-    case 'no_value': line1 = `:${p.name} NO TÉ CAP VALOR`; hints = ['És una entrada del procediment? Mira la línia PROC']; break;
+    case 'no_value': line1 = `:${p.name} NO TÉ CAP VALOR`; hints = ['És una variable del procediment? Mira la línia PROC']; break;   // (owner: «variable», mai «entrada»)
     case 'no_output': line1 = `${p.word} NO HA RETORNAT RES`; hints = [`${p.word} fa una acció, però no dona cap valor`]; break;
     case 'only_in_proc': line1 = `${p.word} NOMÉS ES POT FER DINS D'UN PROCEDIMENT`; break;
     case 'already_defined': line1 = `${p.word} JA ESTÀ DEFINIT`; hints = ['El pots canviar al panell de procediments']; break;
@@ -105,6 +108,7 @@ export function describe(err, known = []) {
       hints = [`Per exemple: ${p.word} ${Array(p.n).fill(50).join(' ')}`];
       break;
     case 'bad_title': line1 = 'A PROC LI FALTA EL NOM'; hints = ['Per exemple: PROC QUADRAT']; break;
+    case 'bad_inputs': line1 = 'LES VARIABLES DE PROC PORTEN DOS PUNTS'; hints = ['Per exemple: PROC QUADRAT :COSTAT']; break;   // (owner)
     case 'div_zero': line1 = 'NO PUC DIVIDIR ENTRE ZERO'; break;
     case 'fence':
       line1 = 'LA TORTUGA NO POT SORTIR DE LA PANTALLA';

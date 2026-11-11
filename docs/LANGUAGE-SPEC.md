@@ -156,7 +156,7 @@ All approved; wording marked (owner) was written by the owner and must not be al
 | 4 | Wrong input type | `A X NO LI AGRADA Y` | `X vol un nombre, sense claudàtor` (owner) |
 | 5 | Missing `]` | `FALTA TANCAR UN CLAUDÀTOR` | `Cada [ necessita el seu ]` |
 | 6 | Stray `]` or `)` | `SOBRA UN CLAUDÀTOR` | `Hi ha un ] sense el seu [` |
-| 7 | Variable without value | `:X NO TÉ CAP VALOR` | `És una entrada del procediment? Mira la línia PROC` |
+| 7 | Variable without value | `:X NO TÉ CAP VALOR` | `És una variable del procediment? Mira la línia PROC` |
 | 8 | Command used as value | `X NO HA RETORNAT RES` | `X fa una acció, però no dona cap valor` |
 | 9 | `ACABA`/`RETORNA` at top level | `X NOMÉS ES POT FER DINS D'UN PROCEDIMENT` | — |
 | 10 | Procedure defined | `X DEFINIT` | — |
@@ -194,6 +194,16 @@ Approved by the owner on 2026-11-11 (chapter 5): school signs. An unknown word c
 servir el signe /. Per exemple: 360 / 5`; `·`, `×`, `3X120`, or a lone `X` between two
 numbers (when no procedure is named `X`) gets `Per multiplicar, fes servir el signe *. Per
 exemple: 3 * 120`. These are detected before the line runs, so nothing is printed or drawn.
+
+Approved by the owner on 2026-11-11 (chapter 6). Student-facing Catalan always says
+"variable" for a procedure input (never "entrada"). An unknown word that is the name of a
+variable of the running procedure (`AVANÇA COSTAT`) → `NO SÉ COM FER COSTAT` / `Volies dir
+:COSTAT? Les variables s'escriuen amb dos punts al davant.` A lone `:` followed by a word
+(`AVANÇA : COSTAT`) → `NO SÉ COM FER :` / `Els dos punts van enganxats al nom, sense espai:
+:COSTAT` (a lone `:` followed by a number keeps the division hint). Anything after the
+procedure name in a `PROC` line that is not a `:name` (`PROC QUADRAT COSTAT`, `PROC QUADRAT
+: COSTAT`, `PROC QUADRAT 50`) → `LES VARIABLES DE PROC PORTEN DOS PUNTS` / `Per exemple:
+PROC QUADRAT :COSTAT`; `A PROC LI FALTA EL NOM` is now only for a missing name.
 
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.

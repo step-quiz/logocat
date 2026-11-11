@@ -123,11 +123,11 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .sim:fullscreen .sim-monitor { flex: 1 1 auto; }
 
 /* ── Simulador amb panell de procediments (capítol 3 endavant) ──
-   Panell a l'esquerra i monitor a la dreta. El panell fa 44 % perquè la línia més llarga dels
-   capítols (34 caràcters) hi càpiga sense barra horitzontal; el dibuix no hi perd res. */
+   Panell a l'esquerra i monitor a la dreta, meitat i meitat (owner, 2026-11-11): hi caben 43
+   caràcters per línia, i el dibuix no hi perd res perquè la seva mida depèn de l'alçada. */
 .sim-cos { display: flex; align-items: stretch; min-height: 0; }
 .sim-cos > .sim-monitor { flex: 1 1 0; min-width: 0; }
-.sim-panell { flex: 0 0 44%; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--bg); }
+.sim-panell { flex: 0 0 50%; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--bg); }
 .sim-panell .panell-cap { padding: 8px 12px; }
 .sim-panell .panell-codi { font-size: 14px; min-height: 0; }
 .sim-panell .numeros { width: 34px; padding-right: 8px; }
@@ -158,6 +158,8 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .mini-tortuga { fill: none; stroke: #f2f2ee; stroke-width: 1.3; stroke-linejoin: round; }
 .mini-tortuga--plena { fill: #f2f2ee; }                 /* llapis a baix: tortuga plena */
 .mini-inici { fill: #a9abb3; }
+/* Número de versió, a baix a la dreta de la portada: per comprovar que l'última pujada és en línia. */
+.versio { position: fixed; right: 12px; bottom: 8px; margin: 0; color: var(--muted); font-size: 12px; }
 /* Taula de colors del capítol 4: les mostres són els colors reals del llapis (js/ui/monitor.js, PEN). */
 .colors { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .colors li { display: inline-flex; align-items: center; gap: 8px; margin: 0; }

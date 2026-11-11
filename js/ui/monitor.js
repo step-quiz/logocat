@@ -36,6 +36,7 @@ export class Monitor {
    *   preload: 'text'       línia que surt ja escrita a «?» (activitat «troba l'error»)
    *   panel: { initial }    simulador amb panell de procediments a l'esquerra (capítol 3 endavant)
    *   run: 'GRAÓ'           «Comprova» executa aquest procediment en una pantalla neta i en compara el resultat;
+   *                         pot portar valors ('TRIANGLE 70'): llavors el procediment ha de tenir tantes variables;
    *                         amb `require`, el procediment `run` ha de fer servir aquesta paraula
    * Per a l'Editor lliure, que posa els seus propis botons i panell:
    *   toolbar: false     no construeix la barra de botons
@@ -99,6 +100,8 @@ export class Monitor {
     const now = el('dd', 'pas-ara'), where = el('dd');
     dl.appendChild(el('dt', null, 'Ara farà')); dl.appendChild(now);
     dl.appendChild(el('dt', null, 'On som')); dl.appendChild(where);
+    const valsLabel = el('dt', null, 'Valors'), vals = el('dd');
+    dl.appendChild(valsLabel); dl.appendChild(vals);
     box.appendChild(dl); side.appendChild(box);
     const h = this.panel.hooks();
     this.opts = {
@@ -107,7 +110,10 @@ export class Monitor {
         h.onBefore(ev);
         if (!ev) return;
         now.textContent = ev.text;
-        where.textContent = this.I.stepInfo().path || 'a la línia que has escrit';
+        const info = this.I.stepInfo();
+        where.textContent = info.path || 'a la línia que has escrit';
+        vals.textContent = info.values.join('   ');
+        valsLabel.hidden = vals.hidden = info.values.length === 0;
         box.hidden = false;
       },
       onBusy: (busy, stepping) => { if (!busy) box.hidden = true; h.onBusy(busy, stepping); },
@@ -344,16 +350,19 @@ export class Monitor {
 
   /** «Comprova» d'un exercici de procediment: l'executa en una pantalla neta, a la vista de l'alumne. */
   async runForCheck() {
-    const name = this.opts.run;
+    const [name, ...given] = this.opts.run.trim().split(/\s+/);      // 'TRIANGLE 70' → TRIANGLE, amb un valor
     this.panel.flush();
     if (!this.panel.warn.hidden) { this.say('no', 'Encara no.', 'Al panell hi ha un error. Llegeix l\'avís de sota dels procediments i corregeix-lo.'); return false; }
     if (!this.I.procs.has(name)) { this.say('no', 'Encara no.', `Encara no has definit ${name}.`); return false; }
-    if (this.I.procs.get(name).inputs.length) { this.say('no', 'Encara no.', `${name} no ha de tenir entrades.`); return false; }
+    if (this.I.procs.get(name).inputs.length !== given.length) {
+      const want = given.length === 0 ? 'no ha de tenir variables' : given.length === 1 ? 'ha de tenir una variable' : `ha de tenir ${given.length} variables`;
+      this.say('no', 'Encara no.', `${name} ${want}. Mira la línia PROC.`); return false;
+    }
     this.I.turtle.reset(); this.I.globals.clear();
     this.undo = []; this.lines = []; this.log.textContent = '';
     this.shown = this.I.turtle.pose(); this.clearFeedback(); this.draw();
     this.checking = true;
-    try { await this.submit(name, false); } finally { this.checking = false; }
+    try { await this.submit(this.opts.run, false); } finally { this.checking = false; }
     if (this.lastError) {
       const stopped = this.lastError.code === 'stopped';
       this.say('no', 'Encara no.', stopped ? `Has aturat ${name} abans que acabés.` : `${name} s'ha aturat amb un error. Llegeix el missatge i corregeix el procediment.`);
@@ -393,8 +402,9 @@ export class Monitor {
     }
     const need = this.opts.require;
     if (need && this.opts.run) {
-      if (!this.I.procUses(this.opts.run, need)) {
-        say('si', 'Molt bé!', `El dibuix és correcte. Ara fes que ${this.opts.run} faci servir ${need}.`);
+      const procName = this.opts.run.trim().split(/\s+/)[0];
+      if (!this.I.procUses(procName, need)) {
+        say('si', 'Molt bé!', `El dibuix és correcte. Ara fes que ${procName} faci servir ${need}.`);
         return false;
       }
     } else if (need && !this.lines.some((l) => l.split(/[\s\[\]()]+/).includes(need))) {

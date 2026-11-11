@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 6 · Variables — LogoCat</title>
+<meta name="description" content="Sisè capítol de LogoCat: procediments amb una variable, per dibuixar la mateixa figura de qualsevol mida.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 6</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 6</p>
+    <h1>Variables</h1>
+  </div>
+
+  <section>
+    <h2>Un quadrat de cada mida</h2>
+    <p>El teu <code>QUADRAT</code> fa sempre 50 passos. Per fer-ne un de 30 hauries d'escriure un altre procediment, i un altre per al de 80.</p>
+    <p>Hi ha una manera millor: que el procediment rebi la mida. A <code>AVANÇA</code> li dius quant ha d'avançar; al teu <code>QUADRAT</code> li diràs quant fa de costat.</p>
+    <pre class="codi">PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI</pre>
+    <p><code>:COSTAT</code> és una variable: un nom que pot valer un nombre diferent cada vegada. Quan escrius <code>QUADRAT 80</code>, la variable <code>:COSTAT</code> val 80, i cada vegada que LOGO la troba hi posa un 80.</p>
+    <p>Escriu el procediment al panell i prova <code>QUADRAT 30</code> i <code>QUADRAT 80</code>.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2>Les regles d'una variable</h2>
+    <ul>
+      <li>La variable s'escriu a la línia <code>PROC</code>, després del nom del procediment.</li>
+      <li>Porta dos punts enganxats al davant.</li>
+      <li>El nom el tries tu, però ha de ser el mateix a dalt i a dins.</li>
+    </ul>
+    <p>Quan fas servir el procediment, li has de donar un valor. Si no, LOGO t'avisa:</p>
+    <pre class="codi">? QUADRAT
+<span class="e">EL PROCEDIMENT 'QUADRAT' NECESSITA 1 VALOR</span>
+<span class="p">  Per exemple: QUADRAT 50</span></pre>
+    <p>Prova-ho. Després escriu <code>QUADRAT 60</code> i prem «Pas» unes quantes vegades: el requadre «Pas a pas» t'ensenya quant val la variable.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>Aquest és el procediment <code>TRIANGLE</code>. Sense executar res, tria què dibuixarà la línia de sota.</p>
+    <div class="prediu" data-id="cap6-prediu">
+      <pre class="codi">PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+
+? TRIANGLE 20 TRIANGLE 40</pre>
+      <script type="text/logo" data-correcta data-perque="Un triangle de 20 i un de 40, que comencen al mateix punt.">
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+TRIANGLE 20 TRIANGLE 40
+</script>
+      <script type="text/logo" data-perque="Això serien dos triangles de 40, un sobre l'altre. El primer és de 20.">
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+TRIANGLE 40 TRIANGLE 40
+</script>
+      <script type="text/logo" data-perque="Els nombres no se sumen: cada TRIANGLE rep el seu valor i dibuixa el seu triangle.">
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+TRIANGLE 60
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El triangle de qualsevol mida</h2>
+    <p>Defineix <code>TRIANGLE</code> amb una variable que es digui <code>:COSTAT</code>. Ha de dibuixar un triangle de tres costats iguals de la mida que li diguis, i ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>TRIANGLE 70</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap6-triangle" data-panell data-executa="TRIANGLE 70" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. Els tres costats han de fer el que val la variable.">
+      <script type="text/logo">
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+TRIANGLE 70
+</script>
+      <script type="text/logo">
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.E 120]
+FI
+TRIANGLE 70
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Figures semblants</h2>
+    <p>Al panell ja hi tens <code>QUADRAT</code>. Escriu aquesta línia:</p>
+    <pre class="codi">QUADRAT 20 QUADRAT 40 QUADRAT 60 QUADRAT 80</pre>
+    <p>Quatre quadrats, un dins l'altre. Tenen la mateixa forma i mides diferents: són figures semblants.</p>
+    <p>Fixa't què canvia i què no: els costats canvien, els angles no. Per això la variable va als <code>AVANÇA</code> i no als <code>GIRA.D</code>.</p>
+    <p>El perímetre del quadrat és 4 vegades el costat. Aquest procediment el calcula:</p>
+    <pre class="codi">PROC PERÍMETRE :COSTAT
+  ESCRIU 4 * :COSTAT
+FI</pre>
+    <pre class="codi">? PERÍMETRE 20
+80
+? PERÍMETRE 40
+160</pre>
+    <p>Si el costat es fa el doble, el perímetre també.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El quadrat que no creix</h2>
+    <p>Aquest <code>QUADRAT</code> té una variable, però <code>QUADRAT 30</code> i <code>QUADRAT 70</code> dibuixen el mateix. Prova-ho.</p>
+    <p>Troba l'error i corregeix-lo. Quan premis «Comprova», la tortuga farà <code>QUADRAT 70</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap6-error" data-panell data-executa="QUADRAT 70" data-comprova="dibuix"
+         data-si-falla="El quadrat no fa 70 de costat. Mira on és la variable a la línia PROC, i on és a dins.">
+      <script type="text/logo-panell">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA 50 GIRA.D 90]
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+QUADRAT 70
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>La variable passa d'un procediment a un altre</h2>
+    <p>Un procediment pot donar la seva variable a un altre, i fer-hi comptes pel camí:</p>
+    <pre class="codi">PROC DOS.QUADRATS :MIDA
+  QUADRAT :MIDA
+  QUADRAT :MIDA / 2
+FI</pre>
+    <p><code>DOS.QUADRATS 60</code> dibuixa un quadrat de 60 i, a dins, un de 30.</p>
+    <p>Quan crida <code>QUADRAT :MIDA</code>, li passa el 60. A dins de <code>QUADRAT</code>, aquest 60 es diu <code>:COSTAT</code>. Cada procediment té les seves variables, amb els seus noms.</p>
+    <p>Afegeix <code>DOS.QUADRATS</code> al panell i fes-lo amb «Pas» per veure com passa el valor.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap6-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. Has definit PROC QUADRAT :COSTAT. Què passa si escrius QUADRAT, sense cap nombre?</legend>
+        <label><input type="radio"> Dibuixa un quadrat de costat 0</label>
+        <label><input type="radio"> LOGO avisa que QUADRAT necessita un valor</label>
+        <label><input type="radio"> Dibuixa l'últim quadrat que has fet</label>
+        <p class="explicacio" hidden>La variable no val res fins que li dones un valor.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="2">
+        <legend>2. QUADRAT 40 té un perímetre de 160 passos. Quin perímetre té QUADRAT 80?</legend>
+        <label><input type="radio"> 160</label>
+        <label><input type="radio"> 240</label>
+        <label><input type="radio"> 320</label>
+        <p class="explicacio" hidden>El costat és el doble, i el perímetre també: 4 × 80 = 320.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="2">
+        <legend>3. Quina línia està ben escrita?</legend>
+        <label><input type="radio"> PROC QUADRAT COSTAT</label>
+        <label><input type="radio"> PROC QUADRAT : COSTAT</label>
+        <label><input type="radio"> PROC QUADRAT :COSTAT</label>
+        <p class="explicacio" hidden>La variable porta dos punts enganxats al davant, sense espai.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> La casa de qualsevol mida</h2>
+    <p>Al panell ja hi ha <code>QUADRAT</code> i <code>TRIANGLE</code>, tots dos amb la variable <code>:COSTAT</code>. Defineix <code>CASA</code> amb una variable: una casa com la del capítol 5, però de la mida que li diguis.</p>
+    <p><code>CASA</code> ha de fer servir <code>TRIANGLE</code> i ha de deixar la tortuga com l'ha trobada. Quan premis «Comprova», la tortuga farà <code>CASA 40</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap6-casa" data-clau data-panell data-executa="CASA 40" data-comprova="dibuix+tortuga" data-exigeix="TRIANGLE"
+         data-si-falla="Mira quins traços sobren i quins falten. Dels nombres de la casa, quins són mides i quin és un angle?">
+      <script type="text/logo-panell">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+PROC CASA :MIDA
+  QUADRAT :MIDA
+  AVANÇA :MIDA GIRA.D 30
+  TRIANGLE :MIDA
+  GIRA.E 30 RECULA :MIDA
+FI
+CASA 40
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>Una variable és un nom que pot valer un nombre diferent cada vegada. S'escriu amb dos punts, a la línia <code>PROC</code> i a dins.</li>
+      <li>Quan fas servir el procediment, li dones el valor: <code>QUADRAT 80</code>.</li>
+      <li>La variable va a les mides i no als girs: així surten figures semblants.</li>
+      <li>Una variable es pot passar a un altre procediment, i s'hi poden fer comptes.</li>
+    </ul>
+    <p>El teu QUADRAT i el teu TRIANGLE s'assemblen molt: només canvien el 4 i el 90, el 3 i el 120. Al capítol següent, un sol procediment amb dues variables els farà tots dos, i tots els altres polígons.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-5.html">← Capítol 5 · Triangles i polígons</a> · Capítol 7: en preparació.</p>
+
+</main>
+</body>
+</html>

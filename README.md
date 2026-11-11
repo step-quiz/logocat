@@ -64,5 +64,7 @@ Simulator with the procedures panel (chapter 3 onwards):
 ```
 
 `data-executa="NOM"`: Comprova clears the screen, runs that procedure and compares the
-result. With `data-executa`, `data-exigeix="PEÇA"` means the procedure must call `PEÇA`.
+result. It may carry values (`data-executa="TRIANGLE 70"`, chapter 6 onwards): the
+procedure must then have that many variables, and the solution script must end with the
+same call. With `data-executa`, `data-exigeix="PEÇA"` means the procedure must call `PEÇA`.
 See `curs/capitol-3.html`.

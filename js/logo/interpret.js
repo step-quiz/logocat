@@ -57,7 +57,7 @@ export class Interpreter {
     return !!p && p.lines.some(has);
   }
 
-  /** On som i quant valen les entrades, per al requadre del pas a pas. */
+  /** On som i quant valen les variables, per al requadre del pas a pas. */
   stepInfo() {
     const parts = [];
     for (const t of this.trail) {
@@ -115,7 +115,7 @@ export class Interpreter {
     if (atPrompt && this.procs.has(name)) throw new LogoError('already_defined', { word: name });
     const inputs = [];
     for (const t of tokens.slice(2)) {
-      if (t.t !== 'var') throw new LogoError('bad_title');
+      if (t.t !== 'var') throw new LogoError('bad_inputs');
       inputs.push(t.v);
     }
     return { name, inputs };
@@ -172,6 +172,7 @@ export class Interpreter {
       else if (t.t === 'word' && !this.prims[t.v] && !this.procs.has(t.v)) {
         const a = tokens[i - 1], b = tokens[i + 1];
         const between = !!(a && a.t === 'num' && b && b.t === 'num');
+        if (t.v === ':' && b && b.t === 'word') throw new LogoError('unknown', { word: ':', colonName: b.v });   // «: COSTAT»
         if (/[:÷·×]/.test(t.v) || /^\d+(\.\d+)?X\d+(\.\d+)?$/.test(t.v) || (t.v === 'X' && between)) throw new LogoError('unknown', { word: t.v, between });
       }
     });
@@ -309,7 +310,8 @@ export class Interpreter {
       // «3 X 120»: una ics entre dos nombres és una multiplicació escrita com a classe.
       const before = cur.toks[cur.pos - 2];
       const between = !!(before && before.t === 'num' && next && next.t === 'num');
-      throw new LogoError('unknown', { word, between });
+      const frame = this.frames[this.frames.length - 1];
+      throw new LogoError('unknown', { word, between, isVar: !!(frame && frame.vars.has(word)) });   // «AVANÇA COSTAT»
     }
     const argv = yield* this.args(word, proc.inputs.length, cur,
       () => new LogoError('proc_inputs', { word, n: proc.inputs.length }));

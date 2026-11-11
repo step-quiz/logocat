@@ -41,6 +41,10 @@ the document in the same change.
   artifact with per-point buttons (see `docs/DECISIONS.md` §1).
 - **Owner-written wording is frozen.** Messages marked (owner) in the spec, and the
   chapter prose once approved, are copied verbatim.
+- **Say "variable".** In everything a student reads (prose, messages, UI), a procedure
+  input such as `:COSTAT` is a "variable": never "entrada", never "capsa".
+- **Version label.** Every delivery bumps `version` in `package.json` and the `v…` label
+  at the bottom-right of `index.html` (a test keeps them equal).
 - **Vocabulary.** Catalan primitives from the 1985 ICE-UB book, normative diacritics,
   no abbreviations. A word typed without its accent is an error with a hint, never an alias.
 - **No third-party requests.** No CDN, no remote fonts, no analytics. Students are minors.

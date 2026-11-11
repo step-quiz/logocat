@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.9: chapter 5).
+> Last update: 2026-11-11 (v0.10: chapter 6 «Variables», version label on the landing page).
 
 ## What exists
 
@@ -35,8 +35,9 @@
   wire step marks, the red error line, define/forget/edit events and read-only while
   running. Optional `storageKey` (only the Editor lliure persists).
 - **Simulator with panel** (chapter 3 onwards; `data-panell` on `.simulador`): toolbar on
-  top, panel on the left (44 %), monitor on the right, and a compact "Pas a pas" box
-  ("Ara farà", "On som") under the panel while stepping; step mode pauses BEFORE each
+  top, panel on the left (50 %, owner-approved: 43 characters per line), monitor on the
+  right, and a compact "Pas a pas" box ("Ara farà", "On som", "Valors") under the panel
+  while stepping; step mode pauses BEFORE each
   action, as in the Editor lliure. Below 720 px the panel goes under the monitor
   (300 px high). No placeholder text. Each simulator is independent; an activity that
   needs a known procedure carries it in `<script type="text/logo-panell">`. Reinicia
@@ -65,6 +66,18 @@
   solution accepted), find-the-bug "El pentàgon obert" (`PENTÀGON`, given panel), key
   exercise "La casa" (`CASA` must use `TRIANGLE`, drawing + pose; the 30° turn is left
   for the student to discover).
+- **Chapter 6** (`curs/capitol-6.html`, titled «Variables»): approved script, 7 simulators
+  with panel (4 for examples, 3 exercises), "Què dibuixarà?", quiz. Procedures with one
+  variable. Exercises run ONE call with a value named in the statement
+  (`data-executa="TRIANGLE 70"`; the owner rejected testing with two values): "El
+  triangle de qualsevol mida" (drawing + pose, mirrored solution accepted), find-the-bug
+  "El quadrat que no creix" (`QUADRAT 70`), key exercise "La casa de qualsevol mida"
+  (`CASA 40`, must use `TRIANGLE`, drawing + pose). When `data-executa` carries values,
+  Comprova first checks that the procedure has that many variables (`TRIANGLE ha de tenir
+  una variable. Mira la línia PROC.`).
+- **Version label**: `index.html` shows `v0.10` fixed at the bottom-right (`.versio`); a
+  test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
+  uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
   Editor lliure included): filled triangle = pen down, hollow = pen up, dashed outline =
   eraser; the turtle takes the pen colour (if pen colour equals field colour, a
@@ -90,9 +103,9 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 66 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
-  headless Chrome on 2026-11-11: chapters 1–5 and the Editor lliure, no console errors, no
-  external requests. Chapter 5 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+- **Tests**: 74 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+  headless Chrome on 2026-11-11: chapters 1–6, the landing page and the Editor lliure, no
+  console errors, no external requests. Chapter 6 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
@@ -100,7 +113,7 @@
 
 ## Not built yet
 
-- **Chapters 6–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
+- **Chapters 7–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
   go there, not in a chapter), teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
@@ -122,9 +135,6 @@
 - Messages added during implementation and pending owner review: see the note at the end
   of `docs/LANGUAGE-SPEC.md` §8.
 - `FES.XY` in wrap mode draws a straight stroke without wrapping.
-- Simulator with panel: the owner approved a 38 % panel; it is built at 44 % because at
-  38 % the longest line of chapter 3 (34 characters) needs a horizontal scrollbar. The
-  drawing is unaffected (it is limited by height, not width). Pending owner confirmation.
 - References to the 1980s: the two approved earlier stay (`curs/capitol-1.html`, history
   sentence; `index.html`, intro and meta description) — owner, 2026-11-11. Do not add new
   ones in chapter text (owner rejected one in chapter 3).
