@@ -197,11 +197,28 @@ Editable draft: Claude Docs doc "LogoCat · Capítol 1 · Coneix la tortuga"
 - `CENTRE` never draws, even with the pen down (owner decision).
 - OPEN: whether "El quadrat" also accepts the mirrored square drawn with `GIRA.E` (proposed yes).
 
+## 8b. Chapter 2 (script approved 2026-11-11; built)
+
+Review artifact "Revisió 4 del guió del capítol 2" (slug
+`68ed61ca-4d33-4fe3-900a-e4d08ab82bdf`). Order: Dir-ho una sola vegada → Els claudàtors
+(the owner rejected saying where the bracket keys are) → "Què dibuixarà?" → Canvia els
+nombres (rectangle) → exercise "El rectangle" → Quatre vegades 90 (4 × 90 = 360,
+perimeter) → quiz → find-the-bug "El quadrat que no tanca" (line pre-written at `?`) →
+key exercise "L'escala llarga" → summary. Nested `REPETEIX` was moved to chapter 3.
+
+- Owner wording: `REPETEIX NECESSITA SABER QUÈ HA DE REPETIR`.
+- Course-wide rule (owner): when an exercise requires a construct and the student gets
+  the right drawing without it, tell them they did it right and encourage the construct
+  ("Molt bé! El dibuix és correcte. Ara prova de fer-lo amb REPETEIX: amb una sola línia
+  n'hi ha prou."), in the success style. The exercise is marked done only with the
+  construct.
+
 ## 9. Next step
 
-v0.2 delivered (engine, monitor, chapter 1, Editor lliure). Next candidate: the script
-of chapter 2 (same review flow as chapter 1), then family integration once
-`step-quiz-commons` is available.
+Chapters 1–2 and the Editor lliure are delivered. Next: the script of chapter 3
+(«Paraules noves»: `PROC … FI`, the procedures panel inside chapter simulators, nested
+`REPETEIX`), same review flow; then family integration once `step-quiz-commons` is
+available.
 
 ## 10. Sources and records
 

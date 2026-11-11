@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.5: three-column Editor lliure, owner UI changes).
+> Last update: 2026-11-11 (v0.6: chapter 2).
 
 ## What exists
 
@@ -23,6 +23,11 @@
   running the option code through the engine; options are shuffled) and the quiz.
 - **Chapter 1** (`curs/capitol-1.html`): approved text, 6 free simulators, 4 activities.
   "El quadrat" awards the chapter tick and accepts the square drawn to either side.
+- **Chapter 2** (`curs/capitol-2.html`): approved script, 4 free simulators, 5 activities.
+  New exercise options in the monitor: `data-exigeix="REPETEIX"` (required word; a correct
+  drawing without it gets praise plus encouragement and is not marked done) and
+  `data-ordre="…"` (line pre-written at `?`, restored by Reinicia; used by find-the-bug).
+  "L'escala llarga" awards the chapter tick.
 - **Editor lliure** (`simulador.html`, `js/ui/editor.js`): the hybrid screen of the
   approved mockup. Left: procedures panel (a textarea under a syntax-coloured layer with
   line numbers), autosaved to `localStorage` (`logocat-editor-procediments`), parsed on
@@ -43,7 +48,7 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 39 passing (`node --test tests/unit/*.test.mjs`). Manual browser smoke runs
+- **Tests**: 44 passing (`node --test tests/unit/*.test.mjs`). Manual browser smoke runs
   (Chrome, 1360 px and 390 px wide) passed on 2026-11-10 for chapter 1 and for the Editor
   lliure (panel colouring, run, step mode matching the mockup scenario, stop, error line,
   panel syntax warning, define/forget/edit from the prompt, undo, persistence after
@@ -51,7 +56,7 @@
 
 ## Not built yet
 
-- **Chapters 2–12**, glossary, teacher guide, certificate.
+- **Chapters 3–12**, glossary, teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
   seen; LogoCat must be registered there first.

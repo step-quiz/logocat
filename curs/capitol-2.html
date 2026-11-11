@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 2 · Repeteix — LogoCat</title>
+<meta name="description" content="Segon capítol de LogoCat: REPETEIX, per dibuixar quadrats i rectangles amb una sola línia.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 2</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 2</p>
+    <h1>Repeteix</h1>
+  </div>
+
+  <section>
+    <h2>Dir-ho una sola vegada</h2>
+    <p>Per dibuixar el quadrat del capítol 1 vas escriure vuit ordres. En realitat eren dues, <code>AVANÇA 50</code> i <code>GIRA.D 90</code>, repetides quatre vegades.</p>
+    <p>A la tortuga li pots demanar que repeteixi. Escriu aquesta línia i prem Retorn:</p>
+    <pre class="codi">REPETEIX 4 [AVANÇA 50 GIRA.D 90]</pre>
+    <p>Es llegeix així: repeteix, 4 vegades, el que hi ha a dins: avança 50 i gira 90 a la dreta.</p>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2>Els claudàtors</h2>
+    <p>Els signes <code>[</code> i <code>]</code> es diuen claudàtors. Marquen on comença i on acaba el que s'ha de repetir.</p>
+    <p>Sempre van de dos en dos: un que obre i un que tanca. Si te'n deixes un, LOGO t'avisa:</p>
+    <pre class="codi">? REPETEIX 4 [AVANÇA 50 GIRA.D 90
+<span class="e">FALTA TANCAR UN CLAUDÀTOR</span>
+<span class="p">  Cada [ necessita el seu ]</span></pre>
+    <p>I si no li dius què ha de repetir, també:</p>
+    <pre class="codi">? REPETEIX 4
+<span class="e">REPETEIX NECESSITA SABER QUÈ HA DE REPETIR</span>
+<span class="p">  Per exemple: REPETEIX 4 [AVANÇA 50 GIRA.D 90]</span></pre>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>La tortuga és al centre i mira amunt. Sense executar res, pensa quin dibuix farà aquesta línia i tria'l.</p>
+    <div class="prediu" data-id="cap2-prediu">
+      <pre class="codi">REPETEIX 3 [AVANÇA 40 GIRA.D 90]</pre>
+      <script type="text/logo" data-correcta data-perque="Fa tres costats i tres girs. Per tancar el quadrat en faltaria un altre.">REPETEIX 3 [AVANÇA 40 GIRA.D 90]</script>
+      <script type="text/logo" data-perque="Això és un quadrat sencer, i per fer-lo calen quatre repeticions, no tres.">REPETEIX 4 [AVANÇA 40 GIRA.D 90]</script>
+      <script type="text/logo" data-perque="Aquí la tortuga no gira mai. Dins dels claudàtors hi ha dues ordres, i es repeteixen totes dues.">REPETEIX 3 [AVANÇA 40]</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Canvia els nombres</h2>
+    <p>Cada nombre mana una cosa diferent. Prova de canviar-los d'un en un i mira què passa:</p>
+    <ul>
+      <li>El nombre de després d'<code>AVANÇA</code> és la mida del costat.</li>
+      <li>El nombre de després de <code>REPETEIX</code> diu quantes vegades es fa.</li>
+    </ul>
+    <pre class="codi">REPETEIX 4 [AVANÇA 80 GIRA.D 90]</pre>
+    <p>Dins dels claudàtors hi poden anar més de dues ordres. Amb quatre ordres i dues repeticions surt un rectangle, que té els costats iguals de dos en dos:</p>
+    <pre class="codi">REPETEIX 2 [AVANÇA 80 GIRA.D 90 AVANÇA 40 GIRA.D 90]</pre>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El rectangle</h2>
+    <p>Dibuixa un rectangle de 60 passos d'ample i 30 d'alt amb <code>REPETEIX</code>. En acabar, la tortuga ha de ser on ha començat i ha de mirar amunt.</p>
+    <div class="simulador" data-id="cap2-rectangle" data-comprova="dibuix+tortuga" data-exigeix="REPETEIX"
+         data-si-falla="Mira quins traços sobren i quins falten. L'ample és 60 i l'alt és 30.">
+      <script type="text/logo">REPETEIX 2 [AVANÇA 30 GIRA.D 90 AVANÇA 60 GIRA.D 90]</script>
+      <script type="text/logo">REPETEIX 2 [AVANÇA 30 GIRA.E 90 AVANÇA 60 GIRA.E 90]</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quatre vegades 90</h2>
+    <p>Quan acaba el quadrat, la tortuga torna a mirar amunt. No és casualitat: ha girat 90 graus quatre vegades, i 4 × 90 = 360, que és una volta sencera.</p>
+    <p>Amb el rectangle passa el mateix: 90 + 90 + 90 + 90 = 360.</p>
+    <p><code>REPETEIX</code> també et diu quant camina la tortuga. Amb <code>REPETEIX 4 [AVANÇA 50 GIRA.D 90]</code> avança 50 passos quatre vegades: 4 × 50 = 200 passos. És el perímetre del quadrat.</p>
+    <div class="simulador"></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap2-quiz">
+      <fieldset class="pregunta" data-correcta="2">
+        <legend>1. Quants passos camina la tortuga amb REPETEIX 4 [AVANÇA 30 GIRA.D 90]?</legend>
+        <label><input type="radio"> 30</label>
+        <label><input type="radio"> 90</label>
+        <label><input type="radio"> 120</label>
+        <p class="explicacio" hidden>Avança 30 passos quatre vegades: 4 × 30 = 120.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>2. La tortuga mira amunt. Després de REPETEIX 2 [GIRA.D 90], cap on mira?</legend>
+        <label><input type="radio"> Amunt</label>
+        <label><input type="radio"> Avall</label>
+        <label><input type="radio"> A la dreta</label>
+        <p class="explicacio" hidden>Gira 90 graus dues vegades: 2 × 90 = 180, mitja volta.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. Quina línia dibuixa un quadrat de costat 20?</legend>
+        <label><input type="radio"> REPETEIX 20 [AVANÇA 4 GIRA.D 90]</label>
+        <label><input type="radio"> REPETEIX 4 [AVANÇA 20 GIRA.D 90]</label>
+        <label><input type="radio"> REPETEIX 4 [AVANÇA 20 GIRA.D 20]</label>
+        <p class="explicacio" hidden>Quatre costats de 20 passos, i a cada cantonada un gir de 90.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El quadrat que no tanca</h2>
+    <p>Aquesta línia hauria de dibuixar un quadrat de costat 60, però no ho fa. Ja la tens escrita: prem Retorn per veure què passa. Després, prem «Reinicia», corregeix-la i torna-ho a provar.</p>
+    <p>En acabar, la tortuga ha de ser on ha començat i ha de mirar amunt.</p>
+    <div class="simulador" data-id="cap2-error" data-comprova="dibuix+tortuga" data-ordre="REPETEIX 4 [AVANÇA 60 GIRA.D 60]"
+         data-si-falla="Encara no és un quadrat. Dels dos nombres de dins dels claudàtors, quin és la mida i quin és el gir?">
+      <script type="text/logo">REPETEIX 4 [AVANÇA 60 GIRA.D 90]</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> L'escala llarga</h2>
+    <p>Dibuixa una escala de 5 graons amb una sola línia. Cada graó puja 20 passos i avança 20 cap a la dreta.</p>
+    <div class="simulador" data-id="cap2-escala" data-clau data-comprova="dibuix" data-exigeix="REPETEIX"
+         data-si-falla="Mira quins traços sobren i quins falten. Pensa primer com es fa un sol graó.">
+      <script type="text/logo">REPETEIX 5 [AVANÇA 20 GIRA.D 90 AVANÇA 20 GIRA.E 90]</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li><code>REPETEIX 4 [ … ]</code> fa quatre vegades el que hi ha entre els claudàtors.</li>
+      <li>Els claudàtors van sempre de dos en dos: <code>[</code> obre i <code>]</code> tanca.</li>
+      <li>Quatre girs de 90 graus fan 360: una volta sencera.</li>
+    </ul>
+    <p>Has escrit moltes vegades la línia del quadrat. Al capítol següent li posaràs nom, i n'hi haurà prou d'escriure QUADRAT.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-1.html">← Capítol 1 · Coneix la tortuga</a> · Capítol 3 · Paraules noves: en preparació.</p>
+
+</main>
+</body>
+</html>

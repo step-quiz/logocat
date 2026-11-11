@@ -168,8 +168,9 @@ All approved; wording marked (owner) was written by the owner and must not be al
 | 20 | `FI` without `PROC`, `PROC` without `FI` | `FALTA FI` / `SOBRA FI` | `Cada PROC acaba amb FI` |
 
 Additions made while implementing (same voice; NOT yet reviewed by the owner):
-`X NECESSITA UNA LLISTA` / `Per exemple: REPETEIX 4 [AVANÇA 50 GIRA.D 90]` (missing list
-input); `FALTA TANCAR UN PARÈNTESI` / `Cada ( necessita el seu )`; `SOBRA UN PARÈNTESI` /
+`X NECESSITA UNA LLISTA` (missing list input, for words other than `REPETEIX`; for
+`REPETEIX` the owner wrote `REPETEIX NECESSITA SABER QUÈ HA DE REPETIR` /
+`Per exemple: REPETEIX 4 [AVANÇA 50 GIRA.D 90]`, approved); `FALTA TANCAR UN PARÈNTESI` / `Cada ( necessita el seu )`; `SOBRA UN PARÈNTESI` /
 `Hi ha un ) sense el seu (`; `A PROC LI FALTA EL NOM` / `Per exemple: PROC QUADRAT`;
 `X NO ÉS DINS DE CAP PROCEDIMENT` / `Aquí només hi van procediments (PROC … FI). Les
 ordres soltes s'escriuen a la línia ?` (text outside any procedure in the panel);

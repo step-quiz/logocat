@@ -126,7 +126,8 @@ test('REPETEIX i SI', () => {
   const r = run('REPETEIX 4 [AVANÇA 50 GIRA.D 90]');
   assert.equal(r.T.segments.length, 4); near(r.T.x, 0); near(r.T.y, 0); assert.equal(r.T.heading, 0);
   assert.deepEqual(run('SI 3 > 2 [ESCRIU 1] [ESCRIU 2]\nSI 3 < 2 [ESCRIU 1] [ESCRIU 2]').prints, ['1', '2']);
-  assert.equal(run('REPETEIX 4').msg.line1, 'REPETEIX NECESSITA UNA LLISTA');
+  assert.equal(run('REPETEIX 4').msg.line1, 'REPETEIX NECESSITA SABER QUÈ HA DE REPETIR');
+  assert.deepEqual(run('REPETEIX 4').msg.hints, ['Per exemple: REPETEIX 4 [AVANÇA 50 GIRA.D 90]']);
 });
 
 test('procediments: definir a «?», entrades i missatges', () => {

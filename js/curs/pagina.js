@@ -22,6 +22,7 @@ function init() {
       exercise, solutions,
       checkPose: node.dataset.comprova === 'dibuix+tortuga',
       failText: node.dataset.siFalla, okText: node.dataset.siEncerta,
+      require: node.dataset.exigeix, preload: node.dataset.ordre,
       onSolved: () => { if (id) markDone(id); },
     });
     if (exercise && id) tick(host, id);

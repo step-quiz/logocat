@@ -30,6 +30,8 @@ export function drawingOf(code) {
 export class Monitor {
   /**
    * opts: { exercise, solutions: [text], checkPose, failText, okText, onSolved }
+   *   require: 'REPETEIX'   l'exercici només es dona per fet si s'ha fet servir aquesta paraula
+   *   preload: 'text'       línia que surt ja escrita a «?» (activitat «troba l'error»)
    * Per a l'Editor lliure, que posa els seus propis botons i panell:
    *   toolbar: false     no construeix la barra de botons
    *   maxHeight          alçada màxima del dibuix, en píxels
@@ -43,6 +45,7 @@ export class Monitor {
     this.opts = opts;
     this.I = new Interpreter();
     this.undo = [];
+    this.lines = [];                          // línies executades des de l'últim «Reinicia»
     this.history = []; this.histPos = 0;
     this.busy = false; this.stepping = false; this.abort = false; this.resume = null;
     this.shown = this.I.turtle.pose();        // on es dibuixa la tortuga ara (animació)
@@ -117,6 +120,7 @@ export class Monitor {
     this.input.setAttribute('autocapitalize', 'characters'); this.input.setAttribute('autocorrect', 'off');
     this.input.setAttribute('aria-label', 'Línia d\'ordres');
     this.input.addEventListener('keydown', (e) => this.onKey(e));
+    if (this.opts.preload) this.input.value = this.opts.preload;
     row.appendChild(this.promptLabel); row.appendChild(this.input);
     mon.appendChild(row);
     r.appendChild(mon);
@@ -185,6 +189,7 @@ export class Monitor {
     this.history.push(text); if (this.history.length > 50) this.history.shift();
     this.histPos = this.history.length;
     this.undo.push(this.I.snapshot()); if (this.undo.length > 50) this.undo.shift();
+    this.lines.push(text.toUpperCase()); if (this.lines.length > 50) this.lines.shift();
     this.clearFeedback();
     this.stepping = stepMode; this.abort = false;
     this.setBusy(true);
@@ -264,7 +269,7 @@ export class Monitor {
   onStop() { this.abort = true; if (this.resume) this.resume(); }
   onUndo() {
     if (this.busy || !this.undo.length) return;
-    this.I.restore(this.undo.pop());
+    this.I.restore(this.undo.pop()); this.lines.pop();
     if (this.opts.afterRestore) this.opts.afterRestore();
     this.promptLabel.textContent = '?';
     this.shown = this.I.turtle.pose();
@@ -273,7 +278,8 @@ export class Monitor {
   }
   onReset() {
     if (this.busy) return;
-    this.I.resetAll(); this.undo = [];
+    this.I.resetAll(); this.undo = []; this.lines = [];
+    if (this.opts.preload) this.input.value = this.opts.preload;
     if (this.opts.afterRestore) this.opts.afterRestore();
     this.promptLabel.textContent = '?';
     this.log.textContent = '';
@@ -315,6 +321,11 @@ export class Monitor {
         say('quasi', 'Gairebé.', `El dibuix és correcte. Només falta que la tortuga acabi mirant ${dir}.`);
         return false;
       }
+    }
+    const need = this.opts.require;
+    if (need && !this.lines.some((l) => l.split(/[\s\[\]()]+/).includes(need))) {
+      say('si', 'Molt bé!', `El dibuix és correcte. Ara prova de fer-lo amb ${need}: amb una sola línia n'hi ha prou.`);
+      return false;
     }
     say('si', 'Correcte!', this.opts.okText || 'Has dibuixat exactament el que es demanava.');
     if (this.opts.onSolved) this.opts.onSolved();

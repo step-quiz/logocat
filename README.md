@@ -46,5 +46,6 @@ ES modules need a web server: opening the files with `file://` does not work.
 ```
 
 `data-comprova`: `dibuix` (drawing only) or `dibuix+tortuga` (also final position and
-heading). `data-clau` marks the exercise that awards the chapter tick. See
+heading). `data-clau` marks the exercise that awards the chapter tick. `data-exigeix="REPETEIX"`
+requires that word; `data-ordre="…"` pre-writes a line at the `?` prompt. See
 `curs/capitol-1.html` for `.prediu` and `.quiz`.
