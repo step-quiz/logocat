@@ -154,6 +154,17 @@ The owner hand-edited the light theme; the dark theme mirrors it. Binding points
   most 720 px tall the two top bars merge into one row and the turtle status moves to a thin
   strip at the top of the monitor; the procedures panel scrolls only when the code does
   not fit, with a thin theme-coloured scrollbar (font 15 px / line-height 1.75 unchanged).
+- Owner changes of 2026-11-11 (they SUPERSEDE the mockup and the bullets above where they
+  conflict): the Editor lliure has three columns above 860 px wide: procedures panel 30 %,
+  monitor 50 %, and a button column 20 % at the far right holding Pas, Continua, Atura,
+  Desfés and Reinicia stacked, each half the column wide and aligned to the monitor side
+  (so the turtle sits nearer the centre of the screen); their hover is deliberately strong:
+  soft grey background and a thick pure-black border (white in the dark theme). There is a single top bar at every height: logo, Capítols / Editor lliure, speed
+  slider, turtle status, state badge, theme toggle; no separate toolbar row and no status
+  strip over the drawing. In the panel, the code is separated from the focus frame by the
+  same 12 px that separate the line numbers, and the focus frame is inset from the panel
+  edges. The `?` input has NO placeholder text when idle (the teacher explains it in
+  class); this applies to every monitor, chapters included.
 - Embedded exercises in early chapters show the monitor only (no procedures panel; it
   appears from chapter 3). Toolbar there: `Comprova` (primary), `Pas`, `Desfés`,
   `Reinicia` at 16 px, plus `Objectiu: visible` toggle and `Pantalla completa`. Goal

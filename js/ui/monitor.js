@@ -115,7 +115,7 @@ export class Monitor {
     this.input = el('input'); this.input.id = id; this.input.type = 'text';
     this.input.autocomplete = 'off'; this.input.spellcheck = false;
     this.input.setAttribute('autocapitalize', 'characters'); this.input.setAttribute('autocorrect', 'off');
-    this.input.placeholder = 'escriu una ordre i prem Retorn';
+    this.input.setAttribute('aria-label', 'Línia d\'ordres');
     this.input.addEventListener('keydown', (e) => this.onKey(e));
     row.appendChild(this.promptLabel); row.appendChild(this.input);
     mon.appendChild(row);
@@ -173,7 +173,7 @@ export class Monitor {
     if (this.bCheck) this.bCheck.disabled = on;
     if (this.opts.onBusy) this.opts.onBusy(on, this.stepping);
     this.input.disabled = on;
-    this.input.placeholder = on ? (this.stepping ? 'prem Pas o Continua' : 'la tortuga està treballant…') : 'escriu una ordre i prem Retorn';
+    this.input.placeholder = on ? (this.stepping ? 'prem Pas o Continua' : 'la tortuga està treballant…') : '';
     if (!on) this.input.focus({ preventScroll: true });
   }
 

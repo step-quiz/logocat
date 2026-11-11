@@ -20,7 +20,6 @@
 </head>
 <body class="pagina-editor">
 
-<div class="capcalera">
 <header class="barra">
   <a class="barra-logo" href="index.html">
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
@@ -30,19 +29,6 @@
     <a href="index.html">Capítols</a>
     <a href="simulador.html" aria-current="page">Editor lliure</a>
   </nav>
-  <span class="barra-espai"></span>
-  <span class="estat" id="estat" data-estat="apunt"><i></i><span>a punt</span></span>
-  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
-    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
-  </button>
-</header>
-
-<div class="eines">
-  <button class="boto boto--gran" id="b-pas" type="button">Pas</button>
-  <button class="boto boto--gran" id="b-continua" type="button" hidden>Continua</button>
-  <button class="boto boto--gran" id="b-atura" type="button" aria-disabled="true">Atura</button>
-  <button class="boto" id="b-desfes" type="button">Desfés</button>
-  <button class="boto" id="b-reinicia" type="button">Reinicia</button>
   <div class="eines-velocitat">
     <label for="velocitat">Velocitat:</label>
     <input id="velocitat" type="range" min="1" max="6" step="1" value="3">
@@ -53,8 +39,11 @@
     <span>Llapis: <strong id="e-llapis">a baix</strong></span>
     <span>Color: <strong id="e-color">blanc</strong></span>
   </div>
-</div>
-</div>
+  <span class="estat" id="estat" data-estat="apunt"><i></i><span>a punt</span></span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
 
 <main class="editor">
   <section class="panell" aria-label="Procediments">
@@ -88,6 +77,13 @@ FI"></textarea>
   <section class="pantalla" aria-label="Pantalla de la tortuga">
     <div id="monitor"></div>
   </section>
+  <aside class="botons" aria-label="Controls">
+    <button class="boto boto--gran" id="b-pas" type="button">Pas</button>
+    <button class="boto boto--gran" id="b-continua" type="button" hidden>Continua</button>
+    <button class="boto boto--gran" id="b-atura" type="button" aria-disabled="true">Atura</button>
+    <button class="boto" id="b-desfes" type="button">Desfés</button>
+    <button class="boto" id="b-reinicia" type="button">Reinicia</button>
+  </aside>
 </main>
 
 </body>

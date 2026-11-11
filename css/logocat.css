@@ -185,11 +185,10 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 
 html:has(.pagina-editor) { height: 100%; }
 .pagina-editor { min-height: 100%; display: flex; flex-direction: column; position: relative; }
-.capcalera { flex: none; }
-.eines { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+.pagina-editor > .barra { flex: none; }
 .boto--gran { font-size: 18px; }
 .boto[aria-disabled="true"] { color: var(--muted); cursor: default; }
-.eines-velocitat { display: flex; align-items: center; gap: 8px; margin-left: 12px; color: var(--muted); }
+.eines-velocitat { display: flex; align-items: center; gap: 8px; margin-left: 12px; color: var(--muted); font-size: 13px; }
 .eines-velocitat input { width: 120px; accent-color: var(--accent); }
 .eines-estat { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-size: 15px; }
 .eines-estat strong { color: var(--text); }
@@ -209,9 +208,11 @@ html:has(.pagina-editor) { height: 100%; }
 /* Base 0: l'alçada la dona la finestra, no la quantitat de codi (els números de línia no empenyen). */
 .panell-codi { flex: 1 1 0; display: flex; min-height: 120px; overflow: hidden; font-size: 15px; line-height: 1.75; }
 .numeros { margin: 0; padding: 12px 12px 12px 0; width: 44px; flex: none; text-align: right; color: var(--muted); overflow: hidden; font: inherit; user-select: none; }
-.pila { position: relative; flex: 1 1 auto; min-width: 0; }
+/* El requadre de focus queda separat de les vores del panell, i el codi separat del requadre
+   els mateixos 12 px que separen els números. */
+.pila { position: relative; flex: 1 1 auto; min-width: 0; margin: 8px 12px 8px 0; }
 .capa, .pila textarea {
-  margin: 0; padding: 12px 12px 12px 0; border: 0; font: inherit; letter-spacing: 0; tab-size: 2;
+  margin: 0; padding: 4px 12px 12px 12px; border: 0; font: inherit; letter-spacing: 0; tab-size: 2;
   white-space: pre; overflow-wrap: normal; position: absolute; inset: 0;
 }
 .capa { overflow: hidden; pointer-events: none; color: var(--text); }
@@ -247,39 +248,32 @@ html:has(.pagina-editor) { height: 100%; }
 .pas-info dd { margin: 0; overflow-wrap: anywhere; }
 #pas-ara { font-weight: 700; }
 
+/* Columna de botons, a la dreta de tot (20 % de l'amplada). */
+.botons { min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--surface); border-left: 1px solid var(--border); }
+.botons { align-items: flex-start; }
+.botons .boto { width: 50%; }                 /* la meitat de la columna, al costat de la tortuga */
+/* Hover ben visible: fons gris suau i vora negra gruixuda (blanca en tema fosc). */
+.botons .boto:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: #e5e7eb; border-color: #000000; box-shadow: inset 0 0 0 2px #000000;
+}
+:root[data-theme="dark"] .botons .boto:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: #2e2e2e; border-color: #ffffff; box-shadow: inset 0 0 0 2px #ffffff;
+}
+
 /* Pantalla única: en finestres amples l'editor ocupa exactament la finestra, sense scroll de pàgina. */
 @media (min-width: 861px) {
   .pagina-editor { height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; }
   .editor { flex-wrap: nowrap; }
-  .panell, .pantalla { flex: 1 1 0; }
+  .panell { flex: 0 0 30%; }
+  .pantalla { flex: 0 0 50%; }
+  .botons { flex: 0 0 20%; }
 }
 
-/* Finestres baixes (portàtils de 1366 × 768 o 1280 × 720): les dues barres en una sola fila,
-   i l'estat de la tortuga passa a un racó del monitor. */
-@media (min-width: 861px) and (max-height: 720px) {
-  .capcalera { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 6px 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
-  .capcalera .barra, .capcalera .eines { display: contents; }
-  .capcalera .barra-logo { order: 0; }
-  .capcalera .barra-nav { order: 1; margin-right: 8px; }
-  .capcalera .eines > .boto { order: 2; }
-  .capcalera .eines-velocitat { order: 3; margin-left: 6px; font-size: 13px; }
-  .capcalera .barra > .barra-espai { display: none; }
-  .capcalera .eines > .barra-espai { order: 4; }
-  .capcalera .estat { order: 5; }
-  .capcalera #boto-tema { order: 6; }
-  /* L'estat de la tortuga: una franja prima a dalt del monitor (no tapa mai el dibuix). */
-  .eines-estat {
-    position: absolute; top: 57px; left: 50%; width: 50%; height: 24px; z-index: 1; pointer-events: none;
-    flex-wrap: nowrap; align-items: center; gap: 16px; padding: 0 16px; overflow: hidden; white-space: nowrap;
-    font-size: 12px; color: var(--mon-muted); background: var(--mon); border-bottom: 1px solid var(--mon-line);
-  }
-  .eines-estat strong { color: var(--mon-text); }
-  .pantalla { padding-top: 24px; }
-}
-
-/* Pantalles estretes: el monitor passa a dalt i el panell a sota; aquí la pàgina sí que fa scroll. */
+/* Pantalles estretes: monitor, botons en fila i panell, de dalt a baix; aquí la pàgina sí que fa scroll. */
 @media (max-width: 860px) {
-  .pantalla { order: -1; }
+  .pantalla { order: -2; flex-basis: 100%; }
+  .botons { order: -1; flex: 1 1 100%; flex-direction: row; flex-wrap: wrap; border-left: 0; border-top: 1px solid var(--border); }
+  .botons .boto { width: auto; flex: 1 1 auto; }
   .panell { border-right: 0; border-top: 1px solid var(--border); min-height: 360px; }
   .sim--ajusta .sim-camp { flex: none; height: min(72vw, 340px); }
 }
