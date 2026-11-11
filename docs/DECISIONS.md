@@ -37,7 +37,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | F6 | Out of engine and course: disk (`GRAVA`, `RECUPERA`), packages (`PQ*`), property lists (`*.PROP`), paddles (`DIAL`, `BOTÓ.POLSAT`), system words (`.EXM` etc.), text-screen modes (`P.TEXT`, `P.MIXTA`, `P.DIB`), `FES.PROPORCIÓ`. Kept: `PROCS?`, `PROC?`, `OBLIDA.PROC`. |
 | P0 | Start with the turtle in direct mode; text output comes late (the Apple manual starts with `PRINT`). |
 | D1 | Audience: ages 12–14 (1r–2n ESO), no prior experience; entry point of the family, before KarelCat. Chapters 10–12 flagged as extension. Maths (synthetic geometry) is the thread; the owner is NOT interested in analytic/coordinate geometry. |
-| D2 | Drawing validation: compare the student's drawn segments with a reference solution's, with tolerance, ignoring stroke order and direction. Per-exercise options: turtle must end where it started; required construct (`REPETEIX`, a `PROC` with inputs); run a procedure with several input values. Student sees the goal as a faint overlay via a "🎯 Objectiu" button (KarelCat pattern). |
+| D2 | Drawing validation: compare the student's drawn segments with a reference solution's, with tolerance, ignoring stroke order and direction (point-sampling method since v0.12, see §8h and `STATE.md`). Per-exercise options: turtle must end where it started; required construct (`REPETEIX`, a `PROC` with inputs); run a procedure with several input values. Student sees the goal as a faint overlay via a "🎯 Objectiu" button (KarelCat pattern). |
 | D3 | Activity types: editable examples, validated exercise, find-the-bug, Parsons, quiz, final challenges, plus one new type: "Què dibuixarà?" (pick the right drawing before running). The unplugged "Fes de tortuga" activity was rejected. |
 | A1 | Name LogoCat; turtle icon in the family "EXPLORA" selector. |
 | A2 | Own interpreter following KarelCat's design (tokenizer → parser → generator-based interpreter, see `karelcat/js/{tokenizer,parser,interpreter,execution}.js`), under HTMLCat's rules: native ES modules, zero third-party requests (self-hosted fonts), tests from day one. |
@@ -53,7 +53,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 5 | Triangles i polígons | Arithmetic in inputs (`GIRA.D 360 / 5`); `ESCRIU` with numbers, moved here from chapter 11 (owner) | Exterior/interior angles, angle sums, Total Turtle Trip theorem |
 | 6 | Variables | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
 | 7 | Dues variables | `PROC POLÍGON :N :COSTAT` | Generalising with 360 / N; stars as more than one full turn (no divisor theory: owner) |
-| 8 | Cercles i arcs | Student-built `CERCLE`, `ARC` (the 1985 vocabulary has no circle primitive) | Circle as many-sided polygon, circumference, π |
+| 8 | Cercles i arcs | Student-built `CERCLE :PAS`, `ARC :PAS :GRAUS` (the 1985 vocabulary has no circle primitive) | The turtle walks round (tiny step, tiny turn); full turn = circle, part of it = arc. NOT a many-sided polygon, NO π (owner, review 10) |
 | 9 | Simetria | No new words; swap `GIRA.D`/`GIRA.E` | Rotational and mirror symmetry, tessellations |
 | 10 | Triangles i quadrilàters | `ARREL2` | Classify and construct: isosceles, right triangle, parallelogram, rhombus, trapezoid, kite; opposite/supplementary angles; Pythagoras for the diagonal |
 | 11 | Decisions i atzar | `SI [ ... ]`, `ACABA`, `POSA.A`, `ATZAR`, `RETORNA`, `ESCRIU` | Conditions, random walk, frequencies |
@@ -330,11 +330,44 @@ petit" → Estrelles → quiz → key exercise "L'estrella" → summary, bridge 
   20`; with no value typed, 50 is used).
 - Panel 55 % with 13 px code font (owner), for the 46- and 49-character lines.
 
+## 8h. Chapter 8 «Cercles i arcs» (script approved 2026-11-11; built)
+
+Review artifact "Revisió 10 del guió del capítol 8" (slug
+`f9fb5be4-9282-4294-80a3-5557042d8bda`; 20 points: G1–G7, chapter points, and P1–P3 for
+questions left open by earlier chapters), plus a two-question dialog. Order: La tortuga
+camina en rodó → Un cercle de cada mida → "Què dibuixarà?" (half circle) → exercise "El
+cercle" → find-the-bug "El cercle que no tanca" → Arcs → quiz → key exercise "El pètal"
+→ summary, the flower, bridge to chapter 9 (symmetry).
+
+- **How the circle is presented (owner, option A).** "La tortuga camina en rodó": a short
+  step and a small turn, again and again, like walking round a roundabout. Never say
+  "polígon", never "s'assembla". The rule of the full turn explains why it closes
+  (360 turns of 1° = one turn). A test forbids `polígon|assembl|costats` in chapter 8.
+- **Variable of `CERCLE` (owner): `:PAS`**, not `:RADI` (that needs π, and its line has
+  53 characters). Good values 0.2–1.2; the text says `CERCLE 2` does not fit and wraps.
+  `ARC :PAS :GRAUS` (`:GRAUS` is a repeat count, not a turn; owner kept the name).
+- **No π (owner).** «No m'interessa treballar el nombre pi en aquest entorn de LOGO»: the
+  turtle only approximates. The planned section "Quantes vegades hi cap?" (measuring the
+  diameter, `ESCRIU 360 / 115`) and the π conclusion were dropped and NOT replaced (owner,
+  dialog). Do not bring π back in later chapters without asking.
+- Quiz question 3 (owner, dialog): «Quin cercle és més petit?» CERCLE 1 · **CERCLE 0.5** ·
+  Són iguals (replaces a question that relied on π).
+- **Comprova sees curves (owner, G5).** New point-sampling comparison for ALL exercises
+  (see `STATE.md`, Drawing validation). Every earlier chapter re-checked.
+- "El pètal": the 90° turn between the arcs is not given; it follows from the rule of the
+  full turn; the failure text says to try it at the `?` line (as "La casa", chapter 5).
+- Decimals: typed with a dot (`0.5`); the text says so once.
+- Chapter 5: the sentence «Com més costats, més s'assembla a un cercle.» was removed
+  (owner, P1); the paragraph now reads «Prova amb 8, 10 i 12 costats.»
+- Messages: see `LANGUAGE-SPEC.md` §8 (chapter 8 block). The missing-value example change
+  also removed the «Per exemple: QUADRAT 50» line quoted in chapter 6's text, so that the
+  page shows the real message.
+
 ## 9. Next step
 
-Chapters 1–7 and the Editor lliure are delivered. Next: the script of chapter 8
-(«Cercles i arcs»), same review flow; then family integration once `step-quiz-commons` is
-available. Open questions for the owner are listed in `docs/STATE.md`.
+Chapters 1–8 and the Editor lliure are delivered. Next: the script of chapter 9
+(«Simetria»), same review flow; then family integration once `step-quiz-commons` is
+available. No open questions are pending for the owner as of v0.12.
 
 ## 10. Sources and records
 

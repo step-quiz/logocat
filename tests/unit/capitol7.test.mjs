@@ -41,7 +41,7 @@ test('capítol 7: 3 simuladors d\'exemple i 3 exercicis; decisions de la revisi�
     assert.ok(html.includes(`farà <code>${attr(s, 'data-executa')}</code>`));
   }
   for (const s of sims) if (s.panel) new Interpreter().defineAll(s.panel);
-  const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ');
+  const text = html.replace(/<p class="peu">[\s\S]*?<\/p>/, '').replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ');
   assert.ok(!/\bentrad|\bcaps[ae]/i.test(text));
   assert.ok(!/cercle|circumfer/i.test(text.replace('dibuixaràs cercles i arcs', '')), 'cap polígon «sembla un cercle» (owner)');
   assert.ok(!/divisor|divideixen/i.test(text), 'sense teoria de divisors (owner)');
@@ -102,6 +102,6 @@ test('capítol 7: «Què dibuixarà?» — hexàgon, pentàgon i triangle', () =
 test('missatge quan falta un valor (owner): la línia PROC i un exemple amb els valors de l\'alumne', () => {
   assert.deepEqual(msg(runPanel(PO, 'POLÍGON 5')), { line1: "EL PROCEDIMENT 'POLÍGON' NECESSITA 2 VALORS",
     hints: ['Mira la seva línia PROC: PROC POLÍGON :N :COSTAT', 'Per exemple: POLÍGON 5 20'] });
-  assert.deepEqual(msg(runPanel(PO, 'POLÍGON')).hints, ['Mira la seva línia PROC: PROC POLÍGON :N :COSTAT', 'Per exemple: POLÍGON 50 50']);
+  assert.deepEqual(msg(runPanel(PO, 'POLÍGON')).hints, ['Mira la seva línia PROC: PROC POLÍGON :N :COSTAT']);   // sense valor escrit, sense exemple (owner, cap. 8)
   for (const m of html.matchAll(/<span class="p">  ([^<]+)<\/span>/g)) assert.ok(msg(runPanel(PO, 'POLÍGON 5')).hints.includes(m[1]), m[1]);   // el capítol cita el missatge real
 });

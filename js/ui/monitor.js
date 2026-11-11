@@ -501,8 +501,21 @@ export class Monitor {
       if (s.erase) stroke(s, field, base * 2.4); else stroke(s, PEN[s.color] || PEN[1], base);
     }
     if (this.diff) {
-      for (const s of this.diff.extra) stroke(s, '#ff8f84', base * 2);
-      for (const s of this.diff.missing) stroke(s, '#a8c8ff', base, [k * 3, k * 2.5]);
+      // Els trams seguits es pinten com un sol camí, perquè el discontinu segueixi les corbes.
+      const chain = (list, color, width, dash) => {
+        let open = false, lx = NaN, ly = NaN;
+        g.setLineDash(dash || []); g.strokeStyle = color; g.lineWidth = width; g.lineJoin = 'round';
+        for (const s of list) {
+          if (!open || Math.hypot(s.x1 - lx, s.y1 - ly) > 1e-6) {
+            if (open) g.stroke();
+            g.beginPath(); g.moveTo(X(s.x1), Y(s.y1)); open = true;
+          }
+          g.lineTo(X(s.x2), Y(s.y2)); lx = s.x2; ly = s.y2;
+        }
+        if (open) g.stroke();
+      };
+      chain(this.diff.extra, '#ff8f84', base * 2);
+      chain(this.diff.missing, '#a8c8ff', base, [k * 3, k * 2.5]);
     }
     g.setLineDash([]);
 

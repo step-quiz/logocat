@@ -15,7 +15,7 @@
   case-insensitive (canonical form: upper case). Diacritics ARE significant: `AVANCA` is
   not `AVANÇA` (it raises "unknown word" with a did-you-mean hint, see §8).
 - **Numbers**: `50`, `3.5`, `.5`. Decimal separator is the dot. A comma
-  decimal (`3,5`) is an error with the hint "Els decimals s'escriuen amb punt: 3.5".
+  or apostrophe decimal (`3,5`, `3'5`) is an error with the hint "Els decimals s'escriuen amb punt: 3.5".
 - **Quoted word**: `"NOM` (a literal word, runs to the next space or bracket).
 - **Variable reference**: `:NOM` ≡ `CONTINGUT "NOM`.
 - **Lists**: `[ ... ]`, used as instruction lists (`REPETEIX`, `SI`) and as literal text for
@@ -162,16 +162,17 @@ All approved; wording marked (owner) was written by the owner and must not be al
 | 10 | Procedure defined | `X DEFINIT` | — |
 | 11 | Redefinition at prompt | `X JA ESTÀ DEFINIT` | `El pots canviar al panell de procediments` |
 | 12 | Primitive name reused | `X ÉS UNA ORDRE DE LOGO` | `Tria un altre nom per al teu procediment` |
-| 13 | Too few inputs to a procedure | `EL PROCEDIMENT 'X' NECESSITA 1 VALOR` / `… N VALORS` (owner) | `Per exemple: X 50` (built from the title line) |
+| 13 | Too few inputs to a procedure | `EL PROCEDIMENT 'X' NECESSITA 1 VALOR` / `… N VALORS` (owner) | PROC line, plus an example only if a value was typed (see below) |
 | 14 | Division by zero | `NO PUC DIVIDIR ENTRE ZERO` (owner) | — |
 | 15 | Fence | `LA TORTUGA NO POT SORTIR DE LA PANTALLA` | Two hint lines (owner): `Estàs en mode barrera.` / `Si vols suprimir el mode barrera, fes servir M.CÍCLIC` |
 | 16 | Stopped by user | `ATURADA!` | — |
 | 17–18 | Step limit or depth limit (same text) | `ATURADA!` | `Hem hagut d'aturar el programa perquè sembla que no acaba mai. Revisa les teves ordres.` (owner) |
-| 19 | Comma decimal | `NO ENTENC 3,5` | `Els decimals s'escriuen amb punt: 3.5` |
+| 19 | Comma (or apostrophe) decimal | `NO ENTENC 3,5` | `Els decimals s'escriuen amb punt: 3.5` |
 | 20 | `FI` without `PROC`, `PROC` without `FI` | `FALTA FI` / `SOBRA FI` | `Cada PROC acaba amb FI` |
 
-Additions made while implementing (same voice; NOT yet reviewed by the owner):
-`X NECESSITA UNA LLISTA` (missing list input, for words other than `REPETEIX`; for
+Additions made while implementing, reviewed and approved as they are by the owner on
+2026-11-11 (review 10, P3): `X NECESSITA UNA LLISTA` (missing list input, for words other
+than `REPETEIX`, e.g. `SI 3 > 2` → `Per exemple: SI :N > 100 [ACABA]`; for
 `REPETEIX` the owner wrote `REPETEIX NECESSITA SABER QUÈ HA DE REPETIR` /
 `Per exemple: REPETEIX 4 [AVANÇA 50 GIRA.D 90]`, approved); `FALTA TANCAR UN PARÈNTESI` / `Cada ( necessita el seu )`; `SOBRA UN PARÈNTESI` /
 `Hi ha un ) sense el seu (`;
@@ -183,8 +184,9 @@ Reviewed and approved by the owner on 2026-11-11 (panel messages): `A PROC LI FA
 procediments (PROC … FI).` (text outside any procedure in the panel; the owner removed a
 second sentence from the hint).
 
-Approved by the owner on 2026-11-11 (chapter 4): a dotted primitive typed with a space
-(`NO LLAPIS`; by extension `GIRA D 90`, `FES COLOR 2`) → `NO SÉ COM FER NO LLAPIS` /
+Approved by the owner on 2026-11-11 (chapter 4; extension to every dotted primitive
+confirmed in review 10, P2): a dotted primitive typed with a space
+(`NO LLAPIS`, `GIRA D 90`, `FES COLOR 2`, `INI DIB`) → `NO SÉ COM FER NO LLAPIS` /
 `Volies dir NO.LLAPIS? S'escriu amb un punt i sense espai.` It fires when `A.B` is a
 primitive and `A` is either `NO` or not a known word. A colour outside 0–5 for
 `FES.COLOR` / `FES.FONS` → `A FES.COLOR NO LI AGRADA 9` / `Els colors van del 0 al 5`.
@@ -205,10 +207,18 @@ procedure name in a `PROC` line that is not a `:name` (`PROC QUADRAT COSTAT`, `P
 : COSTAT`, `PROC QUADRAT 50`) → `LES VARIABLES DE PROC PORTEN DOS PUNTS` / `Per exemple:
 PROC QUADRAT :COSTAT`; `A PROC LI FALTA EL NOM` is now only for a missing name.
 
-Approved by the owner on 2026-11-11 (chapter 7): a procedure called with too few values
-keeps `EL PROCEDIMENT 'X' NECESSITA n VALOR(S)` and gives two hints: `Mira la seva línia
-PROC: PROC POLÍGON :N :COSTAT` and `Per exemple: POLÍGON 5 20` (the values already typed,
-completed with 20; with none typed, 50).
+Approved by the owner on 2026-11-11 (chapter 7, amended in chapter 8): a procedure called
+with too few values keeps `EL PROCEDIMENT 'X' NECESSITA n VALOR(S)` and gives the hint
+`Mira la seva línia PROC: PROC POLÍGON :N :COSTAT`, plus `Per exemple: POLÍGON 5 20` ONLY
+when the student typed at least one value (the values typed, completed with 20). With no
+value typed there is no example line (owner, review 10, G6: `CERCLE 50` would be a bad
+example).
+
+Approved by the owner on 2026-11-11 (chapter 8, review 10, G7): a decimal typed with an
+apostrophe, as in exercise books (`0'5`, also `0’5`), is treated like the comma decimal:
+`NO ENTENC 0'5` / `Els decimals s'escriuen amb punt: 0.5`. A negative count for
+`REPETEIX` keeps `A REPETEIX NO LI AGRADA -90` and gets the hint `REPETEIX no pot repetir
+un nombre negatiu de vegades` (the generic `REPETEIX vol un nombre` was false).
 
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.

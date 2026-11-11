@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 8 · Cercles i arcs — LogoCat</title>
+<meta name="description" content="Vuitè capítol de LogoCat: la tortuga camina en rodó. Cercles de cada mida, arcs i un pètal.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 8</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 8</p>
+    <h1>Cercles i arcs</h1>
+  </div>
+
+  <section>
+    <h2>La tortuga camina en rodó</h2>
+    <p>La tortuga només sap fer dues coses: anar recte i girar. Com pot fer una línia corba?</p>
+    <p>Fent un pas molt curt i girant molt poc, una vegada i una altra, com qui fa la volta a una rotonda. Prova aquesta línia:</p>
+    <pre class="codi">REPETEIX 360 [AVANÇA 1 GIRA.D 1]</pre>
+    <p>La tortuga acaba on ha començat, i mirant amunt. És la regla de la volta sencera: 360 girs d'1 grau fan 360 graus, una volta.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2>Un cercle de cada mida</h2>
+    <p>Per fer cercles de mides diferents, la mida del pas passa a ser una variable:</p>
+    <pre class="codi">PROC CERCLE :PAS
+  REPETEIX 360 [AVANÇA :PAS GIRA.D 1]
+FI</pre>
+    <p>Escriu-lo al panell i prova <code>CERCLE 1</code>, <code>CERCLE 0.5</code> i <code>CERCLE 0.2</code>.</p>
+    <p>Els nombres amb decimals s'escriuen amb punt i sense espais: <code>0.5</code>, no <code>0,5</code>.</p>
+    <p>Amb <code>CERCLE 2</code> el cercle és massa gran: no hi cap, i surt per l'altra banda de la pantalla.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>La tortuga és al centre i mira amunt. Sense executar res, tria què dibuixarà aquesta línia.</p>
+    <div class="prediu" data-id="cap8-prediu">
+      <pre class="codi">REPETEIX 180 [AVANÇA 1 GIRA.D 1]</pre>
+      <script type="text/logo" data-correcta data-perque="180 girs d'1 grau fan mitja volta: mig cercle.">
+REPETEIX 180 [AVANÇA 1 GIRA.D 1]
+</script>
+      <script type="text/logo" data-perque="Això és el cercle sencer: necessita 360 girs d'1 grau. Aquí només n'hi ha 180.">
+REPETEIX 360 [AVANÇA 1 GIRA.D 1]
+</script>
+      <script type="text/logo" data-perque="Això és un quart de cercle: 90 girs d'1 grau. Aquí n'hi ha 180.">
+REPETEIX 90 [AVANÇA 1 GIRA.D 1]
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El cercle</h2>
+    <p>Defineix <code>CERCLE</code> amb una variable, la mida del pas. Ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>CERCLE 0.5</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap8-cercle" data-panell data-executa="CERCLE 0.5" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins trossos sobren i quins falten. Un pas de 0.5 i un gir d'1 grau, fins a fer la volta sencera.">
+      <script type="text/logo">
+PROC CERCLE :PAS
+  REPETEIX 360 [AVANÇA :PAS GIRA.D 1]
+FI
+CERCLE 0.5
+</script>
+      <script type="text/logo">
+PROC CERCLE :PAS
+  REPETEIX 360 [AVANÇA :PAS GIRA.E 1]
+FI
+CERCLE 0.5
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El cercle que no tanca</h2>
+    <p><code>CERCLE 1</code> hauria de fer un cercle, però només en surt un tros. Prova-ho.</p>
+    <p>Troba l'error i corregeix-lo. Quan premis «Comprova», la tortuga farà <code>CERCLE 1</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap8-error" data-panell data-executa="CERCLE 1" data-comprova="dibuix"
+         data-si-falla="Encara no és un cercle sencer. Quants graus ha de girar la tortuga en total?">
+      <script type="text/logo-panell">
+PROC CERCLE :PAS
+  REPETEIX 36 [AVANÇA :PAS GIRA.D 1]
+FI
+</script>
+      <script type="text/logo">
+PROC CERCLE :PAS
+  REPETEIX 360 [AVANÇA :PAS GIRA.D 1]
+FI
+CERCLE 1
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Arcs</h2>
+    <p>Un arc és un tros de cercle: la tortuga fa només una part de la volta. 90 girs d'1 grau fan un quart de volta, i 180, mitja volta.</p>
+    <p>Aquest procediment té dues variables: la mida del pas i els graus de l'arc.</p>
+    <pre class="codi">PROC ARC :PAS :GRAUS
+  REPETEIX :GRAUS [AVANÇA :PAS GIRA.D 1]
+FI</pre>
+    <p>Prova <code>ARC 1 90</code>, <code>ARC 1 180</code> i <code>ARC 0.5 270</code>.</p>
+    <p>Fixa't que, a diferència de <code>CERCLE</code>, un arc no deixa la tortuga com l'ha trobada: és una peça, com un costat.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC ARC :PAS :GRAUS
+  REPETEIX :GRAUS [AVANÇA :PAS GIRA.D 1]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap8-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. Quants graus gira en total la tortuga amb REPETEIX 360 [AVANÇA 1 GIRA.D 1]?</legend>
+        <label><input type="radio"> 1</label>
+        <label><input type="radio"> 360</label>
+        <label><input type="radio"> 720</label>
+        <p class="explicacio" hidden>360 girs d'1 grau: 360 graus, una volta sencera.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="0">
+        <legend>2. Quina part del cercle fa ARC 1 90?</legend>
+        <label><input type="radio"> Un quart</label>
+        <label><input type="radio"> La meitat</label>
+        <label><input type="radio"> Tres quarts</label>
+        <p class="explicacio" hidden>90 graus són un quart de 360.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. Quin cercle és més petit?</legend>
+        <label><input type="radio"> CERCLE 1</label>
+        <label><input type="radio"> CERCLE 0.5</label>
+        <label><input type="radio"> Són iguals</label>
+        <p class="explicacio" hidden>Tots dos fan els mateixos passos i els mateixos girs, però amb CERCLE 0.5 els passos són més curts: el cercle és més petit.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El pètal</h2>
+    <p>Al panell ja hi ha <code>ARC</code>. Defineix <code>PÈTAL</code> amb una variable, la mida del pas: dos quarts de cercle que es toquen per les puntes.</p>
+    <p><code>PÈTAL</code> ha de fer servir <code>ARC</code> i ha de deixar la tortuga com l'ha trobada. Quan premis «Comprova», la tortuga farà <code>PÈTAL 0.8</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap8-petal" data-clau data-panell data-executa="PÈTAL 0.8" data-comprova="dibuix+tortuga" data-exigeix="ARC"
+         data-si-falla="Mira quins trossos sobren i quins falten. Entre arc i arc, la tortuga ha de girar. Quant? Prova-ho a la línia ?">
+      <script type="text/logo-panell">
+PROC ARC :PAS :GRAUS
+  REPETEIX :GRAUS [AVANÇA :PAS GIRA.D 1]
+FI
+</script>
+      <script type="text/logo">
+PROC ARC :PAS :GRAUS
+  REPETEIX :GRAUS [AVANÇA :PAS GIRA.D 1]
+FI
+PROC PÈTAL :PAS
+  REPETEIX 2 [ARC :PAS 90 GIRA.D 90]
+FI
+PÈTAL 0.8
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>La tortuga fa corbes amb passos curts i girs petits.</li>
+      <li>Un cercle és una volta sencera: 360 girs d'1 grau. La variable diu la mida del pas.</li>
+      <li>Un arc és un tros de la volta: 90 graus fan un quart de cercle.</li>
+    </ul>
+    <p>Per acabar, una flor. Al panell hi ha <code>ARC</code> i <code>PÈTAL</code>. Prova:</p>
+    <pre class="codi">REPETEIX 6 [PÈTAL 1 GIRA.D 60]</pre>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC ARC :PAS :GRAUS
+  REPETEIX :GRAUS [AVANÇA :PAS GIRA.D 1]
+FI
+
+PROC PÈTAL :PAS
+  REPETEIX 2 [ARC :PAS 90 GIRA.D 90]
+FI
+</script>
+    </div>
+    <p>Si gires la flor 60 graus, queda igual. Al capítol següent: la simetria.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-7.html">← Capítol 7 · Dues variables</a> · Capítol 9: en preparació.</p>
+
+</main>
+</body>
+</html>

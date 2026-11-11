@@ -136,7 +136,8 @@ test('procediments: definir a «?», entrades i missatges', () => {
   assert.equal(r.T.segments.length, 4);
   let e = run('QUADRAT', r.I);
   assert.equal(e.msg.line1, 'EL PROCEDIMENT \'QUADRAT\' NECESSITA 1 VALOR');
-  assert.deepEqual(e.msg.hints.slice(-1), ['Per exemple: QUADRAT 50']);
+  assert.deepEqual(e.msg.hints, ['Mira la seva línia PROC: PROC QUADRAT :COSTAT']);   // sense valor escrit, sense exemple (owner, cap. 8)
+  assert.deepEqual(run('PROC RECT :A :B\nREPETEIX 2 [AVANÇA :A GIRA.D 90 AVANÇA :B GIRA.D 90]\nFI\nRECT 30', r.I).msg.hints.slice(-1), ['Per exemple: RECT 30 20']);
   e = run('PROC QUADRAT', r.I);
   assert.equal(e.msg.line1, 'QUADRAT JA ESTÀ DEFINIT');
   assert.equal(run('PROC AVANÇA').msg.line1, 'AVANÇA ÉS UNA ORDRE DE LOGO');

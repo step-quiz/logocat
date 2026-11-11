@@ -8,7 +8,7 @@ const isSpace = (c) => c === ' ' || c === '\t' || c === ' ';
 
 function atom(text) {
   if (/^(\d+(\.\d+)?|\.\d+)$/.test(text)) return { t: 'num', v: Number(text) };
-  if (/^\d+,\d+$/.test(text)) throw new LogoError('comma_decimal', { text });
+  if (/^\d+[,'’]\d+$/.test(text)) throw new LogoError('comma_decimal', { text });   // 0,5 i 0'5 (apòstrof: owner, cap. 8)
   if (text[0] === '"') return { t: 'quote', v: text.slice(1).toUpperCase() };
   if (text[0] === ':' && text.length > 1) return { t: 'var', v: text.slice(1).toUpperCase() };
   return { t: 'word', v: text.toUpperCase() };

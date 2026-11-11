@@ -90,6 +90,7 @@ export function describe(err, known = []) {
     case 'bad_input':
       line1 = `A ${p.word} NO LI AGRADA ${p.value}`;
       hints = [p.want === 'c' ? 'Els colors van del 0 al 5'                    // (owner)
+        : p.negative ? `${p.word} no pot repetir un nombre negatiu de vegades`   // (owner, cap. 8)
         : p.want === 'l' ? `${p.word} vol una llista entre claudàtors`
         : p.want === 'b' ? `${p.word} vol una condició, com ara :N > 10`
           : p.isList ? `${p.word} vol un nombre, sense claudàtor` : `${p.word} vol un nombre`];
@@ -106,9 +107,10 @@ export function describe(err, known = []) {
     case 'proc_inputs':
       line1 = `EL PROCEDIMENT '${p.word}' NECESSITA ${p.n} ${p.n === 1 ? 'VALOR' : 'VALORS'}`;
       // (owner) La línia PROC amb els noms de les variables, i un exemple fet amb els valors que l'alumne ja ha escrit.
+      // Sense cap valor escrit, no hi ha exemple: un 50 inventat pot ser un mal exemple (CERCLE 50; owner, cap. 8).
       { const given = p.given || [];
-        const example = [...given, ...Array(Math.max(0, p.n - given.length)).fill(given.length ? 20 : 50)];
-        hints = [`Per exemple: ${p.word} ${example.join(' ')}`];
+        const example = [...given, ...Array(Math.max(0, p.n - given.length)).fill(20)];
+        hints = given.length ? [`Per exemple: ${p.word} ${example.join(' ')}`] : [];
         if (p.inputs) hints.unshift(`Mira la seva línia PROC: PROC ${p.word} ${p.inputs.map((v) => ':' + v).join(' ')}`); }
       break;
     case 'bad_title': line1 = 'A PROC LI FALTA EL NOM'; hints = ['Per exemple: PROC QUADRAT']; break;
@@ -123,7 +125,7 @@ export function describe(err, known = []) {
       line1 = 'ATURADA!';
       hints = ['Hem hagut d\'aturar el programa perquè sembla que no acaba mai. Revisa les teves ordres.'];
       break;
-    case 'comma_decimal': line1 = `NO ENTENC ${p.text}`; hints = [`Els decimals s'escriuen amb punt: ${p.text.replace(',', '.')}`]; break;
+    case 'comma_decimal': line1 = `NO ENTENC ${p.text}`; hints = [`Els decimals s'escriuen amb punt: ${p.text.replace(/[,'’]/, '.')}`]; break;
     case 'missing_fi': line1 = 'FALTA FI'; hints = ['Cada PROC acaba amb FI']; break;
     case 'stray_fi': line1 = 'SOBRA FI'; hints = ['Cada PROC acaba amb FI']; break;
     case 'outside_proc':

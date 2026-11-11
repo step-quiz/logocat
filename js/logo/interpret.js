@@ -425,7 +425,7 @@ function buildPrimitives(I) {
   op('VERS.A', 'nn', (x, y) => ((Math.atan2(x - T.x, y - T.y) * 180 / Math.PI) + 360) % 360);
 
   cmd('REPETEIX', 'nl', function* ([n, body], w) {
-    if (n < 0) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n' });
+    if (n < 0) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n', negative: true });
     const times = Math.trunc(n), entry = { loop: true, k: 0, n: times };
     I.trail.push(entry);
     const mark = I.trail.length;

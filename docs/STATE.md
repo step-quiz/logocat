@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.11: chapter 7 «Dues variables»).
+> Last update: 2026-11-11 (v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -11,9 +11,20 @@
   scope, `RETORNA`, `ACABA`, recursion), every word of the spec's word table, the Catalan
   message catalogue with did-you-mean hints, limits (200 000 steps per line, depth 500),
   snapshot/restore for undo, turtle with wrap / fence / window modes.
-- **Drawing validation** (`js/logo/compara.js`): ink comparison by line and interval,
-  order- and direction-independent, erase-aware; reports matching, extra and missing
-  strokes; final pose check.
+- **Drawing validation** (`js/logo/compara.js`, rewritten in v0.12, owner-approved point
+  G5 of review 10): point-sampling comparison. Net ink = pen strokes cut into pieces of at
+  most 0.5 steps, minus pieces within 1 step of a LATER eraser stroke. A piece is covered
+  if ink of the other drawing lies within 1.5 steps AND runs in a similar direction (< 20°;
+  a crossing line does not cover). Uncovered pieces that touch (endpoints < 0.05 apart, in
+  any order) form runs; runs shorter than 1.5 steps are ignored. Order- and
+  direction-independent, overdraw counts once. Returns `{ ok, matching, extra, missing,
+  error }` (segments; a run is a chain of consecutive segments, which the monitor strokes as
+  one path so dashes follow curves). The old line/interval method could not see curves (a
+  circle is 360 pieces shorter than the 1.5 minimum: an empty screen passed). Every
+  reference solution of chapters 1–8 was re-driven in the browser with the new method.
+  Known tolerance: a gap of up to ~3 steps in a curve (e.g. 355° instead of 360° with
+  step 0.5) is not detected, the same tolerance straight lines always had. Final pose
+  check unchanged.
 - **Monitor** (`js/ui/monitor.js`): the simulator embedded in chapters and the screen of
   the Editor lliure. Animated turtle, `?` prompt with history (arrow keys), `>` prompt
   while defining a procedure, buttons Pas / Continua / Atura / Desfés / Reinicia /
@@ -80,7 +91,16 @@
   and `ESTRELLA :N :VOLTES`. Exercises: "El polígon" (`POLÍGON 5 40`, drawing + pose),
   find-the-bug "El pentàgon petit" (variables swapped inside), key exercise "L'estrella"
   (`ESTRELLA 7 3`, drawing + pose). Mirrored solutions accepted.
-- **Version label**: `index.html` shows `v0.11` fixed at the bottom-right (`.versio`); a
+- **Chapter 8** (`curs/capitol-8.html`, «Cercles i arcs»): approved script (review 10), 7
+  simulators with panel (4 for examples, 3 exercises), "Què dibuixarà?", quiz. The circle
+  is presented as "the turtle walks round" (tiny step, tiny turn), never as a polygon;
+  no π. `CERCLE :PAS` and `ARC :PAS :GRAUS` (student-built; no circle primitive exists).
+  Exercises: "El cercle" (`CERCLE 0.5`, drawing + pose, mirrored solution accepted),
+  find-the-bug "El cercle que no tanca" (`REPETEIX 36` instead of 360; `CERCLE 1`, drawing),
+  key exercise "El pètal" (`PÈTAL 0.8`, must use `ARC`, drawing + pose; the 90° turn is
+  left to discovery; no mirrored version since `ARC` turns right). Last simulator: the
+  flower `REPETEIX 6 [PÈTAL 1 GIRA.D 60]`, bridge to chapter 9 (symmetry).
+- **Version label**: `index.html` shows `v0.12` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -108,9 +128,12 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 80 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
-  headless Chrome on 2026-11-11: chapters 1–7, the landing page and the Editor lliure, no
-  console errors, no external requests. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+- **Tests**: 88 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+  headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
+  console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
+  (every verdict of the three exercises, chapter tick, the new messages, the flower), and
+  every reference solution of chapters 1–8 re-checked through Comprova with the new
+  comparison (all «Correcte»); no horizontal scrollbar on any page or panel. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
@@ -118,7 +141,7 @@
 
 ## Not built yet
 
-- **Chapters 8–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
+- **Chapters 9–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
   go there, not in a chapter), teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
@@ -137,17 +160,12 @@
   in step mode (one turtle action per press); "Continua" finishes it at normal speed.
 - Speed: fixed in embedded simulators (the slider belongs to the Editor lliure). Long
   runs accelerate automatically (after 40 actions, then instant after 150).
-- Messages added during implementation and pending owner review: see the note at the end
-  of `docs/LANGUAGE-SPEC.md` §8.
 - `FES.XY` in wrap mode draws a straight stroke without wrapping.
 - References to the 1980s: the two approved earlier stay (`curs/capitol-1.html`, history
   sentence; `index.html`, intro and meta description) — owner, 2026-11-11. Do not add new
   ones in chapter text (owner rejected one in chapter 3).
 - "El carrer" (chapter 4): the complete answer is 19 panel lines, so the panel shows its
   thin vertical scrollbar at 1366 × 625 (about 14 lines fit).
-- The spaced-word message was approved for `NO LLAPIS`; the same wording is applied to any
-  dotted primitive typed with a space (`GIRA D 90`, `FES COLOR 2`, `INI DIB`). Pending
-  owner confirmation of that extension.
 - Nested `REPETEIX` is taught in no regular chapter (rejected for chapters 2, 3 and 5). The
   owner suggested it may fit a final extension / challenges chapter ("potser"): propose it
   there when that chapter is scripted.
