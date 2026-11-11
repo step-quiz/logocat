@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 7 · Dues variables — LogoCat</title>
+<meta name="description" content="Setè capítol de LogoCat: procediments amb dues variables, un sol procediment per a tots els polígons, i estrelles.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 7</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 7</p>
+    <h1>Dues variables</h1>
+  </div>
+
+  <section>
+    <h2>Un procediment per a tots els polígons</h2>
+    <p>El teu <code>QUADRAT</code> i el teu <code>TRIANGLE</code> són gairebé iguals. Només canvien dos nombres: les repeticions i el gir.</p>
+    <p>I el gir surt de les repeticions, per la regla de la volta sencera: 360 dividit pel nombre de costats. Per tant, n'hi ha prou amb dues variables: quants costats, i quant fa cada costat.</p>
+    <pre class="codi">PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.D 360 / :N]
+FI</pre>
+    <p>Escriu-lo al panell i prova <code>POLÍGON 3 60</code>, <code>POLÍGON 4 50</code> i <code>POLÍGON 6 30</code>.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2>L'ordre importa</h2>
+    <p>Els valors es reparteixen per ordre: el primer va a la primera variable, i el segon a la segona.</p>
+    <pre class="codi">POLÍGON 8 10
+POLÍGON 10 8</pre>
+    <p>El primer és un polígon de 8 costats de 10 passos. El segon, un de 10 costats de 8 passos. Prova'ls, i mira la fila «Valors» amb «Pas».</p>
+    <p>Si et deixes un valor, LOGO t'avisa:</p>
+    <pre class="codi">? POLÍGON 5
+<span class="e">EL PROCEDIMENT 'POLÍGON' NECESSITA 2 VALORS</span>
+<span class="p">  Mira la seva línia PROC: PROC POLÍGON :N :COSTAT</span>
+<span class="p">  Per exemple: POLÍGON 5 20</span></pre>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.D 360 / :N]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>Amb el <code>POLÍGON</code> d'aquest capítol, i sense executar res, tria què dibuixarà aquesta línia.</p>
+    <div class="prediu" data-id="cap7-prediu">
+      <pre class="codi">? POLÍGON 6 30</pre>
+      <script type="text/logo" data-correcta data-perque="El primer valor són els costats i el segon la mida: sis costats de 30 passos.">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.D 360 / :N]
+FI
+POLÍGON 6 30
+</script>
+      <script type="text/logo" data-perque="Això té cinc costats. El primer valor és un 6.">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.D 360 / :N]
+FI
+POLÍGON 5 30
+</script>
+      <script type="text/logo" data-perque="Això és POLÍGON 3 60: tres costats de 60. El 6 és el nombre de costats, no el gir.">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.D 360 / :N]
+FI
+POLÍGON 3 60
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El polígon</h2>
+    <p>Defineix <code>POLÍGON</code> amb dues variables: primer el nombre de costats i després la mida del costat. Ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>POLÍGON 5 40</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap7-poligon" data-panell data-executa="POLÍGON 5 40" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. Han de ser cinc costats de 40 passos.">
+      <script type="text/logo">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.D 360 / :N]
+FI
+POLÍGON 5 40
+</script>
+      <script type="text/logo">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.E 360 / :N]
+FI
+POLÍGON 5 40
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El pentàgon petit</h2>
+    <p><code>POLÍGON 5 40</code> hauria de fer un pentàgon de costat 40, però en surt un de molt petit. Prova-ho.</p>
+    <p>Troba l'error i corregeix-lo. Quan premis «Comprova», la tortuga farà <code>POLÍGON 5 40</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap7-error" data-panell data-executa="POLÍGON 5 40" data-comprova="dibuix"
+         data-si-falla="Encara no és un pentàgon de costat 40. Mira quina variable diu quantes vegades es repeteix, i quina diu quant s'avança.">
+      <script type="text/logo-panell">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :COSTAT [AVANÇA :N GIRA.D 360 / :N]
+FI
+</script>
+      <script type="text/logo">
+PROC POLÍGON :N :COSTAT
+  REPETEIX :N [AVANÇA :COSTAT GIRA.D 360 / :N]
+FI
+POLÍGON 5 40
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Estrelles</h2>
+    <p>Prova aquesta línia:</p>
+    <pre class="codi">REPETEIX 5 [AVANÇA 80 GIRA.D 144]</pre>
+    <p>Surt una estrella de cinc puntes. Per què 144? Perquè és el doble de 72: la tortuga fa dues voltes senceres en lloc d'una.</p>
+    <pre class="codi">polígon de 5 costats:    5 × 72  = 360   (1 volta)
+estrella de 5 puntes:    5 × 144 = 720   (2 voltes)</pre>
+    <p>La regla de la volta sencera continua valent: si la tortuga acaba mirant com al principi, ha fet voltes senceres. En un polígon en fa una. En una estrella en fa més d'una.</p>
+    <p>Aquest procediment fa estrelles: li dius quantes puntes i quantes voltes.</p>
+    <pre class="codi">PROC ESTRELLA :N :VOLTES
+  REPETEIX :N [AVANÇA 80 GIRA.D 360 * :VOLTES / :N]
+FI</pre>
+    <p>Prova <code>ESTRELLA 5 2</code>, <code>ESTRELLA 7 2</code> i <code>ESTRELLA 7 3</code>. De vegades l'estrella no surt sencera.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap7-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. Amb PROC POLÍGON :N :COSTAT, què val :COSTAT quan escrius POLÍGON 8 25?</legend>
+        <label><input type="radio"> 8</label>
+        <label><input type="radio"> 25</label>
+        <label><input type="radio"> 45</label>
+        <p class="explicacio" hidden>El segon valor va a la segona variable. El 45 és el gir: 360 / 8.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>2. A l'estrella de cinc puntes, la tortuga gira 144 cinc vegades. Quantes voltes senceres ha fet?</legend>
+        <label><input type="radio"> 1</label>
+        <label><input type="radio"> 2</label>
+        <label><input type="radio"> 5</label>
+        <p class="explicacio" hidden>5 × 144 = 720, que són dues voltes de 360.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="0">
+        <legend>3. Quina línia dibuixa el mateix que el QUADRAT 50 del capítol 6?</legend>
+        <label><input type="radio"> POLÍGON 4 50</label>
+        <label><input type="radio"> POLÍGON 50 4</label>
+        <label><input type="radio"> POLÍGON 90 50</label>
+        <p class="explicacio" hidden>Quatre costats de 50 passos: primer els costats, després la mida.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> L'estrella</h2>
+    <p>Defineix <code>ESTRELLA</code> amb dues variables: primer el nombre de puntes i després el nombre de voltes. Cada costat fa 80 passos. Ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>ESTRELLA 7 3</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap7-estrella" data-clau data-panell data-executa="ESTRELLA 7 3" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. El gir surt de les dues variables: les voltes senceres, repartides entre les puntes.">
+      <script type="text/logo">
+PROC ESTRELLA :N :VOLTES
+  REPETEIX :N [AVANÇA 80 GIRA.D 360 * :VOLTES / :N]
+FI
+ESTRELLA 7 3
+</script>
+      <script type="text/logo">
+PROC ESTRELLA :N :VOLTES
+  REPETEIX :N [AVANÇA 80 GIRA.E 360 * :VOLTES / :N]
+FI
+ESTRELLA 7 3
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>Un procediment pot tenir més d'una variable. Els valors es reparteixen per ordre.</li>
+      <li><code>POLÍGON</code> fa tots els polígons de costats iguals: el gir és 360 dividit pel nombre de costats.</li>
+      <li>En una estrella, la tortuga fa més d'una volta sencera.</li>
+    </ul>
+    <p>Al capítol següent dibuixaràs cercles i arcs.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-6.html">← Capítol 6 · Variables</a> · Capítol 8: en preparació.</p>
+
+</main>
+</body>
+</html>

@@ -267,7 +267,7 @@ export class Interpreter {
     const out = [];
     for (let k = 0; k < n; k++) {
       const next = cur.toks[cur.pos];
-      if (!next || next.t === 'rp') throw onMissing(k);
+      if (!next || next.t === 'rp') throw onMissing(k, out);
       const v = yield* this.expr(cur, 0);
       if (v === undefined) throw new LogoError('no_output', { word: cur.last });
       out.push(v);
@@ -314,7 +314,7 @@ export class Interpreter {
       throw new LogoError('unknown', { word, between, isVar: !!(frame && frame.vars.has(word)) });   // «AVANÇA COSTAT»
     }
     const argv = yield* this.args(word, proc.inputs.length, cur,
-      () => new LogoError('proc_inputs', { word, n: proc.inputs.length }));
+      (k, got) => new LogoError('proc_inputs', { word, n: proc.inputs.length, inputs: proc.inputs.slice(), given: got.map((v) => fmtValue(v)) }));
     if (this.frames.length >= MAX_DEPTH) throw new LogoError('limit');
     const caller = this.frames[this.frames.length - 1];
     const endTok = cur.toks[cur.pos - 1];

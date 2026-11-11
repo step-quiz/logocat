@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.10: chapter 6 «Variables», version label on the landing page).
+> Last update: 2026-11-11 (v0.11: chapter 7 «Dues variables»).
 
 ## What exists
 
@@ -35,8 +35,8 @@
   wire step marks, the red error line, define/forget/edit events and read-only while
   running. Optional `storageKey` (only the Editor lliure persists).
 - **Simulator with panel** (chapter 3 onwards; `data-panell` on `.simulador`): toolbar on
-  top, panel on the left (50 %, owner-approved: 43 characters per line), monitor on the
-  right, and a compact "Pas a pas" box ("Ara farà", "On som", "Valors") under the panel
+  top, panel on the left (55 %, 13 px code font, owner-approved: 52 characters per line;
+  the canvas keeps its size at 1366 × 625), monitor on the right, and a compact "Pas a pas" box ("Ara farà", "On som", "Valors") under the panel
   while stepping; step mode pauses BEFORE each
   action, as in the Editor lliure. Below 720 px the panel goes under the monitor
   (300 px high). No placeholder text. Each simulator is independent; an activity that
@@ -75,7 +75,12 @@
   (`CASA 40`, must use `TRIANGLE`, drawing + pose). When `data-executa` carries values,
   Comprova first checks that the procedure has that many variables (`TRIANGLE ha de tenir
   una variable. Mira la línia PROC.`).
-- **Version label**: `index.html` shows `v0.10` fixed at the bottom-right (`.versio`); a
+- **Chapter 7** (`curs/capitol-7.html`, «Dues variables»): approved script, 6 simulators
+  with panel (3 for examples, 3 exercises), "Què dibuixarà?", quiz. `POLÍGON :N :COSTAT`
+  and `ESTRELLA :N :VOLTES`. Exercises: "El polígon" (`POLÍGON 5 40`, drawing + pose),
+  find-the-bug "El pentàgon petit" (variables swapped inside), key exercise "L'estrella"
+  (`ESTRELLA 7 3`, drawing + pose). Mirrored solutions accepted.
+- **Version label**: `index.html` shows `v0.11` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -103,9 +108,9 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 74 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
-  headless Chrome on 2026-11-11: chapters 1–6, the landing page and the Editor lliure, no
-  console errors, no external requests. Chapter 6 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+- **Tests**: 80 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+  headless Chrome on 2026-11-11: chapters 1–7, the landing page and the Editor lliure, no
+  console errors, no external requests. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
@@ -113,7 +118,7 @@
 
 ## Not built yet
 
-- **Chapters 7–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
+- **Chapters 8–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
   go there, not in a chapter), teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been

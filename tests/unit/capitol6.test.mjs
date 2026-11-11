@@ -115,7 +115,7 @@ test('capítol 6: «Què dibuixarà?» — tres dibuixos diferents', () => {
 });
 
 test('missatges de les variables (owner): sense dos punts, amb espai, a la línia PROC, sense valor', () => {
-  assert.deepEqual(msg(runPanel(Q, 'QUADRAT')), { line1: "EL PROCEDIMENT 'QUADRAT' NECESSITA 1 VALOR", hints: ['Per exemple: QUADRAT 50'] });
+  assert.deepEqual(msg(runPanel(Q, 'QUADRAT')), { line1: "EL PROCEDIMENT 'QUADRAT' NECESSITA 1 VALOR", hints: ['Mira la seva línia PROC: PROC QUADRAT :COSTAT', 'Per exemple: QUADRAT 50'] });
   assert.deepEqual(msg(runPanel('PROC QUADRAT :COSTAT\n  REPETEIX 4 [AVANÇA COSTAT GIRA.D 90]\nFI', 'QUADRAT 50')),
     { line1: "NO SÉ COM FER COSTAT A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'", hints: ["Volies dir :COSTAT? Les variables s'escriuen amb dos punts al davant."] });
   assert.deepEqual(msg(runPanel('PROC QUADRAT :COSTAT\n  REPETEIX 4 [AVANÇA : COSTAT GIRA.D 90]\nFI', 'QUADRAT 50')),

@@ -52,7 +52,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 4 | El llapis | `NO.LLAPIS`, `LLAPIS`, `GOMA`, `APAREIX`, `DESAPAREIX`, `FES.COLOR`, `FES.FONS` | Translation, friezes |
 | 5 | Triangles i polígons | Arithmetic in inputs (`GIRA.D 360 / 5`); `ESCRIU` with numbers, moved here from chapter 11 (owner) | Exterior/interior angles, angle sums, Total Turtle Trip theorem |
 | 6 | Variables | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
-| 7 | Dues variables | `PROC POLÍGON :N :COSTAT` | Generalising with 360 / N; star polygons and divisors |
+| 7 | Dues variables | `PROC POLÍGON :N :COSTAT` | Generalising with 360 / N; stars as more than one full turn (no divisor theory: owner) |
 | 8 | Cercles i arcs | Student-built `CERCLE`, `ARC` (the 1985 vocabulary has no circle primitive) | Circle as many-sided polygon, circumference, π |
 | 9 | Simetria | No new words; swap `GIRA.D`/`GIRA.E` | Rotational and mirror symmetry, tessellations |
 | 10 | Triangles i quadrilàters | `ARREL2` | Classify and construct: isosceles, right triangle, parallelogram, rhombus, trapezoid, kite; opposite/supplementary angles; Pythagoras for the diagonal |
@@ -309,10 +309,31 @@ exercise "La casa de qualsevol mida" → summary and bridge to chapter 7.
 - Maths vocabulary: "figures semblants"; the variable goes to lengths, never to turns.
 - The landing page shows the delivered version at the bottom-right (owner request).
 
+## 8g. Chapter 7 «Dues variables» (script approved 2026-11-11; built)
+
+Review artifact "Revisió 9 del guió del capítol 7" (slug
+`bcd59d50-6dcb-44c4-9398-01d2ad131184`). Order: Un procediment per a tots els polígons →
+L'ordre importa → "Què dibuixarà?" → exercise "El polígon" → find-the-bug "El pentàgon
+petit" → Estrelles → quiz → key exercise "L'estrella" → summary, bridge to chapter 8.
+
+- **No star-polygon theory (owner).** The {n/k} theory and divisors do not belong in this
+  course. The planned section "Estrelles que no surten" and its table were dropped; the
+  only trace is the owner's sentence, verbatim: "De vegades l'estrella no surt sencera."
+- **A many-sided polygon is not a circle (owner).** Never write or suggest that a polygon
+  "looks like a circle"; `POLÍGON 40 5` is a 40-gon. Examples use few sides (owner's own
+  example for argument order: `POLÍGON 8 10` vs `POLÍGON 10 8`). Keep this in mind when
+  scripting chapter 8 (circles).
+- The rule of the full turn is extended, same name: a star makes more than one full turn.
+  The second variable of `ESTRELLA` is `:VOLTES` (owner; not `:SALT`).
+- Missing-value message (owner): hints are the procedure's `PROC` line and an example
+  built from the values the student already typed (`POLÍGON 5` → `Per exemple: POLÍGON 5
+  20`; with no value typed, 50 is used).
+- Panel 55 % with 13 px code font (owner), for the 46- and 49-character lines.
+
 ## 9. Next step
 
-Chapters 1–6 and the Editor lliure are delivered. Next: the script of chapter 7
-(«Dues variables»: `PROC POLÍGON :N :COSTAT`), same review flow; then family integration once `step-quiz-commons` is
+Chapters 1–7 and the Editor lliure are delivered. Next: the script of chapter 8
+(«Cercles i arcs»), same review flow; then family integration once `step-quiz-commons` is
 available. Open questions for the owner are listed in `docs/STATE.md`.
 
 ## 10. Sources and records

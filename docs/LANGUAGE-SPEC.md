@@ -205,6 +205,11 @@ procedure name in a `PROC` line that is not a `:name` (`PROC QUADRAT COSTAT`, `P
 : COSTAT`, `PROC QUADRAT 50`) → `LES VARIABLES DE PROC PORTEN DOS PUNTS` / `Per exemple:
 PROC QUADRAT :COSTAT`; `A PROC LI FALTA EL NOM` is now only for a missing name.
 
+Approved by the owner on 2026-11-11 (chapter 7): a procedure called with too few values
+keeps `EL PROCEDIMENT 'X' NECESSITA n VALOR(S)` and gives two hints: `Mira la seva línia
+PROC: PROC POLÍGON :N :COSTAT` and `Per exemple: POLÍGON 5 20` (the values already typed,
+completed with 20; with none typed, 50).
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 

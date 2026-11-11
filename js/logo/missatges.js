@@ -105,7 +105,11 @@ export function describe(err, known = []) {
     case 'is_primitive': line1 = `${p.word} ÉS UNA ORDRE DE LOGO`; hints = ['Tria un altre nom per al teu procediment']; break;
     case 'proc_inputs':
       line1 = `EL PROCEDIMENT '${p.word}' NECESSITA ${p.n} ${p.n === 1 ? 'VALOR' : 'VALORS'}`;
-      hints = [`Per exemple: ${p.word} ${Array(p.n).fill(50).join(' ')}`];
+      // (owner) La línia PROC amb els noms de les variables, i un exemple fet amb els valors que l'alumne ja ha escrit.
+      { const given = p.given || [];
+        const example = [...given, ...Array(Math.max(0, p.n - given.length)).fill(given.length ? 20 : 50)];
+        hints = [`Per exemple: ${p.word} ${example.join(' ')}`];
+        if (p.inputs) hints.unshift(`Mira la seva línia PROC: PROC ${p.word} ${p.inputs.map((v) => ':' + v).join(' ')}`); }
       break;
     case 'bad_title': line1 = 'A PROC LI FALTA EL NOM'; hints = ['Per exemple: PROC QUADRAT']; break;
     case 'bad_inputs': line1 = 'LES VARIABLES DE PROC PORTEN DOS PUNTS'; hints = ['Per exemple: PROC QUADRAT :COSTAT']; break;   // (owner)

@@ -123,13 +123,13 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .sim:fullscreen .sim-monitor { flex: 1 1 auto; }
 
 /* ── Simulador amb panell de procediments (capítol 3 endavant) ──
-   Panell a l'esquerra i monitor a la dreta, meitat i meitat (owner, 2026-11-11): hi caben 43
-   caràcters per línia, i el dibuix no hi perd res perquè la seva mida depèn de l'alçada. */
+   Panell a l'esquerra (55 %, lletra de 13 px) i monitor a la dreta (owner, 2026-11-11): hi
+   caben 52 caràcters per línia; el dibuix hi perd un 2 % d'amplada als portàtils de l'aula. */
 .sim-cos { display: flex; align-items: stretch; min-height: 0; }
 .sim-cos > .sim-monitor { flex: 1 1 0; min-width: 0; }
-.sim-panell { flex: 0 0 50%; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--bg); }
+.sim-panell { flex: 0 0 55%; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--bg); }
 .sim-panell .panell-cap { padding: 8px 12px; }
-.sim-panell .panell-codi { font-size: 14px; min-height: 0; }
+.sim-panell .panell-codi { font-size: 13px; min-height: 0; }
 .sim-panell .numeros { width: 34px; padding-right: 8px; }
 .sim-panell .pila { margin: 8px 8px 8px 0; }
 .sim-panell .capa, .sim-panell .pila textarea { padding: 4px 8px 8px 8px; }
