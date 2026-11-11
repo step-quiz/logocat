@@ -2,7 +2,7 @@
 
 Interactive course, in Catalan, to learn the LOGO language with turtle graphics, faithful
 to the 1980s original (Apple Logo behaviour, Catalan vocabulary of 1985). Fifth member of
-the Step Quiz "Cat" family (KarelCat, PyCat, JSCat, HTMLCat). Target: `logocat.step-quiz.net`.
+the Step Quiz "Cat" family (KarelCat, PyCat, JSCat, HTMLCat). Published at `logo.step-quiz.net`.
 
 Static site: HTML, CSS and native ES modules. No build, no dependencies, no third-party
 requests.

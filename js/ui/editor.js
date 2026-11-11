@@ -23,7 +23,7 @@ function init() {
   try { area.value = localStorage.getItem(KEY) || ''; } catch (e) { /* sense emmagatzematge */ }
 
   const monitor = new Monitor($('monitor'), {
-    toolbar: false, maxHeight: 460, stepOnBefore: true,
+    toolbar: false, fit: true, stepOnBefore: true,
     speed: () => SPEEDS[Number($('velocitat').value) - 1],
     beforeRun: () => { tint = {}; flush(); },
     onBusy: (busy, stepping) => {

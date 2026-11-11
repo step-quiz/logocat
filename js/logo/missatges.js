@@ -109,6 +109,10 @@ export function describe(err, known = []) {
     case 'comma_decimal': line1 = `NO ENTENC ${p.text}`; hints = [`Els decimals s'escriuen amb punt: ${p.text.replace(',', '.')}`]; break;
     case 'missing_fi': line1 = 'FALTA FI'; hints = ['Cada PROC acaba amb FI']; break;
     case 'stray_fi': line1 = 'SOBRA FI'; hints = ['Cada PROC acaba amb FI']; break;
+    case 'outside_proc':
+      line1 = `${p.text.length > 24 ? p.text.slice(0, 24) + '…' : p.text} NO ÉS DINS DE CAP PROCEDIMENT`;
+      hints = ['Aquí només hi van procediments (PROC … FI). Les ordres soltes s\'escriuen a la línia ?'];
+      break;
     default: line1 = 'HI HA ALGUNA COSA QUE NO ENTENC';
   }
   if (err.where) line1 += ` A LA LÍNIA ${err.where.line} DEL PROCEDIMENT '${err.where.proc}'`;

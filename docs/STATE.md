@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-10 (v0.2: Editor lliure).
+> Last update: 2026-11-11 (v0.3: one-screen layout for classroom laptops).
 
 ## What exists
 
@@ -34,8 +34,12 @@
   and the box shows "Ara farà", "On som" (call path with loop counters) and "Valors".
   A procedure typed at `?` is appended to the panel; `OBLIDA.PROC` removes it from the
   panel; `EDITA "NOM` moves the cursor there (creating an empty procedure if needed).
-  An error inside a procedure tints its line red. On narrow screens the monitor goes
-  above the panel.
+  An error inside a procedure tints its line red. Layout: one-screen app above 860 px
+  wide (no page scroll; the drawing scales to the free height; text zone fixed at 5
+  lines with hidden scrollbar; bars merged into one row when the window is ≤ 720 px
+  tall, with the turtle status in a thin strip above the drawing). Below 860 px the monitor goes
+  above the panel and the page scrolls. Measured with no page scroll at 1280 × 585,
+  1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
 - **Tests**: 39 passing (`node --test tests/unit/*.test.mjs`). Manual browser smoke runs

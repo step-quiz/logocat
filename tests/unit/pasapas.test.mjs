@@ -75,7 +75,8 @@ test('errors del panell: FALTA FI, SOBRA FI, nom d\'una ordre', () => {
   const I = new Interpreter();
   const code = (text) => { try { I.defineAll(text); return null; } catch (e) { return e.code; } };
   assert.equal(code('PROC A\nAVANÇA 1'), 'missing_fi');
-  assert.equal(code('AVANÇA 1'), 'stray_fi');
+  assert.equal(code('AVANÇA 1'), 'outside_proc');
+  assert.equal(code('FI'), 'stray_fi');
   assert.equal(code('PROC AVANÇA\nFI'), 'is_primitive');
   assert.equal(code(PANEL), null);
 });

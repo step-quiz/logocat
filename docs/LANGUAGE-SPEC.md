@@ -171,6 +171,8 @@ Additions made while implementing (same voice; NOT yet reviewed by the owner):
 `X NECESSITA UNA LLISTA` / `Per exemple: REPETEIX 4 [AVANÇA 50 GIRA.D 90]` (missing list
 input); `FALTA TANCAR UN PARÈNTESI` / `Cada ( necessita el seu )`; `SOBRA UN PARÈNTESI` /
 `Hi ha un ) sense el seu (`; `A PROC LI FALTA EL NOM` / `Per exemple: PROC QUADRAT`;
+`X NO ÉS DINS DE CAP PROCEDIMENT` / `Aquí només hi van procediments (PROC … FI). Les
+ordres soltes s'escriuen a la línia ?` (text outside any procedure in the panel);
 hint variants for wrong input type: `X vol una llista entre claudàtors`,
 `X vol una condició, com ara :N > 10`, `X vol un nombre` (when the value is not a list).
 

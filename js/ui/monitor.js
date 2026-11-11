@@ -33,6 +33,7 @@ export class Monitor {
    * Per a l'Editor lliure, que posa els seus propis botons i panell:
    *   toolbar: false     no construeix la barra de botons
    *   maxHeight          alçada màxima del dibuix, en píxels
+   *   fit: true          el dibuix s'adapta a l'espai lliure del contenidor (pantalla única)
    *   speed()            multiplicador del temps d'animació (0 = instantani)
    *   stepOnBefore       el pas a pas s'atura ABANS de cada acció (i avisa amb onBefore)
    *   onBusy(busy, stepping), onBefore(ev), onEvent(ev), onDraw(), onError(err), afterRestore()
@@ -58,6 +59,7 @@ export class Monitor {
   build() {
     const r = this.root;
     r.classList.add('sim');
+    if (this.opts.fit) r.classList.add('sim--ajusta');
     r.textContent = '';
     const withBar = this.opts.toolbar !== false;
     const bar = el('div', 'sim-barra');
@@ -372,7 +374,9 @@ export class Monitor {
     const c = this.canvas, box = c.parentElement;
     const full = document.fullscreenElement === this.root;
     const maxH = full ? Math.max(200, window.innerHeight - 260) : (this.opts.maxHeight || 320);
-    const cssW = Math.max(120, Math.min(box.clientWidth, maxH * FIELD.w / FIELD.h));
+    const cssW = this.opts.fit && !full
+      ? Math.max(120, Math.min(box.clientWidth - 16, (box.clientHeight - 16) * FIELD.w / FIELD.h))
+      : Math.max(120, Math.min(box.clientWidth, maxH * FIELD.w / FIELD.h));
     const cssH = cssW * FIELD.h / FIELD.w;
     const dpr = window.devicePixelRatio || 1;
     if (c.width !== Math.round(cssW * dpr) || c.height !== Math.round(cssH * dpr)) {

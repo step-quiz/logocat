@@ -8,7 +8,8 @@
 
 Fifth course of the Step Quiz "Cat" family (KarelCat, PyCat, JSCat, HTMLCat): a static,
 build-free, Catalan-language web course that teaches the LOGO language with turtle
-graphics, faithful to the 1980s original. Target domain: `logocat.step-quiz.net`.
+graphics, faithful to the 1980s original. Published at `logo.step-quiz.net` (the owner's
+choice; earlier notes said `logocat.step-quiz.net`).
 Family-wide rules live in the `regles-comunes` block of every sibling `CLAUDE.md`
 (Catalan UI, ZIP delivery to `_uploads/` with repo-root paths, Cloudflare Pages deploy on
 every `main` commit, never `[skip ci]` / `[ci skip]` / `[cf-pages-skip]`, run tests before
@@ -145,6 +146,14 @@ The owner hand-edited the light theme; the dark theme mirrors it. Binding points
 - Step mode: current line tinted, next instruction outlined, and a box under the panel
   with "Ara farà" (next instruction), "On som" (call path with loop counters) and
   "Valors" (input values, e.g. `:COSTAT = 50`).
+- Layout rules decided on 2026-11-11 after testing on classroom laptops (1366 × 768 and
+  1920 × 1080 at 150 %, i.e. viewports around 1366 × 625 and 1280 × 585–670):
+  the Editor lliure is a one-screen app, never a scrolling page (above 860 px wide); the
+  drawing scales to the free height; the text zone shows exactly 5 lines, older lines roll
+  up and can be reached with the wheel, with NO visible scrollbar; when the window is at
+  most 720 px tall the two top bars merge into one row and the turtle status moves to a thin
+  strip at the top of the monitor; the procedures panel scrolls only when the code does
+  not fit, with a thin theme-coloured scrollbar (font 15 px / line-height 1.75 unchanged).
 - Embedded exercises in early chapters show the monitor only (no procedures panel; it
   appears from chapter 3). Toolbar there: `Comprova` (primary), `Pas`, `Desfés`,
   `Reinicia` at 16 px, plus `Objectiu: visible` toggle and `Pantalla completa`. Goal

@@ -147,7 +147,7 @@ export class Interpreter {
         if (!cur) throw new LogoError('stray_fi');
         cur.source.push('FI'); cur.span[1] = n; procs.set(cur.name, cur); cur = null;
       } else {
-        if (!cur) throw new LogoError('stray_fi');
+        if (!cur) throw new LogoError('outside_proc', { text: raw.trim().toUpperCase() });
         cur.lines.push(tokens); cur.lineNos.push(n); cur.source.push('  ' + raw.trim().toUpperCase());
       }
     }
