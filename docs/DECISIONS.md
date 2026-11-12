@@ -487,12 +487,47 @@ Review artifact "Revisió 16: LogoCat a la família" (slug
   chain, and has no certificate. F7 (when a chapter counts) therefore does not apply.
 - **Footer (F6 A):** index, chapters, glossary; not the Editor lliure.
 
+## 8o. Challenges «Reptes» (review 17, approved 2026-11-12; built)
+
+Review artifact "Revisió 17: el capítol de reptes" (slug
+`5d6de9d7-0e83-4e50-a228-3ad35c9c3703`), all points approved, plus a dialog.
+- **Three levels, three strategies (G1, G2):** each level opens with its three-step
+  planning text (owner-approved, frozen): N1 «Troba la peça que es repeteix» (one piece,
+  count, full-turn rule), N2 «Peces que encaixen» (pieces; plan where the turtle starts and
+  ends each piece; pieces first, then the joining procedure), N3 «Generalitza» (the smaller
+  copy inside; what changes; stop rule first, then the self-calling procedure). 3 challenges
+  per level.
+- **Pages (G3 A):** `curs/reptes-1.html`, `-2`, `-3`; «Reptes» in the top bar of every page
+  with a «Seccions» nav (all but 404) → `index.html#reptes`, a section under the chapters
+  listing the levels with «N de 3 fets» / «✓ fet» (`js/curs/portada.js`).
+- **Open access (G4 A):** «Recomanat després del capítol 7 / 9 / 12», no locking.
+- **Panel (G5 A):** N2 gives the base piece (`QUADRAT` 25; ch. 6's `QUADRAT :COSTAT`,
+  `TRIANGLE :COSTAT`, `CASA :MIDA`; `HEXÀGON` 30); N1 and N3 nothing. Owner asked why nothing
+  in N3: the piece and the figure are the same procedure; R8 also without `QUADRAT :C`
+  (dialog).
+- **Hints (G6 A + owner):** «Una pista» shows a strategy sentence; then «Una altra pista»
+  shows a more concrete one (numbers, a code fragment, never the whole solution); then the
+  button disappears. Markup `<div class="pistes"><p>…</p><p>…</p></div>`, mounted by
+  `pagina.js`. Second-hint texts approved in the dialog.
+- **Checking (G7):** target visible, turtle from home, exact drawing and position, drawing
+  only (`data-comprova="dibuix"`), no `data-exigeix`. Every challenge has `data-clau`; the
+  top-bar «✓ Nivell fet» needs all three (pagina.js now accepts several `data-clau`).
+- **Nested REPETEIX (G8 A):** N2 explains it with
+  `REPETEIX 4 [REPETEIX 4 [AVANÇA 20 GIRA.D 90] GIRA.D 90]`; no challenge requires it.
+- **N1 statement (G9 A, owner's idea):** «Reprodueix el dibuix que veus aquí. Defineix X:
+  quan premis «Comprova», la tortuga farà X.» — no description; the student counts and
+  measures. Challenge simulators get `data-quadricula`: a faint grid every 10 steps, a bit
+  stronger every 50 (`Monitor` option `grid`); all sizes are multiples of 10 where measured.
+- **Typos (owner question, dialog):** the existing nearest-word hint already uses
+  Levenshtein distance (≤ 2, ≤ length/3, accents and ç ignored): `ABANÇA`, `AVAANÇA`,
+  `AVANÇ`, `AVAÇA` → `NO SÉ COM FER …` / `Volies dir AVANÇA?`. Owner: keep it as a hint and
+  stop; never auto-correct and run.
+
 ## 9. Next step
 
-Chapters 1–12 (the whole plan), the Editor lliure, the glossary and the family integration
-are delivered. Next (owner, 2026-11-12): the final challenges chapter (nested `REPETEIX`,
-mosaics, maybe `POSA.A`/`RETORNA`), same review flow. Then, only when the owner asks: the
-teacher guide. No open questions are pending for the owner as of v0.18.
+Chapters 1–12, the challenges (3 levels), the Editor lliure, the glossary and the family
+integration are delivered. Only when the owner asks: the teacher guide; more challenges.
+No open questions are pending for the owner as of v0.19.
 
 ## 10. Sources and records
 

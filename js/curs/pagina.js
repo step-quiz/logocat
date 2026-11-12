@@ -10,6 +10,20 @@ function tick(host, id) {
   document.addEventListener('logocat:progres', mark);
 }
 
+// Pistes dels reptes (owner, G6): «Una pista» i, després, «Una altra pista». Mai codi sencer.
+function mountHints(box) {
+  const hints = [...box.querySelectorAll('p')];
+  hints.forEach((h) => { h.hidden = true; });
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'boto'; b.textContent = 'Una pista';
+  let shown = 0;
+  b.addEventListener('click', () => {
+    hints[shown++].hidden = false;
+    if (shown >= hints.length) b.remove(); else b.textContent = 'Una altra pista';
+  });
+  box.prepend(b);
+}
+
 function init() {
   initTheme();
 
@@ -26,7 +40,7 @@ function init() {
       checkPose: node.dataset.comprova === 'dibuix+tortuga',
       failText: node.dataset.siFalla, okText: node.dataset.siEncerta,
       require: node.dataset.exigeix, preload: node.dataset.ordre,
-      panel, run: node.dataset.executa,
+      panel, run: node.dataset.executa, grid: node.hasAttribute('data-quadricula'),
       onSolved: () => { if (id) markDone(id); },
     });
     if (exercise && id) tick(host, id);
@@ -44,11 +58,13 @@ function init() {
     if (id) tick(host, id);
   });
 
-  // ✓ del capítol: el dona l'exercici marcat amb data-clau.
-  const key = document.querySelector('[data-clau]');
+  document.querySelectorAll('.pistes').forEach(mountHints);
+
+  // ✓ del capítol: el donen els exercicis marcats amb data-clau (als reptes, els tres del nivell).
+  const keys = [...document.querySelectorAll('[data-clau]')].map((k) => k.dataset.id);
   const badge = document.getElementById('capitol-fet');
-  if (key && badge) {
-    const show = () => { badge.hidden = !isDone(key.dataset.id); };
+  if (keys.length && badge) {
+    const show = () => { badge.hidden = !keys.every(isDone); };
     show(); document.addEventListener('logocat:progres', show);
   }
 }

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reptes · Nivell 2 · Peces que encaixen — LogoCat</title>
+<meta name="description" content="Reptes de LogoCat, nivell 2: peces que encaixen.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+<script src="../family.js" defer></script>
+<script src="../footer.js" defer></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html">Capítols</a>
+    <a href="../index.html#reptes" aria-current="page">Reptes</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Reptes · Nivell 2</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Nivell fet</span>
+  <div class="topbar-actions"></div>
+  <nav class="barra-nav" aria-label="Consulta"><a href="../glossari.html">Glossari</a></nav>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Reptes · Nivell 2</p>
+    <h1>Peces que encaixen</h1>
+  </div>
+
+  <section>
+    <p class="recomanat">Recomanat després del capítol 9.</p>
+    <p>Aquestes figures tenen diverses peces, i cal col·locar cada peça al seu lloc. Al panell ja hi tens la peça bàsica.</p>
+    <h2>Com ho pots planificar</h2>
+    <ol class="estrategia">
+      <li>Parteix la figura en peces.</li>
+      <li>Per a cada peça, decideix on comença la tortuga i on acaba: si la deixes com l'has trobada, les peces encaixen més fàcilment.</li>
+      <li>Escriu primer les peces i després el procediment que les ajunta.</li>
+    </ol>
+    <p>A cada repte veus la figura de l'objectiu sobre una quadrícula: cada quadret fa 10 passos. La tortuga comença al centre, mirant amunt. Quan premis «Comprova», es mira si el teu dibuix és exactament el de l'objectiu, al mateix lloc.</p>
+  </section>
+
+  <section>
+    <h2>Un REPETEIX dins d'un altre</h2>
+    <p>Dins d'un <code>REPETEIX</code> hi pot haver un altre <code>REPETEIX</code>. Prova-ho:</p>
+    <pre class="codi">REPETEIX 4 [REPETEIX 4 [AVANÇA 20 GIRA.D 90] GIRA.D 90]</pre>
+    <p>El de dins fa un quadrat. El de fora el fa 4 vegades, i gira 90 graus entre quadrat i quadrat. També ho pots fer amb un procediment dins d'un <code>REPETEIX</code>, com ja saps.</p>
+    <div class="simulador" data-ordre="REPETEIX 4 [REPETEIX 4 [AVANÇA 20 GIRA.D 90] GIRA.D 90]"></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 1</span> El mosaic</h2>
+    <p>Defineix <code>MOSAIC</code>: 5 quadrats d'ample i 4 d'alt. Quan premis «Comprova», la tortuga farà <code>MOSAIC</code>.</p>
+    <div class="simulador" data-id="rep2-mosaic" data-clau data-quadricula data-panell data-executa="MOSAIC" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo-panell">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 25 GIRA.D 90]
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 25 GIRA.D 90]
+FI
+PROC FILA
+  REPETEIX 5 [QUADRAT GIRA.D 90 AVANÇA 25 GIRA.E 90]
+  GIRA.E 90 AVANÇA 125 GIRA.D 90
+FI
+PROC MOSAIC
+  REPETEIX 4 [FILA AVANÇA 25]
+  RECULA 100
+FI
+MOSAIC
+</script>
+    </div>
+    <div class="pistes">
+      <p>Primer fes una fila de 5 quadrats que deixi la tortuga on ha començat. Després, el mosaic són 4 files, una sobre l'altra.</p>
+      <p>La fila fa 5 vegades: <code>QUADRAT</code>, i anar 25 cap a la dreta. Al final torna 125 cap a l'esquerra.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 2</span> El carrer</h2>
+    <p>Defineix <code>CARRER</code>: tres cases de 20, 30 i 40, una al costat de l'altra, amb 10 passos entre casa i casa. Quan premis «Comprova», la tortuga farà <code>CARRER</code>. Al panell hi ha <code>CASA</code>, la del capítol 6: deixa la tortuga com l'ha trobada.</p>
+    <div class="simulador" data-id="rep2-carrer" data-clau data-quadricula data-panell data-executa="CARRER" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo-panell">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+
+PROC CASA :MIDA
+  QUADRAT :MIDA
+  AVANÇA :MIDA GIRA.D 30
+  TRIANGLE :MIDA
+  GIRA.E 30 RECULA :MIDA
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+PROC TRIANGLE :COSTAT
+  REPETEIX 3 [AVANÇA :COSTAT GIRA.D 120]
+FI
+PROC CASA :MIDA
+  QUADRAT :MIDA
+  AVANÇA :MIDA GIRA.D 30
+  TRIANGLE :MIDA
+  GIRA.E 30 RECULA :MIDA
+FI
+PROC CARRER
+  CASA 20 GIRA.D 90 AVANÇA 30 GIRA.E 90
+  CASA 30 GIRA.D 90 AVANÇA 40 GIRA.E 90
+  CASA 40
+FI
+CARRER
+</script>
+    </div>
+    <div class="pistes">
+      <p><code>CASA</code> deixa la tortuga a baix a l'esquerra. Quant ha d'anar cap a la dreta per començar la casa següent?</p>
+      <p>Casa de 20 i 10 passos de carrer: la tortuga va 20 + 10 = 30 cap a la dreta: <code>GIRA.D 90 AVANÇA 30 GIRA.E 90</code></p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 3</span> El rusc</h2>
+    <p>Defineix <code>RUSC</code>: sis hexàgons al voltant d'un hexàgon buit. Quan premis «Comprova», la tortuga farà <code>RUSC</code>.</p>
+    <div class="simulador" data-id="rep2-rusc" data-clau data-quadricula data-panell data-executa="RUSC" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo-panell">
+PROC HEXÀGON
+  REPETEIX 6 [AVANÇA 30 GIRA.D 60]
+FI
+</script>
+      <script type="text/logo">
+PROC HEXÀGON
+  REPETEIX 6 [AVANÇA 30 GIRA.D 60]
+FI
+PROC RUSC
+  REPETEIX 6 [HEXÀGON AVANÇA 30 GIRA.E 60]
+FI
+RUSC
+</script>
+    </div>
+    <div class="pistes">
+      <p>Després de cada hexàgon, la tortuga ha de quedar a la cantonada on comença el següent. Prova-ho primer amb dos hexàgons.</p>
+      <p>Després de cada hexàgon: <code>AVANÇA 30</code> i <code>GIRA.E 60</code>. Fes-ho 6 vegades.</p>
+    </div>
+  </section>
+
+  <p class="peu"><a href="reptes-1.html">← Nivell 1</a> · <a href="reptes-3.html">Nivell 3 →</a></p>
+
+</main>
+</body>
+</html>

@@ -41,6 +41,7 @@ export class Monitor {
    * Per a l'Editor lliure, que posa els seus propis botons i panell:
    *   toolbar: false     no construeix la barra de botons
    *   maxHeight          alçada màxima del dibuix, en píxels
+   *   grid               quadrícula de 10 en 10 (reptes)
    *   fit: true          el dibuix s'adapta a l'espai lliure del contenidor (pantalla única)
    *   speed()            multiplicador del temps d'animació (0 = instantani)
    *   stepOnBefore       el pas a pas s'atura ABANS de cada acció (i avisa amb onBefore)
@@ -485,6 +486,17 @@ export class Monitor {
     const field = BG[T.bg] || BG[0];
     g.fillStyle = field; g.fillRect(0, 0, c.width, c.height);
     g.lineCap = 'round'; g.lineJoin = 'round';
+
+    // Quadrícula dels reptes (owner, reptes G9): un quadret cada 10 passos, una mica més marcada cada 50.
+    if (this.opts.grid) {
+      const light = T.bg === 1;
+      g.setLineDash([]); g.lineWidth = 1;
+      for (let v = -140; v <= 140; v += 10) {
+        g.strokeStyle = light ? (v % 50 ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.13)') : (v % 50 ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.13)');
+        g.beginPath(); g.moveTo(Math.round(X(v)) + 0.5, 0); g.lineTo(Math.round(X(v)) + 0.5, c.height); g.stroke();
+        if (Math.abs(v) <= 120) { g.beginPath(); g.moveTo(0, Math.round(Y(v)) + 0.5); g.lineTo(c.width, Math.round(Y(v)) + 0.5); g.stroke(); }
+      }
+    }
 
     const stroke = (s, color, width, dash) => {
       g.beginPath(); g.setLineDash(dash || []);

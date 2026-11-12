@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-12 (v0.18: Step Quiz family integration; v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
+> Last update: 2026-11-12 (v0.19: challenges «Reptes», 3 levels; v0.18: Step Quiz family integration; v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -165,7 +165,14 @@
   `.github/workflows/comuns.yml` must be created by the owner from the GitHub web (ZIPs ignore
   `.github/`). Pending outside this repo: HTMLCat has its own ES-module `family.js` and
   must add LogoCat there by hand (it already receives `logocat.svg`).
-- **Version label**: `index.html` shows `v0.18` fixed at the bottom-right (`.versio`); a
+- **Challenges** (review 17, DECISIONS §8o): `curs/reptes-1..3.html`, 3 challenges per
+  level, each a `.simulador` with `data-clau data-quadricula data-panell data-executa
+  data-comprova="dibuix"` followed by `<div class="pistes">` (two hints). Level 2 shows
+  nested `REPETEIX`; level 3 shows static SVG thumbnails of `FLOC 0..3` (generated once from
+  the engine). Index section `#reptes` with per-level counters (`js/curs/portada.js`).
+  Tests: `tests/unit/reptes.test.mjs` (reference solutions, empty panel fails, typical
+  mistakes fail, a mirrored `FLOR` and a nested-`REPETEIX` `MOSAIC` pass).
+- **Version label**: `index.html` shows `v0.19` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -193,7 +200,7 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 126 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+- **Tests**: 131 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
   headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
   console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
   (every verdict of the three exercises, chapter tick, the new messages, the flower), and
@@ -207,7 +214,7 @@
   verdict, chapter tick, the new hints, the random walk, the coin and the bar chart) and
   for every reference solution of chapters 1–11. v0.16: same for chapter 12 (every
   verdict, chapter tick, runaway recursion stopped with «Atura» and its hint, the tree)
-  and for every reference solution of chapters 1–12. Note: runaway recursion in the UI
+  and for every reference solution of chapters 1–12. v0.19: the three challenge pages driven end to end at 1366 × 625 (both hint buttons, empty panel, every reference solution «Correcte», «✓ Nivell fet», index counters, Editor lliure bar still fits with «Reptes»). Note: runaway recursion in the UI
   reaches the 500-call limit only after about 28 s of animation; most students will
   press «Atura» first, which now also gives the recursion hint. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
@@ -217,12 +224,11 @@
 
 ## Not built yet
 
-- A possible final challenges chapter (nested `REPETEIX`, mosaics; maybe `POSA.A`, `RETORNA`): to be decided by the owner in its own review (owner, review 14, G6 A); teacher guide. No certificate (owner, review 16).
+- Teacher guide (only when the owner asks). No certificate (owner, review 16).
 - **Browser tests in CI.** Only Node unit tests run in CI.
 - **Workspace autosave** (spec §4) is partial: the Editor lliure keeps its procedures;
   drawings, variables and command history are lost on reload everywhere, and embedded
   simulators keep nothing.
-- Top-bar entries of the mockup that have no page yet (Reptes) are not shown.
 
 ## Known deviations and open points
 

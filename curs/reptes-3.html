@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reptes · Nivell 3 · Generalitza — LogoCat</title>
+<meta name="description" content="Reptes de LogoCat, nivell 3: generalitza.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+<script src="../family.js" defer></script>
+<script src="../footer.js" defer></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html">Capítols</a>
+    <a href="../index.html#reptes" aria-current="page">Reptes</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Reptes · Nivell 3</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Nivell fet</span>
+  <div class="topbar-actions"></div>
+  <nav class="barra-nav" aria-label="Consulta"><a href="../glossari.html">Glossari</a></nav>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Reptes · Nivell 3</p>
+    <h1>Generalitza</h1>
+  </div>
+
+  <section>
+    <p class="recomanat">Recomanat després del capítol 12.</p>
+    <p>Aquestes figures tenen a dins còpies més petites d'elles mateixes. Cada una és un procediment que es fa servir a si mateix.</p>
+    <h2>Com ho pots planificar</h2>
+    <ol class="estrategia">
+      <li>Busca dins la figura una còpia més petita d'ella mateixa.</li>
+      <li>Decideix què canvia d'una còpia a la següent: la mida, el nivell…</li>
+      <li>Escriu primer la regla per aturar-se, i després el procediment que es fa servir a si mateix.</li>
+    </ol>
+    <p>A cada repte veus la figura de l'objectiu sobre una quadrícula: cada quadret fa 10 passos. La tortuga comença al centre, mirant amunt. Quan premis «Comprova», es mira si el teu dibuix és exactament el de l'objectiu, al mateix lloc.</p>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 1</span> L'arbre de tres branques</h2>
+    <p>Defineix <code>ARBRE3</code> amb una variable, la mida: el tronc, i a dalt tres arbres de la meitat de mida, un girat 40 graus a l'esquerra, un recte i un girat 40 graus a la dreta. Ha de tornar on ha començat i s'atura quan la mida és més petita que 5. Quan premis «Comprova», la tortuga farà <code>ARBRE3 60</code>.</p>
+    <div class="simulador" data-id="rep3-arbre" data-clau data-quadricula data-panell data-executa="ARBRE3 60" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo">
+PROC ARBRE3 :MIDA
+  SI :MIDA < 5 [ACABA]
+  AVANÇA :MIDA
+  GIRA.E 40 ARBRE3 :MIDA / 2
+  GIRA.D 40 ARBRE3 :MIDA / 2
+  GIRA.D 40 ARBRE3 :MIDA / 2
+  GIRA.E 40 RECULA :MIDA
+FI
+ARBRE3 60
+</script>
+    </div>
+    <div class="pistes">
+      <p>Cada branca és un arbre més petit. Abans de tornar per la branca, la tortuga ha de mirar cap on mirava quan hi va entrar.</p>
+      <p>Parteix de l'<code>ARBRE</code> del capítol 12 i afegeix-hi la branca del mig: <code>ARBRE3 :MIDA / 2</code>, sense girar.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 2</span> L'espiral de quadrats</h2>
+    <p>Defineix <code>QUADRATS</code> amb una variable: un quadrat, un gir de 15 graus, i la mateixa figura amb un quadrat 5 passos més gran, fins que el costat passa de 100. Quan premis «Comprova», la tortuga farà <code>QUADRATS 10</code>.</p>
+    <div class="simulador" data-id="rep3-quadrats" data-clau data-quadricula data-panell data-executa="QUADRATS 10" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo">
+PROC QUADRAT :C
+  REPETEIX 4 [AVANÇA :C GIRA.D 90]
+FI
+PROC QUADRATS :C
+  SI :C > 100 [ACABA]
+  QUADRAT :C GIRA.D 15
+  QUADRATS :C + 5
+FI
+QUADRATS 10
+</script>
+    </div>
+    <div class="pistes">
+      <p>Comença per la regla per aturar-se. Després: un quadrat, un gir, i <code>QUADRATS</code> amb un quadrat més gran.</p>
+      <p>La regla: <code>SI :C > 100 [ACABA]</code>. Després: <code>QUADRAT :C</code>, <code>GIRA.D 15</code> i <code>QUADRATS :C + 5</code></p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 3</span> El floc de neu</h2>
+    <p>Defineix <code>FLOC</code> amb una variable, el nivell. Al nivell 0, cada costat del triangle és una ratlla. A cada nivell, cada ratlla es canvia per quatre ratlles d'un terç, amb una punta al mig. Quan premis «Comprova», la tortuga farà <code>FLOC 3</code>.</p>
+    <p>Els nivells 0, 1, 2 i 3:</p>
+    <div class="nivells">
+      <figure><svg viewBox="-40 -112 140 124" role="img" aria-label="FLOC 0"><path d="M0.0 0.0L0.0 -105.0M0.0 -105.0L90.9 -52.5M90.9 -52.5L0.0 0.0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><figcaption><code>FLOC 0</code></figcaption></figure>
+      <figure><svg viewBox="-40 -112 140 124" role="img" aria-label="FLOC 1"><path d="M0.0 0.0L0.0 -35.0M0.0 -35.0L-30.3 -52.5M-30.3 -52.5L0.0 -70.0M0.0 -70.0L0.0 -105.0M0.0 -105.0L30.3 -87.5M30.3 -87.5L60.6 -105.0M60.6 -105.0L60.6 -70.0M60.6 -70.0L90.9 -52.5M90.9 -52.5L60.6 -35.0M60.6 -35.0L60.6 0.0M60.6 0.0L30.3 -17.5M30.3 -17.5L0.0 0.0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><figcaption><code>FLOC 1</code></figcaption></figure>
+      <figure><svg viewBox="-40 -112 140 124" role="img" aria-label="FLOC 2"><path d="M0.0 0.0L0.0 -11.7M0.0 -11.7L-10.1 -17.5M-10.1 -17.5L0.0 -23.3M0.0 -23.3L0.0 -35.0M0.0 -35.0L-10.1 -40.8M-10.1 -40.8L-20.2 -35.0M-20.2 -35.0L-20.2 -46.7M-20.2 -46.7L-30.3 -52.5M-30.3 -52.5L-20.2 -58.3M-20.2 -58.3L-20.2 -70.0M-20.2 -70.0L-10.1 -64.2M-10.1 -64.2L0.0 -70.0M0.0 -70.0L0.0 -81.7M0.0 -81.7L-10.1 -87.5M-10.1 -87.5L0.0 -93.3M0.0 -93.3L0.0 -105.0M0.0 -105.0L10.1 -99.2M10.1 -99.2L20.2 -105.0M20.2 -105.0L20.2 -93.3M20.2 -93.3L30.3 -87.5M30.3 -87.5L40.4 -93.3M40.4 -93.3L40.4 -105.0M40.4 -105.0L50.5 -99.2M50.5 -99.2L60.6 -105.0M60.6 -105.0L60.6 -93.3M60.6 -93.3L70.7 -87.5M70.7 -87.5L60.6 -81.7M60.6 -81.7L60.6 -70.0M60.6 -70.0L70.7 -64.2M70.7 -64.2L80.8 -70.0M80.8 -70.0L80.8 -58.3M80.8 -58.3L90.9 -52.5M90.9 -52.5L80.8 -46.7M80.8 -46.7L80.8 -35.0M80.8 -35.0L70.7 -40.8M70.7 -40.8L60.6 -35.0M60.6 -35.0L60.6 -23.3M60.6 -23.3L70.7 -17.5M70.7 -17.5L60.6 -11.7M60.6 -11.7L60.6 0.0M60.6 0.0L50.5 -5.8M50.5 -5.8L40.4 0.0M40.4 0.0L40.4 -11.7M40.4 -11.7L30.3 -17.5M30.3 -17.5L20.2 -11.7M20.2 -11.7L20.2 0.0M20.2 0.0L10.1 -5.8M10.1 -5.8L0.0 0.0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><figcaption><code>FLOC 2</code></figcaption></figure>
+      <figure><svg viewBox="-40 -112 140 124" role="img" aria-label="FLOC 3"><path d="M0.0 0.0L0.0 -3.9M0.0 -3.9L-3.4 -5.8M-3.4 -5.8L0.0 -7.8M0.0 -7.8L0.0 -11.7M0.0 -11.7L-3.4 -13.6M-3.4 -13.6L-6.7 -11.7M-6.7 -11.7L-6.7 -15.6M-6.7 -15.6L-10.1 -17.5M-10.1 -17.5L-6.7 -19.4M-6.7 -19.4L-6.7 -23.3M-6.7 -23.3L-3.4 -21.4M-3.4 -21.4L0.0 -23.3M0.0 -23.3L0.0 -27.2M0.0 -27.2L-3.4 -29.2M-3.4 -29.2L0.0 -31.1M0.0 -31.1L0.0 -35.0M0.0 -35.0L-3.4 -36.9M-3.4 -36.9L-6.7 -35.0M-6.7 -35.0L-6.7 -38.9M-6.7 -38.9L-10.1 -40.8M-10.1 -40.8L-13.5 -38.9M-13.5 -38.9L-13.5 -35.0M-13.5 -35.0L-16.8 -36.9M-16.8 -36.9L-20.2 -35.0M-20.2 -35.0L-20.2 -38.9M-20.2 -38.9L-23.6 -40.8M-23.6 -40.8L-20.2 -42.8M-20.2 -42.8L-20.2 -46.7M-20.2 -46.7L-23.6 -48.6M-23.6 -48.6L-26.9 -46.7M-26.9 -46.7L-26.9 -50.6M-26.9 -50.6L-30.3 -52.5M-30.3 -52.5L-26.9 -54.4M-26.9 -54.4L-26.9 -58.3M-26.9 -58.3L-23.6 -56.4M-23.6 -56.4L-20.2 -58.3M-20.2 -58.3L-20.2 -62.2M-20.2 -62.2L-23.6 -64.2M-23.6 -64.2L-20.2 -66.1M-20.2 -66.1L-20.2 -70.0M-20.2 -70.0L-16.8 -68.1M-16.8 -68.1L-13.5 -70.0M-13.5 -70.0L-13.5 -66.1M-13.5 -66.1L-10.1 -64.2M-10.1 -64.2L-6.7 -66.1M-6.7 -66.1L-6.7 -70.0M-6.7 -70.0L-3.4 -68.1M-3.4 -68.1L0.0 -70.0M0.0 -70.0L0.0 -73.9M0.0 -73.9L-3.4 -75.8M-3.4 -75.8L0.0 -77.8M0.0 -77.8L0.0 -81.7M0.0 -81.7L-3.4 -83.6M-3.4 -83.6L-6.7 -81.7M-6.7 -81.7L-6.7 -85.6M-6.7 -85.6L-10.1 -87.5M-10.1 -87.5L-6.7 -89.4M-6.7 -89.4L-6.7 -93.3M-6.7 -93.3L-3.4 -91.4M-3.4 -91.4L0.0 -93.3M0.0 -93.3L0.0 -97.2M0.0 -97.2L-3.4 -99.2M-3.4 -99.2L0.0 -101.1M0.0 -101.1L0.0 -105.0M0.0 -105.0L3.4 -103.1M3.4 -103.1L6.7 -105.0M6.7 -105.0L6.7 -101.1M6.7 -101.1L10.1 -99.2M10.1 -99.2L13.5 -101.1M13.5 -101.1L13.5 -105.0M13.5 -105.0L16.8 -103.1M16.8 -103.1L20.2 -105.0M20.2 -105.0L20.2 -101.1M20.2 -101.1L23.6 -99.2M23.6 -99.2L20.2 -97.2M20.2 -97.2L20.2 -93.3M20.2 -93.3L23.6 -91.4M23.6 -91.4L26.9 -93.3M26.9 -93.3L26.9 -89.4M26.9 -89.4L30.3 -87.5M30.3 -87.5L33.7 -89.4M33.7 -89.4L33.7 -93.3M33.7 -93.3L37.0 -91.4M37.0 -91.4L40.4 -93.3M40.4 -93.3L40.4 -97.2M40.4 -97.2L37.0 -99.2M37.0 -99.2L40.4 -101.1M40.4 -101.1L40.4 -105.0M40.4 -105.0L43.8 -103.1M43.8 -103.1L47.2 -105.0M47.2 -105.0L47.2 -101.1M47.2 -101.1L50.5 -99.2M50.5 -99.2L53.9 -101.1M53.9 -101.1L53.9 -105.0M53.9 -105.0L57.3 -103.1M57.3 -103.1L60.6 -105.0M60.6 -105.0L60.6 -101.1M60.6 -101.1L64.0 -99.2M64.0 -99.2L60.6 -97.2M60.6 -97.2L60.6 -93.3M60.6 -93.3L64.0 -91.4M64.0 -91.4L67.4 -93.3M67.4 -93.3L67.4 -89.4M67.4 -89.4L70.7 -87.5M70.7 -87.5L67.4 -85.6M67.4 -85.6L67.4 -81.7M67.4 -81.7L64.0 -83.6M64.0 -83.6L60.6 -81.7M60.6 -81.7L60.6 -77.8M60.6 -77.8L64.0 -75.8M64.0 -75.8L60.6 -73.9M60.6 -73.9L60.6 -70.0M60.6 -70.0L64.0 -68.1M64.0 -68.1L67.4 -70.0M67.4 -70.0L67.4 -66.1M67.4 -66.1L70.7 -64.2M70.7 -64.2L74.1 -66.1M74.1 -66.1L74.1 -70.0M74.1 -70.0L77.5 -68.1M77.5 -68.1L80.8 -70.0M80.8 -70.0L80.8 -66.1M80.8 -66.1L84.2 -64.2M84.2 -64.2L80.8 -62.2M80.8 -62.2L80.8 -58.3M80.8 -58.3L84.2 -56.4M84.2 -56.4L87.6 -58.3M87.6 -58.3L87.6 -54.4M87.6 -54.4L90.9 -52.5M90.9 -52.5L87.6 -50.6M87.6 -50.6L87.6 -46.7M87.6 -46.7L84.2 -48.6M84.2 -48.6L80.8 -46.7M80.8 -46.7L80.8 -42.8M80.8 -42.8L84.2 -40.8M84.2 -40.8L80.8 -38.9M80.8 -38.9L80.8 -35.0M80.8 -35.0L77.5 -36.9M77.5 -36.9L74.1 -35.0M74.1 -35.0L74.1 -38.9M74.1 -38.9L70.7 -40.8M70.7 -40.8L67.4 -38.9M67.4 -38.9L67.4 -35.0M67.4 -35.0L64.0 -36.9M64.0 -36.9L60.6 -35.0M60.6 -35.0L60.6 -31.1M60.6 -31.1L64.0 -29.2M64.0 -29.2L60.6 -27.2M60.6 -27.2L60.6 -23.3M60.6 -23.3L64.0 -21.4M64.0 -21.4L67.4 -23.3M67.4 -23.3L67.4 -19.4M67.4 -19.4L70.7 -17.5M70.7 -17.5L67.4 -15.6M67.4 -15.6L67.4 -11.7M67.4 -11.7L64.0 -13.6M64.0 -13.6L60.6 -11.7M60.6 -11.7L60.6 -7.8M60.6 -7.8L64.0 -5.8M64.0 -5.8L60.6 -3.9M60.6 -3.9L60.6 -0.0M60.6 -0.0L57.3 -1.9M57.3 -1.9L53.9 -0.0M53.9 -0.0L53.9 -3.9M53.9 -3.9L50.5 -5.8M50.5 -5.8L47.2 -3.9M47.2 -3.9L47.2 -0.0M47.2 -0.0L43.8 -1.9M43.8 -1.9L40.4 -0.0M40.4 -0.0L40.4 -3.9M40.4 -3.9L37.0 -5.8M37.0 -5.8L40.4 -7.8M40.4 -7.8L40.4 -11.7M40.4 -11.7L37.0 -13.6M37.0 -13.6L33.7 -11.7M33.7 -11.7L33.7 -15.6M33.7 -15.6L30.3 -17.5M30.3 -17.5L26.9 -15.6M26.9 -15.6L26.9 -11.7M26.9 -11.7L23.6 -13.6M23.6 -13.6L20.2 -11.7M20.2 -11.7L20.2 -7.8M20.2 -7.8L23.6 -5.8M23.6 -5.8L20.2 -3.9M20.2 -3.9L20.2 -0.0M20.2 -0.0L16.8 -1.9M16.8 -1.9L13.5 0.0M13.5 0.0L13.5 -3.9M13.5 -3.9L10.1 -5.8M10.1 -5.8L6.7 -3.9M6.7 -3.9L6.7 0.0M6.7 0.0L3.4 -1.9M3.4 -1.9L0.0 0.0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><figcaption><code>FLOC 3</code></figcaption></figure>
+    </div>
+    <div class="simulador" data-id="rep3-floc" data-clau data-quadricula data-panell data-executa="FLOC 3" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo">
+PROC KOCH :MIDA :NIVELL
+  SI :NIVELL = 0 [AVANÇA :MIDA ACABA]
+  KOCH :MIDA / 3 :NIVELL - 1 GIRA.E 60
+  KOCH :MIDA / 3 :NIVELL - 1 GIRA.D 120
+  KOCH :MIDA / 3 :NIVELL - 1 GIRA.E 60
+  KOCH :MIDA / 3 :NIVELL - 1
+FI
+PROC FLOC :NIVELL
+  REPETEIX 3 [KOCH 105 :NIVELL GIRA.D 120]
+FI
+FLOC 3
+</script>
+    </div>
+    <div class="pistes">
+      <p>Fes primer un procediment per a un sol costat, amb dues variables: la mida i el nivell. Al nivell 0, avança. Si no: avança un terç, gira 60 a l'esquerra, un terç, 120 a la dreta, un terç, 60 a l'esquerra, un terç (cada terç, un costat d'un nivell menys).</p>
+      <p><code>KOCH</code> comença amb <code>SI :NIVELL = 0 [AVANÇA :MIDA ACABA]</code>. <code>FLOC</code> fa 3 vegades: <code>KOCH 105 :NIVELL</code> i <code>GIRA.D 120</code></p>
+    </div>
+  </section>
+
+  <p class="peu"><a href="reptes-2.html">← Nivell 2</a> · <a href="../simulador.html">Editor lliure →</a></p>
+
+</main>
+</body>
+</html>

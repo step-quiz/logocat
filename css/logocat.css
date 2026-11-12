@@ -334,3 +334,16 @@ a.gl-capitol { color: var(--accent); }
 /* ── Família Step Quiz: selector EXPLORA (family.js) i peu (footer.js), fitxers comuns ── */
 .topbar-actions { display: flex; align-items: center; margin: 0 6px; }
 .logocat-footer { margin-top: 32px; }
+
+/* Reptes */
+.pistes { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.pistes p { border-left: 3px solid var(--accent); padding: 6px 12px; background: var(--surface, transparent); }
+.recomanat { color: var(--muted); font-size: 14px; }
+.estrategia { margin: 0; }
+.portada .reptes { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.portada .reptes h2 { font-size: 22px; margin: 0; }
+.llista-reptes .comptador { border: 0; min-height: 0; padding: 0; margin-left: auto; color: var(--muted); font-size: 13px; }
+.llista-reptes .comptador.tot { color: var(--ok); font-weight: 700; }
+.nivells { display: flex; flex-wrap: wrap; gap: 16px; }
+.nivells figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.nivells svg { width: 110px; height: auto; color: var(--text); }

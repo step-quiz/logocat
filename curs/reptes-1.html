@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reptes · Nivell 1 · Troba la peça que es repeteix — LogoCat</title>
+<meta name="description" content="Reptes de LogoCat, nivell 1: troba la peça que es repeteix.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+<script src="../family.js" defer></script>
+<script src="../footer.js" defer></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html">Capítols</a>
+    <a href="../index.html#reptes" aria-current="page">Reptes</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Reptes · Nivell 1</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Nivell fet</span>
+  <div class="topbar-actions"></div>
+  <nav class="barra-nav" aria-label="Consulta"><a href="../glossari.html">Glossari</a></nav>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Reptes · Nivell 1</p>
+    <h1>Troba la peça que es repeteix</h1>
+  </div>
+
+  <section>
+    <p class="recomanat">Recomanat després del capítol 7.</p>
+    <p>Mira la figura i reprodueix-la. Totes estan fetes amb una sola peça que es repeteix.</p>
+    <h2>Com ho pots planificar</h2>
+    <ol class="estrategia">
+      <li>Mira la figura i busca la peça que es repeteix.</li>
+      <li>Compta quantes vegades surt.</li>
+      <li>Calcula quant ha de girar la tortuga entre peça i peça, amb la regla de la volta sencera.</li>
+    </ol>
+    <p>A cada repte veus la figura de l'objectiu sobre una quadrícula: cada quadret fa 10 passos. La tortuga comença al centre, mirant amunt. Quan premis «Comprova», es mira si el teu dibuix és exactament el de l'objectiu, al mateix lloc.</p>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 1</span> La flor de quadrats</h2>
+    <p>Reprodueix el dibuix que veus aquí. Defineix <code>FLOR</code>: quan premis «Comprova», la tortuga farà <code>FLOR</code>.</p>
+    <div class="simulador" data-id="rep1-flor" data-clau data-quadricula data-panell data-executa="FLOR" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 50 GIRA.D 90]
+FI
+PROC FLOR
+  REPETEIX 8 [QUADRAT GIRA.D 45]
+FI
+FLOR
+</script>
+    </div>
+    <div class="pistes">
+      <p>Quantes vegades hi ha el quadrat? Entre quadrat i quadrat la tortuga gira, i entre tots els girs ha de fer una volta sencera.</p>
+      <p>Hi ha 8 quadrats, i 360 / 8 = 45. Comença així: <code>REPETEIX 8 [ ... ]</code></p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 2</span> La corona</h2>
+    <p>Reprodueix el dibuix que veus aquí. Defineix <code>CORONA</code>: quan premis «Comprova», la tortuga farà <code>CORONA</code>.</p>
+    <div class="simulador" data-id="rep1-corona" data-clau data-quadricula data-panell data-executa="CORONA" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo">
+PROC QUADRAT
+  REPETEIX 4 [AVANÇA 20 GIRA.D 90]
+FI
+PROC CORONA
+  REPETEIX 12 [QUADRAT AVANÇA 30 GIRA.D 30]
+FI
+CORONA
+</script>
+    </div>
+    <div class="pistes">
+      <p>La peça és un quadrat i un tros de camí. Si hi ha 12 peces, quant ha de girar la tortuga després de cada tros?</p>
+      <p>Cada peça és <code>QUADRAT</code> i <code>AVANÇA 30</code>. Hi ha 12 peces: 360 / 12 = 30</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Repte 3</span> L'estrella de 9 puntes</h2>
+    <p>Reprodueix el dibuix que veus aquí. Defineix <code>ESTRELLA</code>: quan premis «Comprova», la tortuga farà <code>ESTRELLA</code>.</p>
+    <div class="simulador" data-id="rep1-estrella" data-clau data-quadricula data-panell data-executa="ESTRELLA" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten.">
+      <script type="text/logo">
+PROC ESTRELLA
+  REPETEIX 9 [AVANÇA 90 GIRA.D 160]
+FI
+ESTRELLA
+</script>
+    </div>
+    <div class="pistes">
+      <p>Com a les estrelles del capítol 7, la tortuga fa més d'una volta sencera. Segueix el traç amb el dit i compta quantes voltes fa abans de tornar a l'inici.</p>
+      <p>4 voltes són 4 * 360 = 1440 graus, repartits en 9 girs: 1440 / 9</p>
+    </div>
+  </section>
+
+  <p class="peu"><a href="../index.html#reptes">← Reptes</a> · <a href="reptes-2.html">Nivell 2 →</a></p>
+
+</main>
+</body>
+</html>

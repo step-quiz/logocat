@@ -47,7 +47,8 @@ test('capítol 12: 2 simuladors d\'exemple i 3 exercicis; decisions de la revisi
     'Un procediment que es fa servir a si mateix necessita una regla per aturar-se. Sense la regla, no acabaria mai.',
     'Cada branca és un arbre més petit. Una figura així es diu fractal.',
     "Has acabat el curs. Ara ja pots inventar els teus dibuixos a l' Editor lliure"]) assert.ok(text.replace(/\s+/g, ' ').includes(w), w);
-  assert.ok(!/progressió|diferència|capítol 13|reptes/i.test(text), 'G3 A i G6 A');
+  assert.ok(!/progressió|diferència|capítol 13/i.test(text), 'G3 A i G6 A');
+  assert.ok(!/reptes/i.test(html.slice(html.indexOf('<main'))), 'el capítol 12 no parla dels reptes (només la barra de dalt)');
   assert.ok(!/\bentrad|\bcaps[ae]/i.test(text));
   assert.ok(!/anys 80|1985|198\d/.test(text));
   assert.ok(html.includes('href="../simulador.html"'));
