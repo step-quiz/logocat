@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-12 (v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
+> Last update: 2026-11-12 (v0.18: Step Quiz family integration; v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -153,7 +153,19 @@
   or a procedure in the panel (`PROC`, `FI`, `:NOM`, `ACABA`, `LOCAL`, `RETORNA`, `PROC?`,
   `OBLIDA.PROC`) have no button. No "ideas" section (owner). «Glossari» is in the top bar of
   every page except 404, on the right before the theme toggle, as in the mockup.
-- **Version label**: `index.html` shows `v0.17` fixed at the bottom-right (`.versio`); a
+- **Family integration** (review 16): LogoCat is the entry `logocat` of
+  `step-quiz-commons/comuns.json` and receives `LICENSE`, `LLICENCIA.md`, the five family
+  icons, `family.js` (EXPLORA selector; config `actual: logocat`, `fontExterna: false` so no
+  Google Fonts request, `posicio: inici`, never centred, label hidden under 1100 px) and
+  `footer.js` (`logocat-footer`, not fixed). The selector (host `<div class="topbar-actions">`
+  before «Glossari») and the footer are on the index, the chapters and the glossary; the
+  Editor lliure has neither (its bar has only ~100 px free at 1366 px; footer would add a
+  scrollbar). No certificate and no shared `progress.js` (owner: LogoCat, like HTMLCat, is
+  outside the KarelCat → PyCat → JSCat chain); no touch key bar. The workflow
+  `.github/workflows/comuns.yml` must be created by the owner from the GitHub web (ZIPs ignore
+  `.github/`). Pending outside this repo: HTMLCat has its own ES-module `family.js` and
+  must add LogoCat there by hand (it already receives `logocat.svg`).
+- **Version label**: `index.html` shows `v0.18` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -181,7 +193,7 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 123 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+- **Tests**: 126 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
   headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
   console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
   (every verdict of the three exercises, chapter tick, the new messages, the flower), and
@@ -205,10 +217,7 @@
 
 ## Not built yet
 
-- A possible final challenges chapter (nested `REPETEIX`, mosaics; maybe `POSA.A`, `RETORNA`): to be decided by the owner in its own review (owner, review 14, G6 A); teacher guide; certificate (comes with the family integration, see below).
-- **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
-  footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
-  seen; LogoCat must be registered there first.
+- A possible final challenges chapter (nested `REPETEIX`, mosaics; maybe `POSA.A`, `RETORNA`): to be decided by the owner in its own review (owner, review 14, G6 A); teacher guide. No certificate (owner, review 16).
 - **Browser tests in CI.** Only Node unit tests run in CI.
 - **Workspace autosave** (spec §4) is partial: the Editor lliure keeps its procedures;
   drawings, variables and command history are lost on reload everywhere, and embedded

@@ -39,6 +39,10 @@ the document in the same change.
   Do not invent chapters, wording of messages or screen changes: propose them. Decision
   questions go through multiple-choice dialogs; five or more points go into a review
   artifact with per-point buttons (see `docs/DECISIONS.md` §1).
+- **Common files are not edited here.** `LICENSE`, `LLICENCIA.md`, `family.js`,
+  `footer.js` and `img/{logocat,karelcat,pycat,jscat,htmlcat}.svg` come from
+  `step-quiz/step-quiz-commons` (`comuns.json`, entry `logocat`) and are overwritten every
+  day by the workflow `.github/workflows/comuns.yml`. Change them in step-quiz-commons.
 - **Owner-written wording is frozen.** Messages marked (owner) in the spec, and the
   chapter prose once approved, are copied verbatim.
 - **Say "variable".** In everything a student reads (prose, messages, UI), a procedure

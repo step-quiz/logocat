@@ -122,7 +122,7 @@ Sant Ignasi, Barcelona) without naming them.
   single source of truth, teacher guide, progress export/import).
 - JSCat: publication switches (`VISIBLE_MAX_CHAPTER`, `SHOW_REPTES`).
 - Shared files (selector, footer, progress, certificate, touch key bar) come from the
-  `step-quiz-commons` repo, which has NOT been seen yet; needed to register LogoCat.
+  `step-quiz-commons` repo; see §8n for what LogoCat receives.
 
 ## 7. Screen (mockup approved by the owner on 2026-11-10)
 
@@ -472,13 +472,27 @@ Review artifact "Revisió 15: el glossari" (slug `e5fac928-a3d0-42b1-a8a4-641f46
 - **Access (G6):** «Glossari» in the top bar of every page.
 - **Edge modes (G7):** the three approved sentences, frozen.
 
+## 8n. LogoCat in the Step Quiz family (review 16, approved 2026-11-12; built)
+
+Review artifact "Revisió 16: LogoCat a la família" (slug
+`98e0f05a-b13a-4f51-a170-8afb71f169b6`), plus a dialog on the certificate.
+- **Files (F1 A, then reduced by F5):** licence, icons, `family.js`, `footer.js`. No touch
+  key bar. No certificate and no shared `progress.js` (they only served the certificate).
+- **No Google Fonts (F2 A):** new option `fontExterna: false` in step-quiz-commons'
+  `family.js`, used only by LogoCat; other webs unchanged.
+- **Selector (F3 A):** LogoCat first in `CAT_PROJECTS`; every web shows 5 icons. In LogoCat
+  the selector is not on the Editor lliure page (no room at 1366 px; same reason as F6).
+- **Icon (F4 A):** hand-drawn top-view green turtle, `img/logocat.svg`.
+- **Certificate (F5, owner):** LogoCat, like HTMLCat, is outside the KarelCat → PyCat → JSCat
+  chain, and has no certificate. F7 (when a chapter counts) therefore does not apply.
+- **Footer (F6 A):** index, chapters, glossary; not the Editor lliure.
+
 ## 9. Next step
 
-Chapters 1–12 (the whole plan) and the Editor lliure are delivered. Pending, each through
-the same review flow and only when the owner asks: a final challenges chapter (nested
-`REPETEIX`, mosaics, maybe `POSA.A`/`RETORNA`), the glossary, the teacher guide, the
-certificate, and family integration once `step-quiz-commons` is available. No open
-questions are pending for the owner as of v0.16.
+Chapters 1–12 (the whole plan), the Editor lliure, the glossary and the family integration
+are delivered. Next (owner, 2026-11-12): the final challenges chapter (nested `REPETEIX`,
+mosaics, maybe `POSA.A`/`RETORNA`), same review flow. Then, only when the owner asks: the
+teacher guide. No open questions are pending for the owner as of v0.18.
 
 ## 10. Sources and records
 

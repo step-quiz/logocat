@@ -13,6 +13,7 @@ requests.
 |---|---|
 | `index.html` | Landing page with the chapter list |
 | `simulador.html` | Editor lliure: procedures panel + monitor, step mode. `simulador.html?prova=TEXT` opens it with TEXT already typed at the `?` line (the glossary's «Prova-ho») |
+| `LICENSE`, `LLICENCIA.md`, `family.js`, `footer.js`, `img/*cat.svg` | Common files of the Step Quiz family, copied every day from `step-quiz/step-quiz-commons` by `.github/workflows/comuns.yml` (entry `logocat` of its `comuns.json`). Never edit them here. `family.js` (EXPLORA selector) and `footer.js` are loaded with `defer` on the index, the chapters and the glossary, not on the Editor lliure |
 | `glossari.html` | Glossary: every word the engine knows except the coordinate words, in two parts (course words with their chapter; other words), by theme, alphabetical within a theme. Static HTML, generated once from a word list; edit it by hand from now on and keep `tests/unit/glossari.test.mjs` passing |
 | `curs/capitol-N.html` | One page per chapter; text, simulators and activities |
 | `js/logo/` | The language: `lexer.js`, `interpret.js` (generator-based interpreter and primitives), `tortuga.js` (turtle and field), `missatges.js` (Catalan messages), `compara.js` (drawing validation) |

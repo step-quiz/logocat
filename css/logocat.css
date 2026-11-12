@@ -330,3 +330,7 @@ a.gl-capitol { color: var(--accent); }
 .gl-entrada pre.codi { margin: 0; }
 .gl-prova { align-self: flex-start; display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; text-decoration: none; color: var(--text); }
 .gl-prova:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Família Step Quiz: selector EXPLORA (family.js) i peu (footer.js), fitxers comuns ── */
+.topbar-actions { display: flex; align-items: center; margin: 0 6px; }
+.logocat-footer { margin-top: 32px; }
