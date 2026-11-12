@@ -21,3 +21,23 @@ jobs:
 
       - name: Proves del motor i del curs
         run: node --test tests/unit/*.test.mjs
+
+  # Proves al navegador (revisió 18, C2): totes les pàgines a quatre mides de
+  # pantalla i cada exercici resolt amb «Comprova». Triga uns minuts.
+  navegador:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Instal·la Playwright i Chromium
+        run: |
+          npm install --no-save playwright@1
+          npx playwright install --with-deps chromium
+
+      - name: Proves al navegador
+        run: node tests/navegador/prova.mjs
