@@ -122,7 +122,7 @@ test('pistes noves (owner, revisió 11)', () => {
   assert.deepEqual(m('GIRA.DRETA 90').hints, ['Volies dir GIRA.D?']);
   assert.deepEqual(m('GIRA.ESQUERRA 90').hints, ['Volies dir GIRA.E?']);
   assert.deepEqual(m('BANDERA D', BD), { line1: 'NO SÉ COM FER BANDERA D', hints: ["Volies dir BANDERA.D? S'escriu amb un punt i sense espai."] });
-  assert.deepEqual(m('BANDERA.E', BD), { line1: 'NO SÉ COM FER BANDERA.E', hints: [] });
+  assert.deepEqual(m('BANDERA.E', BD), { line1: 'NO SÉ COM FER BANDERA.E', hints: ["Si és un procediment teu, primer l'has de definir amb PROC … FI."] });   // cap pista cap a BANDERA.D; revisió 19 (E8): la general
   assert.deepEqual(m('BANDERA', BD).hints, ['Volies dir BANDERA.D?']);
   assert.deepEqual(m('NO LLAPIS'), { line1: 'NO SÉ COM FER NO LLAPIS', hints: ["Volies dir NO.LLAPIS? S'escriu amb un punt i sense espai."] });
 });

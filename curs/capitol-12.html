@@ -117,6 +117,10 @@ FI
 ESPIRAL 5
 </script>
     </div>
+    <div class="pistes">
+      <p>Amb <code>ESPIRAL 5</code>, el costat val 5. Llegeix la regla: amb 5, s'atura?</p>
+      <p>5 és més petit que 100, i per això acaba de seguida. S'ha d'aturar quan el costat passa de 100.</p>
+    </div>
   </section>
 
   <section>
@@ -141,6 +145,10 @@ PROC ESPIRAL.TRI :COSTAT
 FI
 ESPIRAL.TRI 5
 </script>
+    </div>
+    <div class="pistes">
+      <p>Parteix d'<code>ESPIRAL</code>: només canvien el nom i el gir.</p>
+      <p>Canvia el nom als dos llocs: a la línia <code>PROC</code> i a la línia on es fa servir a si mateixa. I gira 120.</p>
     </div>
   </section>
 
@@ -211,6 +219,10 @@ PROC ESPIRAL.IN :COSTAT
 FI
 ESPIRAL.IN 100
 </script>
+    </div>
+    <div class="pistes">
+      <p>Com <code>ESPIRAL</code>, però cada costat 5 més curt. Comença per la regla per aturar-se.</p>
+      <p>La regla: <code>SI :COSTAT &lt; 5 [ACABA]</code>. I a l'última línia, <code>ESPIRAL.IN :COSTAT - 5</code>.</p>
     </div>
   </section>
 

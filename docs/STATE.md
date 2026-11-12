@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-12 (v0.20: final review (review 18): engine fixes, new messages, tablet key bar, saved exercise panels, files in the Editor lliure, browser tests; v0.19: challenges «Reptes», 3 levels; v0.18: Step Quiz family integration; v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
+> Last update: 2026-11-12 (v0.21: review 19: two hints after every chapter exercise, more hints for frequent mistakes, owner texts for the confirm dialogs, ( ) " on the key bar; v0.20: final review (review 18): engine fixes, new messages, tablet key bar, saved exercise panels, files in the Editor lliure, browser tests; v0.19: challenges «Reptes», 3 levels; v0.18: Step Quiz family integration; v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -183,9 +183,12 @@
   exercise panels saved per `data-id` with «Torna a començar»; Editor lliure «Desa en un
   fitxer», «Obre un fitxer», «Desa el dibuix»; touch key bar (`js/ui/tecles.js`).
   Tests: `tests/unit/revisio18.test.mjs` and the browser suite `tests/navegador/prova.mjs`
-  (150 checks: 19 pages × 4 screen sizes, every exercise and challenge through
+  (154 checks in v0.21: 19 pages × 4 screen sizes, every exercise and challenge through
   «Comprova», the review-18 behaviours).
-- **Version label**: `index.html` shows `v0.20` fixed at the bottom-right (`.versio`); a
+- **Chapter hints** (review 19, DECISIONS §8q): every chapter exercise (34) is followed by
+  `<div class="pistes">` with the two approved hints; tests `tests/unit/revisio19.test.mjs`
+  (+ `pistes19.data.mjs`, the frozen texts).
+- **Version label**: `index.html` shows `v0.21` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -213,7 +216,7 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 139 passing (`node --test tests/unit/*.test.mjs`), plus the browser suite (`node tests/navegador/prova.mjs`, 150 checks, all passing on 2026-11-12). Manual browser runs in
+- **Tests**: 143 passing (`node --test tests/unit/*.test.mjs`), plus the browser suite (`node tests/navegador/prova.mjs`, 154 checks, all passing on 2026-11-12). Manual browser runs in
   headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
   console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
   (every verdict of the three exercises, chapter tick, the new messages, the flower), and
@@ -237,11 +240,8 @@
 
 ## Not built yet
 
-- **Review 19** (published, waiting for the owner; DECISIONS §9): «Una pista» / «Una altra
-  pista» for the 34 chapter exercises (68 texts, P6 B), the extended list of hints for
-  frequent mistakes (P5), the new texts of v0.20. Build after the owner's answers.
-- **Teacher guide**: draft Claude doc (DECISIONS §8p, M4); final form after the owner's
-  review. No certificate (owner, review 16).
+- **Teacher guide**: approved as a Claude doc (DECISIONS §8p M4, §8q G1), outside the web.
+  No certificate (owner, review 16).
 - **Browser tests in CI**: the suite exists; the CI job runs once the owner replaces
   `.github/workflows/ci.yml` on github.com with the version given in the v0.20 delivery
   (ZIPs cannot change `.github/`).

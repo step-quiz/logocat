@@ -4,7 +4,8 @@
 // panell de procediments. Es col·loca a la vora de la part visible de la pantalla (sobre el
 // teclat) que queda més lluny del camp, perquè no el tapi mai.
 // No és el kbd-accessory.js de step-quiz-commons: aquell treballa amb un sol editor per pàgina.
-const KEYS = ['[', ']', ':', '.', '+', '-', '*', '/', '=', '<', '>'];
+// ( ) i " afegides a la revisió 19 (owner, T4).
+const KEYS = ['[', ']', '(', ')', ':', '.', '"', '+', '-', '*', '/', '=', '<', '>'];
 
 const isField = (el) => !!(el && el.matches && (el.matches('.sim-entrada input') || el.matches('.pila textarea')));
 

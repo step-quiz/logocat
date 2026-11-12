@@ -121,7 +121,7 @@ test('missatges de les variables (owner): sense dos punts, amb espai, a la líni
   assert.deepEqual(msg(runPanel('PROC QUADRAT :COSTAT\n  REPETEIX 4 [AVANÇA : COSTAT GIRA.D 90]\nFI', 'QUADRAT 50')),
     { line1: "NO SÉ COM FER : A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'", hints: ['Els dos punts van enganxats al nom, sense espai: :COSTAT'] });
   for (const title of ['PROC QUADRAT COSTAT', 'PROC QUADRAT : COSTAT', 'PROC QUADRAT 50']) {
-    assert.deepEqual(msg(runPanel(title + '\n  AVANÇA 10\nFI', 'QUADRAT 50')), { line1: 'LES VARIABLES DE PROC PORTEN DOS PUNTS', hints: ['Per exemple: PROC QUADRAT :COSTAT'] });
+    assert.deepEqual(msg(runPanel(title + '\n  AVANÇA :COSTAT\nFI', 'QUADRAT 50')), { line1: 'LES VARIABLES DE PROC PORTEN DOS PUNTS', hints: ['Per exemple: PROC QUADRAT :COSTAT'] });
   }
   assert.deepEqual(msg(runPanel('PROC\n  AVANÇA 10\nFI', 'X')).line1, 'A PROC LI FALTA EL NOM');
   assert.deepEqual(msg(runPanel(Q, 'AVANÇA :COSTAT')), { line1: ':COSTAT NO TÉ CAP VALOR', hints: ['És una variable del procediment? Mira la línia PROC'] });

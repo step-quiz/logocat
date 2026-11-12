@@ -81,7 +81,7 @@ function init() {
     file.value = '';
     if (!f) return;
     f.text().then((text) => {
-      if (panel.value.trim() && !window.confirm('Vols canviar els procediments del panell pels del fitxer?')) return;
+      if (panel.value.trim() && !window.confirm('Segur que vols canviar els procediments que hi ha al panell pels que hi ha al fitxer? Pensa que perdràs el que tens ara escrit.')) return;
       panel.area.value = text.replace(/\r\n?/g, '\n');
       panel.changed(true);
     });

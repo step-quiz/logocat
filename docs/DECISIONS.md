@@ -572,17 +572,27 @@ Review artifact "Revisió 18: revisió final de LogoCat" (slug
   edits `.github/` on github.com).
 - **HANDOUT.md (C3)** at the repo root for a future session.
 
+## 8q. Hints and texts (review 19, approved 2026-11-12; built in v0.21)
+
+Review artifact "Revisió 19: pistes dels exercicis i textos nous" (slug
+`c4ea3382-a0f7-456a-9b07-22c79f33b1e3`): 47 points, all approved.
+- **A1–A34:** «Una pista» / «Una altra pista» after every chapter exercise (34), the exact
+  texts of `tests/unit/pistes19.data.mjs` (frozen). Same markup and mechanism as the
+  challenges (`<div class="pistes">`, mounted by `pagina.js`).
+- **E1–E8:** LANGUAGE-SPEC §8, block "review 19". E2 extended with the owner's comment
+  ("azar, fin, …").
+- **T1, T2 (owner wording):** «Segur que vols tornar a començar? Pensa que es perdrà tot el
+  que has escrit al panell.» and «Segur que vols canviar els procediments que hi ha al panell
+  pels que hi ha al fitxer? Pensa que perdràs el que tens ara escrit.»
+- **T3:** the chapter 7 statement and fail text as built in v0.20.
+- **T4:** key bar `[ ] ( ) : . " + - * / = < >` and `↑`.
+- **G1:** the teacher guide draft is approved as it is (Claude doc, outside the web).
+
 ## 9. Next step
 
-Review 19 "Revisió 19: pistes dels exercicis i textos nous" (slug
-`c4ea3382-a0f7-456a-9b07-22c79f33b1e3`, 47 points, published 2026-11-12, waiting for the
-owner): A1–A34 the hints «Una pista» / «Una altra pista» for the 34 chapter exercises (P6 B;
-34, not 30: the «Troba l'error» exercises count too); E1–E8 the extended hints for frequent
-mistakes (P5: English and Spanish Logo words, other Catalan words, a letter inside a number,
-two lists after REPETEIX, a two-word procedure name, ESCRIU with a word, a fallback hint
-that would change rule 1 of the catalogue); T1–T4 the new texts of v0.20 (two confirm
-dialogs, the chapter 7 statement, `( )` and `"` on the key bar); G1 the teacher guide
-draft. Build what he approves (the challenge pages show the hint markup to reuse).
+Nothing pending from the owner as of v0.21. Possible later work, only if he asks: the
+final form of the teacher guide (it is approved as a Claude doc); real-tablet checks of the
+key bar; adding LogoCat to HTMLCat's own `family.js` (outside this repo).
 
 ## 10. Sources and records
 

@@ -293,6 +293,32 @@ Approved by the owner on 2026-11-12 (final review, review 18; built in v0.20).
   pieces, then the turtle jumps to its exact final place (`AVANÇA 99999999`); the drawing
   comparison keeps one copy of retraced ink (the last one, so the eraser rule is kept).
 
+Approved by the owner on 2026-11-12 (review 19; built in v0.21).
+- Words from other Logos and languages → `Volies dir X?` (table `OTHER_WORDS` in
+  `missatges.js`): AVANÇA ← FD FORWARD ADELANTE AVANZA; RECULA ← BK BACK ATRAS ATRÁS
+  RETROCEDE; GIRA.D ← RT RIGHT DERECHA GIRA.DERECHA; GIRA.E ← LT LEFT IZQUIERDA
+  GIRA.IZQUIERDA; REPETEIX ← REPEAT REPITE; INI.DIB ← CS CLEARSCREEN BORRAR LIMPIAR BORRA
+  LIMPIA ESBORRA.TOT; NO.LLAPIS ← PU PENUP SUBE.LAPIZ AIXECA AIXECA.LLAPIS PUJA.LLAPIS;
+  LLAPIS ← PD PENDOWN BAJA.LAPIZ BAIXA.LLAPIS; DESAPAREIX ← HT HIDETURTLE AMAGA
+  AMAGA.TORTUGA OCULTA ESCONDE; APAREIX ← ST SHOWTURTLE MOSTRA.TORTUGA MUESTRA APARECE;
+  CENTRE ← HOME CENTRO; ESCRIU ← PRINT ESCRIBE; PROC ← TO PROCEDIMIENTO; FI ← END FIN;
+  ATZAR ← RANDOM AZAR. (`AZAR`, `FIN` and "more Spanish" were the owner's comment.)
+- A word made of digits and the letters O, L, I that is a number once O→0 and L/I→1
+  (`5O`, `L0`) → `Volies dir 50? Hi has escrit la lletra O en lloc del zero.` / `Volies dir
+  10? Hi has escrit la lletra L en lloc de l'u.` (I: `la lletra I en lloc de l'u`). A
+  number followed by a dot (`50.`) → `Volies dir 50? Els nombres no acaben amb punt.`
+- A list left over right after the list of `REPETEIX` (`REPETEIX 4 [AVANÇA 50] [GIRA.D
+  90]`) keeps `NO SÉ QUÈ FER AMB [GIRA.D 90]` with the hint `REPETEIX només repeteix una
+  llista: posa totes les ordres dins dels mateixos claudàtors.`
+- `PROC CASA GRAN` (the first token after the name is a word starting with a letter)
+  keeps `LES VARIABLES DE PROC PORTEN DOS PUNTS` / `Per exemple: PROC QUADRAT :COSTAT` and
+  adds `Si GRAN és part del nom, ha de ser una sola paraula: PROC CASA.GRAN` — not in the
+  panel when the procedure body uses `:GRAN` (then it is a variable without its colon).
+- Unknown word with no similar word: right after `ESCRIU` / `ESCRIU.S` → `Per escriure una
+  paraula, posa-hi cometes al davant: ESCRIU "HOLA`; otherwise → `Si és un procediment teu,
+  primer l'has de definir amb PROC … FI.` This replaces rule 1 ("otherwise no hint"), also
+  for `BANDERA.E` when only `BANDERA.D` exists (still no hint towards the other flag).
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 

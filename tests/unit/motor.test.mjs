@@ -88,7 +88,7 @@ test('pistes «Volies dir…?»', () => {
   assert.deepEqual(run('GIRAD 90').msg.hints, ['Volies dir GIRA.D?']);
   assert.deepEqual(run('AVANSA 10').msg.hints, ['Volies dir AVANÇA?']);
   assert.deepEqual(run('FES.ORIENTACIO 90').msg.hints, ['Volies dir FES.ORIENTACIÓ?']);
-  assert.deepEqual(run('XYZZY').msg.hints, []);
+  assert.deepEqual(run('XYZZY').msg.hints, ["Si és un procediment teu, primer l'has de definir amb PROC … FI."]);   // revisió 19 (E8)
 });
 
 test('errors d\'escriptura', () => {

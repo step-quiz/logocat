@@ -2,7 +2,7 @@
 
 Entry point for a new session (human or AI) that has to continue this project cold. Read
 this file, then `CLAUDE.md`, then `docs/STATE.md`, `docs/DECISIONS.md` and
-`docs/LANGUAGE-SPEC.md`. As of v0.20 (2026-11-12).
+`docs/LANGUAGE-SPEC.md`. As of v0.21 (2026-11-12).
 
 ## 1. What the project is
 
@@ -40,10 +40,10 @@ Progress, exercise panels and the Editor lliure procedures live in `localStorage
 
 ## 3. Tests
 
-- `node --test tests/unit/*.test.mjs` (139 tests): engine, every message, every chapter
+- `node --test tests/unit/*.test.mjs` (143 tests): engine, every message, every chapter
   page (texts the owner froze, reference solutions, line lengths ≤ 52 in panels and
   solutions), challenges, glossary, family files, review 18.
-- `node tests/navegador/prova.mjs` (Playwright, 150 checks): every page at 1366×625,
+- `node tests/navegador/prova.mjs` (Playwright, 154 checks): every page at 1366×625,
   1280×585, 1180×740 and 1024×690 (touch), every exercise and challenge solved through
   «Comprova», review-18 behaviours. Needs `npm install --no-save playwright` and a Chromium
   (`npx playwright install chromium`, or `CHROME_PATH=…`).
@@ -81,20 +81,14 @@ Progress, exercise panels and the Editor lliure procedures live in `localStorage
 - Every delivery bumps `package.json` `version` and the `v…` label in `index.html`.
 - His e-mail address is private: never send it to an external service.
 
-## 5. Open items (as of v0.20)
+## 5. Open items (as of v0.21)
 
-1. **Review 19** (published 2026-11-12, slug `c4ea3382-a0f7-456a-9b07-22c79f33b1e3`, 47
-   points; DECISIONS §9): hints «Una pista» / «Una altra pista» for the 34 chapter
-   exercises (68 texts, review 18 P6 option B; reuse the challenge-page markup
-   `<div class="pistes"><p>…</p><p>…</p></div>` right after the simulator, mounted by
-   `pagina.js`); the extended hints for frequent mistakes (E1–E8); the new texts of v0.20
-   (T1–T4); the teacher guide draft (G1). When the owner writes «Revisa artifact», read
-   `respostes` there and build what he approved.
-2. **Teacher guide**: a draft Claude doc ("LogoCat · Guia del professorat (esborrany)").
-   The owner reviews it; then decide its final form.
-3. **CI browser job**: the owner must replace `.github/workflows/ci.yml` with the version
-   that adds the `navegador` job (given in the v0.20 delivery message; the job installs
-   Playwright and Chromium and runs `node tests/navegador/prova.mjs`).
-4. HTMLCat's own `family.js` still lacks LogoCat (outside this repo).
-5. Not verified on real tablets: the key bar and the focus rule (Chrome touch emulation
+Nothing is waiting for the owner: reviews 18 and 19 are fully built.
+1. **Teacher guide**: approved as a Claude doc ("LogoCat · Guia del professorat
+   (esborrany)", outside the web). Its solutions and error table describe v0.21; update it
+   if exercises or messages change.
+2. **CI browser job**: exists once the owner has pasted the v0.20 `ci.yml` on github.com
+   (job `navegador`). If the Actions tab shows only the `tests` job, he has not done it.
+3. HTMLCat's own `family.js` still lacks LogoCat (outside this repo).
+4. Not verified on real tablets: the key bar and the focus rule (Chrome touch emulation
    only).

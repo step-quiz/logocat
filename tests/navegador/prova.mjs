@@ -175,6 +175,14 @@ async function main() {
   await setPanel(p, sim, 'PROC X\nFI\n');
   await sim.locator('button', { hasText: 'Torna a començar' }).click(); await p.waitForTimeout(300);
   check((await sim.locator('.sim-panell textarea').inputValue()) === initial, 'M1: a «Troba l\'error» torna el procediment amb l\'error');
+  // Revisió 19 (A1–A34): les pistes dels exercicis dels capítols.
+  sim = p.locator('.simulador[data-id="cap3-torre"]');
+  const hints = p.locator('section', { has: sim }).locator('.pistes');
+  await hints.locator('button').click();
+  check(await hints.locator('p:visible').count() === 1 && (await hints.locator('button').textContent()) === 'Una altra pista', 'A: «Una pista» mostra la primera pista');
+  await hints.locator('button').click();
+  check(await hints.locator('p:visible').count() === 2 && await hints.locator('button').count() === 0, 'A: «Una altra pista» mostra la segona');
+  check(await p.locator('.pistes').count() === 3, 'A: el capítol 3 té les pistes dels tres exercicis');
   // P1: el qüestionari, en qualsevol ordre.
   const orders = new Set();
   for (let k = 0; k < 8; k++) {
@@ -224,6 +232,8 @@ async function main() {
   await input.fill('REPETEIX 4 ');
   await p.locator('.tecla', { hasText: '[' }).tap();
   check((await input.inputValue()) === 'REPETEIX 4 [', 'U5: la tecla [ escriu a la línia ?');
+  await p.locator('.tecla', { hasText: '(' }).tap();
+  check((await input.inputValue()) === 'REPETEIX 4 [(', 'T4: la tecla ( escriu a la línia ?');
   await input.fill('AVANÇA 20'); await input.press('Enter'); await waitIdle(p, sim);
   await input.tap(); await p.locator('.tecla', { hasText: '↑' }).tap();
   check((await input.inputValue()) === 'AVANÇA 20', 'U5: la tecla ↑ recupera l\'última línia');

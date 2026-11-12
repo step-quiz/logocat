@@ -116,7 +116,8 @@ export class Interpreter {
     if (atPrompt && this.procs.has(name)) throw new LogoError('already_defined', { word: name });
     const inputs = [];
     for (const t of tokens.slice(2)) {
-      if (t.t !== 'var') throw new LogoError('bad_inputs');
+      // «PROC CASA GRAN»: potser GRAN és part del nom (owner, revisió 19, E6).
+      if (t.t !== 'var') throw new LogoError('bad_inputs', !inputs.length && t.t === 'word' && /^[A-ZÀ-ÚÇ]/.test(t.v) ? { name, namePart: t.v } : {});
       inputs.push(t.v);
     }
     return { name, inputs };
@@ -144,14 +145,25 @@ export class Interpreter {
   defineAll(text) {
     const procs = new Map();
     let cur = null, n = -1;
-    for (const raw of text.split('\n')) {
+    const all = text.split('\n');
+    for (const raw of all) {
       n++;
       if (!raw.trim()) continue;
       const tokens = tokenize(raw);
       const first = tokens[0];
       if (first && first.t === 'word' && first.v === 'PROC') {
         if (cur) throw new LogoError('missing_fi');
-        cur = { ...this._title(tokens, false), lines: [], source: [raw.trim().toUpperCase()], span: [n, n], lineNos: [] };
+        let title;
+        try { title = this._title(tokens, false); } catch (e) {
+          // «PROC QUADRAT COSTAT» amb :COSTAT a dins: és una variable sense els dos punts, no part del nom (E6).
+          if (e.params && e.params.namePart) {
+            const end = all.findIndex((l, i) => i > n && /^\s*FI\s*$/i.test(l));
+            const body = all.slice(n + 1, end < 0 ? all.length : end).join('\n').toUpperCase();
+            if (new RegExp(':\\s*' + e.params.namePart.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?![\\w.À-ÿ])').test(body)) delete e.params.namePart;
+          }
+          throw e;
+        }
+        cur = { ...title, lines: [], source: [raw.trim().toUpperCase()], span: [n, n], lineNos: [] };
       } else if (tokens.length === 1 && first.t === 'word' && first.v === 'FI') {
         if (!cur) throw new LogoError('stray_fi');
         // Dos PROC amb el mateix nom: abans valia l'últim sense avisar (revisió 18, B2).
@@ -196,7 +208,12 @@ export class Interpreter {
         const minus = m && m.t === 'op' && m.v === '-' && m.unary && show(before) && show(after) ? { left: show(before), right: show(after) } : null;
         // «COLOR 2»: COLOR diu el color que hi ha ara; per canviar-lo, FES.COLOR (revisió 18, B4).
         const setter = m && m.t === 'word' && SETTERS[m.v] ? { word: m.v, value: after && after.t === 'num' ? fmtNum(after.v) : null } : null;
-        throw new LogoError('unused', { value: fmtValue(v, true), minus, setter });
+        // «REPETEIX 4 [AVANÇA 50] [GIRA.D 90]»: una segona llista just després de la de REPETEIX (owner, revisió 19, E5).
+        let twoLists = false;
+        if (m && m.t === 'list' && before && before.t === 'list') {
+          for (let i = start - 2; i >= 0 && tokens[i].t !== 'list'; i--) if (tokens[i].t === 'word' && tokens[i].v === 'REPETEIX') { twoLists = true; break; }
+        }
+        throw new LogoError('unused', { value: fmtValue(v, true), minus, setter, twoLists });
       }
     }
   }
@@ -385,7 +402,9 @@ export class Interpreter {
       const before = cur.toks[cur.pos - 2];
       const between = !!(before && before.t === 'num' && next && next.t === 'num');
       const frame = this.frames[this.frames.length - 1];
-      throw new LogoError('unknown', { word, between, isVar: !!(frame && frame.vars.has(word)) });   // «AVANÇA COSTAT»
+      // «ESCRIU HOLA»: una paraula sense cometes després d'ESCRIU (owner, revisió 19, E7).
+      const printWord = before && before.t === 'word' && (before.v === 'ESCRIU' || before.v === 'ESCRIU.S') ? before.v : null;
+      throw new LogoError('unknown', { word, between, printWord, isVar: !!(frame && frame.vars.has(word)) });   // «AVANÇA COSTAT»
     }
     const argv = yield* this.args(word, proc.inputs.length, cur,
       (k, got) => new LogoError('proc_inputs', { word, n: proc.inputs.length, inputs: proc.inputs.slice(), given: got.map((v) => fmtValue(v)) }));

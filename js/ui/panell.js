@@ -27,7 +27,7 @@ export class ProcPanel {
       const again = el('button', 'boto panell-torna', 'Torna a començar'); again.type = 'button';
       again.addEventListener('click', () => {
         if (this.monitor && this.monitor.busy) return;
-        if (this.area.value === (opts.initial || '') || window.confirm('Vols tornar a començar? Es perdrà el que has escrit al panell.')) this.resetText();
+        if (this.area.value === (opts.initial || '') || window.confirm('Segur que vols tornar a començar? Pensa que es perdrà tot el que has escrit al panell.')) this.resetText();
       });
       cap.appendChild(again);
     }

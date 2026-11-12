@@ -125,7 +125,7 @@ test('missatges del capítol 5 (owner): els signes de classe per dividir i multi
   assert.deepEqual(message('ESCRIU 3 X 120'), { line1: 'NO SÉ COM FER X', hints: mul });
   assert.deepEqual(message('ESCRIU 3 · 120').hints, mul);
   assert.deepEqual(message('ESCRIU 3x120').hints, mul);
-  assert.deepEqual(message('X').hints, []);                                                  // una X sola no és una multiplicació
+  assert.deepEqual(message('X').hints, ["Si és un procediment teu, primer l'has de definir amb PROC … FI."]);   // revisió 19 (E8): la pista general                                                  // una X sola no és una multiplicació
   assert.deepEqual(run('PROC X\nAVANÇA 10\nFI\nX').r.error, null);                            // i X pot ser un procediment
   assert.deepEqual(run('ESCRIU 360/5').r.prints, ['72']);
   assert.equal(message('ESCRIU 360 / 0').line1, 'NO PUC DIVIDIR ENTRE ZERO');

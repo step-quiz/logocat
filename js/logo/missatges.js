@@ -57,6 +57,19 @@ export function nearest(word, known) {
   return best;
 }
 
+// Una paraula desconeguda que no s'assembla a cap (owner, revisió 19, E8: canvia la regla 1 del catàleg).
+const OWN_PROC = "Si és un procediment teu, primer l'has de definir amb PROC … FI.";
+
+// Paraules del LOGO en anglès, en castellà i altres maneres de dir-ho en català (owner, revisió 19, E1–E3).
+const OTHER_WORDS = Object.fromEntries([
+  ['AVANÇA', 'FD FORWARD ADELANTE AVANZA'], ['RECULA', 'BK BACK ATRAS ATRÁS RETROCEDE'],
+  ['GIRA.D', 'RT RIGHT DERECHA GIRA.DERECHA'], ['GIRA.E', 'LT LEFT IZQUIERDA GIRA.IZQUIERDA'],
+  ['REPETEIX', 'REPEAT REPITE'], ['INI.DIB', 'CS CLEARSCREEN BORRAR LIMPIAR BORRA LIMPIA ESBORRA.TOT'],
+  ['NO.LLAPIS', 'PU PENUP SUBE.LAPIZ AIXECA AIXECA.LLAPIS PUJA.LLAPIS'], ['LLAPIS', 'PD PENDOWN BAJA.LAPIZ BAIXA.LLAPIS'],
+  ['DESAPAREIX', 'HT HIDETURTLE AMAGA AMAGA.TORTUGA OCULTA ESCONDE'], ['APAREIX', 'ST SHOWTURTLE MOSTRA.TORTUGA MUESTRA APARECE'],
+  ['CENTRE', 'HOME CENTRO'], ['ESCRIU', 'PRINT ESCRIBE'], ['PROC', 'TO PROCEDIMIENTO'], ['FI', 'END FIN'], ['ATZAR', 'RANDOM AZAR'],
+].flatMap(([w, list]) => list.split(' ').map((x) => [x, `Volies dir ${w}?`])));
+
 // Colors escrits amb el nom (revisió 18, P5).
 const COLOR_NAMES = new Set(['NEGRE', 'BLANC', 'VERD', 'VIOLETA', 'TARONJA', 'BLAU', 'VERMELL', 'GROC', 'ROSA', 'LILA', 'MARRÓ', 'GRIS', 'MORAT', 'ROIG']);
 
@@ -83,6 +96,14 @@ export function describe(err, known = []) {
       line1 = `NO SÉ COM FER ${p.word}`;
       // Variables sense els dos punts, o amb un espai després dels dos punts (owner, 2026-11-11).
       if (p.isVar) { hints = [`Volies dir :${p.word}? Les variables s'escriuen amb dos punts al davant.`]; break; }
+      // Una lletra dins d'un nombre, o un punt al final (owner, revisió 19, E4).
+      if (/\d/.test(p.word) && /^[\dOLI]+(\.[\dOLI]+)?$/.test(p.word) && /[OLI]/.test(p.word)) {
+        const n = p.word.replace(/O/g, '0').replace(/[LI]/g, '1');
+        const letter = /O/.test(p.word) ? 'la lletra O en lloc del zero' : /L/.test(p.word) ? "la lletra L en lloc de l'u" : "la lletra I en lloc de l'u";
+        hints = [`Volies dir ${n}? Hi has escrit ${letter}.`]; break;
+      }
+      const dot = /^(\d+(?:\.\d+)?)\.$/.exec(p.word);
+      if (dot) { hints = [`Volies dir ${dot[1]}? Els nombres no acaben amb punt.`]; break; }
       // Revisió 18 (owner): claus en lloc de claudàtors (B1), i comes entre ordres (P5).
       if (p.brace || /[{}]/.test(p.word)) { hints = ['Els claudàtors són [ i ], no { i }']; break; }
       if (/[,;]/.test(p.word)) { hints = ['Les ordres se separen amb un espai, sense comes.']; break; }
@@ -110,17 +131,19 @@ export function describe(err, known = []) {
         // Revisió 18 (owner, P5): paraules del català de cada dia.
         'DRETA': 'Volies dir GIRA.D?', 'ESQUERRA': 'Volies dir GIRA.E?', 'ENDAVANT': 'Volies dir AVANÇA?',
         'ENRERE': 'Volies dir RECULA?', 'ENDARRERE': 'Volies dir RECULA?',
-        'ESBORRA': 'Volies dir INI.DIB?', 'NETEJA': 'Volies dir INI.DIB?' }[p.word];
+        'ESBORRA': 'Volies dir INI.DIB?', 'NETEJA': 'Volies dir INI.DIB?',
+        ...OTHER_WORDS }[p.word];
       if (turn) { hints = [turn]; break; }
       // BANDERA.E quan només hi ha BANDERA.D (o al revés): cap pista, que no faci dubtar (owner, cap. 9).
       const de = /^(.+)\.([DE])$/.exec(p.word);
-      if (de && known.includes(de[1] + '.' + (de[2] === 'D' ? 'E' : 'D'))) break;
+      if (de && known.includes(de[1] + '.' + (de[2] === 'D' ? 'E' : 'D'))) { hints = [OWN_PROC]; break; }
       // «AVANÇA50», «GIRA.D90»: una paraula que LOGO coneix, enganxada a un nombre (revisió 18, P4).
       const glued = /^(.*[^\d.])(\d+(?:\.\d+)?)$/.exec(p.word);
       const w = glued && known.find((k) => sameLetters(k, glued[1]));
       if (w) { hints = [`Falta un espai entre ${w} i ${glued[2]}: ${w} ${glued[2]}`]; break; }
       const y = nearest(p.word, known);
-      if (y) hints = [`Volies dir ${y}?`];
+      // Sense cap paraula semblant: després d'ESCRIU, les cometes (E7); si no, la pista general (E8) (owner, revisió 19).
+      hints = [y ? `Volies dir ${y}?` : p.printWord ? `Per escriure una paraula, posa-hi cometes al davant: ${p.printWord} "${p.word}` : OWN_PROC];
       break;
     }
     case 'spaced': line1 = `NO SÉ COM FER ${p.text}`; hints = [`Volies dir ${p.word}? S'escriu amb un punt i sense espai.`]; break;   // (owner)
@@ -135,7 +158,8 @@ export function describe(err, known = []) {
       break;
     case 'unused':
       line1 = `NO SÉ QUÈ FER AMB ${p.value}`;
-      hints = [p.setter ? SETTER_HINT[p.setter.word](p.setter.value)                       // (owner, revisió 18, B4)
+      hints = [p.twoLists ? 'REPETEIX només repeteix una llista: posa totes les ordres dins dels mateixos claudàtors.'   // (owner, revisió 19, E5)
+        : p.setter ? SETTER_HINT[p.setter.word](p.setter.value)                       // (owner, revisió 18, B4)
         : p.minus ? `Per restar, posa un espai a cada costat del signe menys: ${p.minus.left} - ${p.minus.right}`   // (owner, cap. 10)
         : p.sign ? 'LOGO només coneix els signes <, > i ='                               // «>=», «==», «<>» (owner, cap. 11)
         : 'Escriu una ordre, com per exemple AVANÇA 50'];
@@ -171,7 +195,9 @@ export function describe(err, known = []) {
         if (p.inputs) hints.unshift(`Mira la seva línia PROC: PROC ${p.word} ${p.inputs.map((v) => ':' + v).join(' ')}`); }
       break;
     case 'bad_title': line1 = 'A PROC LI FALTA EL NOM'; hints = ['Per exemple: PROC QUADRAT']; break;
-    case 'bad_inputs': line1 = 'LES VARIABLES DE PROC PORTEN DOS PUNTS'; hints = ['Per exemple: PROC QUADRAT :COSTAT']; break;   // (owner)
+    case 'bad_inputs': line1 = 'LES VARIABLES DE PROC PORTEN DOS PUNTS'; hints = ['Per exemple: PROC QUADRAT :COSTAT'];   // (owner)
+      if (p.namePart) hints.push(`Si ${p.namePart} és part del nom, ha de ser una sola paraula: PROC ${p.name}.${p.namePart}`);   // (owner, revisió 19, E6)
+      break;
     case 'div_zero': line1 = 'NO PUC DIVIDIR ENTRE ZERO'; break;
     case 'fence':
       line1 = 'LA TORTUGA NO POT SORTIR DE LA PANTALLA';
