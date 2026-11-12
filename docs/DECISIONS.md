@@ -56,8 +56,8 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 8 | Cercles i arcs | Student-built `CERCLE :PAS`, `ARC :PAS :GRAUS` (the 1985 vocabulary has no circle primitive) | The turtle walks round (tiny step, tiny turn); full turn = circle, part of it = arc. NOT a many-sided polygon, NO π (owner, review 10) |
 | 9 | Simetria | No new words; swap `GIRA.D`/`GIRA.E`; student names with a dot (`BANDERA.D`/`BANDERA.E`) | Turning a figure (gir) and mirror symmetry (simetria, eix de simetria). Tessellations moved to the final challenges chapter (owner, review 11) |
 | 10 | Quadrilàters (renamed by the owner, review 12) | `ARREL2` | Parallelograms only (square, rectangle, rhombus, rhomboid): consecutive angles add to 180, opposite angles equal; the trapezoid in one sentence; Pythagoras for the square's diagonal. Isosceles/right triangles and the kite were dropped (owner) |
-| 11 | Decisions i atzar | `SI [ ... ]`, `ACABA`, `POSA.A`, `ATZAR`, `RETORNA`, `ESCRIU` | Conditions, random walk, frequencies |
-| 12 | Recursivitat | Self-calling procedure with a stop rule | Spirals (sequences), fractals (self-similarity) |
+| 11 | Decisions i atzar | `ATZAR`, `SI cond [ ... ] [ ... ]`, `<` `>` `=` (owner, review 13: `ACABA` moved to chapter 12; `POSA.A` and `RETORNA` to the challenges chapter or the glossary) | Random numbers (a die, a coin), conditions, random walk, frequencies as a bar chart drawn by the turtle |
+| 12 | Recursivitat | Self-calling procedure with a stop rule; `ACABA` (moved here from chapter 11) | Spirals (sequences), fractals (self-similarity) |
 
 Chapter 10 replaced an originally proposed "Coordenades" chapter. Coordinate words
 (`FES.XY`, `COOR.X` ...) are not taught; the engine may still implement them.
@@ -409,11 +409,36 @@ del quadrat → quiz → key exercise "El rombe de 70 graus" → summary, bridge
 - **Half on one line, twice (owner, G5):** `REPETEIX 2 [...]` does not fit 52 characters.
 - Messages: see `LANGUAGE-SPEC.md` §8 (chapter 10 block).
 
+## 8k. Chapter 11 «Decisions i atzar» (script approved 2026-11-12; built)
+
+Review artifact "Revisió 13 del guió del capítol 11" (slug
+`3939c5f6-2bb8-4a39-b158-20bd38a9dc5e`; 15 points, all approved with the recommended
+options). Order: Un dau → Un passeig a l'atzar → Decisions (`SI`, `MONEDA`) → "Què
+dibuixarà?" → find-the-bug "El cercle que no hi cap" → Cares i creus → quiz → key exercise
+"El quadrat que hi cap" → summary, bridge to chapter 12.
+
+- **Words (owner, G2 A):** only `ATZAR` and `SI`. No quoted words in the course yet.
+- **`ATZAR N` first (owner, comment on G4 and S1):** before `SI`, explain very clearly
+  that `ATZAR N` gives a number of {0, 1, …, N − 1}: N possible results, N never comes out,
+  because counting starts at 0; `ATZAR 2` gives only 0 or 1. A test checks the order.
+- **No randomness in exercises (owner, G3 A):** Comprova runs the reference with a fixed
+  `ATZAR` and the student with real randomness, so random drawings cannot be compared.
+  Chapter 11 therefore has 2 exercises, not 3.
+- **The `ATZAR 2 = 0` trap (owner, G4 A):** in Logo a prefix word takes the whole infix
+  expression after it, so `SI ATZAR 2 = 0 [...]` gives `ATZAR` the value `FALS`. Kept as
+  in Apple Logo; taught as `SI (ATZAR 2) = 0 [...]`, with a hint on the error.
+- **Second list of `SI` (owner, G5):** taught from the start. Frozen sentence: «La segona
+  llista és el que fa la tortuga si la condició no es compleix.» Also frozen: «Si tires
+  una moneda moltes vegades, surt cara més o menys la meitat de les vegades. Però no saps
+  mai quantes exactament.»
+- Messages: see `LANGUAGE-SPEC.md` §8 (chapter 11 block).
+
 ## 9. Next step
 
-Chapters 1–10 and the Editor lliure are delivered. Next: the script of chapter 11
-(«Decisions i atzar»), same review flow; then family integration once `step-quiz-commons`
-is available. No open questions are pending for the owner as of v0.14.
+Chapters 1–11 and the Editor lliure are delivered. Next: the script of chapter 12
+(«Recursivitat», with `ACABA`), same review flow; then the final challenges chapter if the
+owner wants it, and family integration once `step-quiz-commons` is available. No open
+questions are pending for the owner as of v0.15.
 
 ## 10. Sources and records
 

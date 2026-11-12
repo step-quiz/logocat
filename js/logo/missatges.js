@@ -78,7 +78,12 @@ export function describe(err, known = []) {
       const sq = /^(\d+(?:\.\d+)?)²$/.exec(p.word);
       if (sq) { hints = [`Per elevar al quadrat, multiplica: ${sq[1]} * ${sq[1]}`]; break; }
       const turn = { 'GIRA.I': "Volies dir GIRA.E? E d'esquerra.", 'GIRA': 'Volies dir GIRA.D o GIRA.E?',
-        'GIRA.DRETA': 'Volies dir GIRA.D?', 'GIRA.ESQUERRA': 'Volies dir GIRA.E?' }[p.word];
+        'GIRA.DRETA': 'Volies dir GIRA.D?', 'GIRA.ESQUERRA': 'Volies dir GIRA.E?',
+        // Capítol 11 (owner): el «si no», signes que LOGO no té, i paraules d'altres llengües.
+        'SINO': "No cal escriure SINO: la segona llista ja és el que es fa si no es compleix.",
+        'SI.NO': "No cal escriure SINO: la segona llista ja és el que es fa si no es compleix.",
+        '≥': 'LOGO només coneix els signes <, > i =', '≤': 'LOGO només coneix els signes <, > i =', '≠': 'LOGO només coneix els signes <, > i =',
+        'IF': 'Volies dir SI?', 'ALEATORI': 'Volies dir ATZAR?' }[p.word];
       if (turn) { hints = [turn]; break; }
       // BANDERA.E quan només hi ha BANDERA.D (o al revés): cap pista, que no faci dubtar (owner, cap. 9).
       const de = /^(.+)\.([DE])$/.exec(p.word);
@@ -96,6 +101,7 @@ export function describe(err, known = []) {
     case 'unused':
       line1 = `NO SÉ QUÈ FER AMB ${p.value}`;
       hints = [p.minus ? `Per restar, posa un espai a cada costat del signe menys: ${p.minus.left} - ${p.minus.right}`   // (owner, cap. 10)
+        : p.sign ? 'LOGO només coneix els signes <, > i ='                               // «>=», «==», «<>» (owner, cap. 11)
         : 'Escriu una ordre, com per exemple AVANÇA 50'];
       break;
     case 'bad_input':
@@ -103,6 +109,8 @@ export function describe(err, known = []) {
       hints = [p.want === 'c' ? 'Els colors van del 0 al 5'                    // (owner)
         : p.negative ? `${p.word} no pot repetir un nombre negatiu de vegades`   // (owner, cap. 8)
         : p.root ? "ARREL2 no pot fer l'arrel d'un nombre negatiu"                 // (owner, cap. 10)
+        : p.paren ? `Posa ${p.word} ${p.paren.left} entre parèntesis: (${p.word} ${p.paren.left}) ${p.paren.op} ${p.paren.right}`   // (owner, cap. 11)
+        : p.min1 ? `${p.word} vol un nombre més gran que 0`                            // (owner, cap. 11)
         : p.want === 'l' ? `${p.word} vol una llista entre claudàtors`
         : p.want === 'b' ? `${p.word} vol una condició, com ara :N > 10`
           : p.isList ? `${p.word} vol un nombre, sense claudàtor` : `${p.word} vol un nombre`];

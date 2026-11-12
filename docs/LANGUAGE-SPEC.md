@@ -237,6 +237,14 @@ negative keeps `A ARREL2 NO LI AGRADA -4` with the hint `ARREL2 no pot fer l'arr
 nombre negatiu`. A number with `²` (`50²`) → `NO SÉ COM FER 50²` / `Per elevar al quadrat,
 multiplica: 50 * 50`.
 
+Approved by the owner on 2026-11-12 (chapter 11, review 13). A number input that receives
+`CERT`/`FALS` from a comparison written right after the word (`ATZAR 2 = 0`) keeps `A ATZAR
+NO LI AGRADA FALS` with the hint `Posa ATZAR 2 entre parèntesis: (ATZAR 2) = 0` (built from
+the tokens; any prefix word). `ATZAR 0` (or less) → `ATZAR vol un nombre més gran que 0`.
+`SINO` / `SI.NO` → `No cal escriure SINO: la segona llista ja és el que es fa si no es
+compleix.` Signs Logo does not have (`>=`, `=>`, `==`, `<>`, `≥`, `≤`, `≠`) → `LOGO només
+coneix els signes <, > i =`. `IF` → `Volies dir SI?`; `ALEATORI` → `Volies dir ATZAR?`.
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 

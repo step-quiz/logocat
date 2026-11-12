@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 11 · Decisions i atzar — LogoCat</title>
+<meta name="description" content="Onzè capítol de LogoCat: nombres a l'atzar, decisions amb SI i freqüències.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 11</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 11</p>
+    <h1>Decisions i atzar</h1>
+  </div>
+
+  <section>
+    <h2>Un dau</h2>
+    <p><code>ATZAR 6</code> dona un nombre a l'atzar. Prova-ho unes quantes vegades:</p>
+    <pre class="codi">ESCRIU ATZAR 6</pre>
+    <p>Només pot sortir un d'aquests sis nombres: 0, 1, 2, 3, 4 o 5. El 6 no surt mai. Hi ha sis resultats possibles, però es comença a comptar pel 0.</p>
+    <p>En general, <code>ATZAR N</code> dona un nombre del conjunt {0, 1, …, N − 1}: hi ha N resultats possibles, i el N no surt mai.</p>
+    <p>Per exemple, <code>ATZAR 2</code> només pot donar 0 o 1. És com tirar una moneda: el 0 és cara i l'1 és creu. Prova <code>ESCRIU ATZAR 2</code> unes quantes vegades.</p>
+    <p>I per fer un dau, de l'1 al 6, s'hi suma 1:</p>
+    <pre class="codi">ESCRIU 1 + ATZAR 6</pre>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2>Un passeig a l'atzar</h2>
+    <p>Ara la tortuga avança un pas curt i gira un angle a l'atzar, 300 vegades:</p>
+    <pre class="codi">REPETEIX 300 [AVANÇA 4 GIRA.D ATZAR 360]</pre>
+    <p>Prova-ho més d'una vegada: cada vegada surt un camí diferent. Per què creus que la tortuga no se'n va gaire lluny?</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2>Decisions</h2>
+    <p><code>SI</code> mira una condició. Si es compleix, la tortuga fa la primera llista:</p>
+    <pre class="codi">SI 3 &gt; 5 [AVANÇA 50] [GIRA.D 90 AVANÇA 50]</pre>
+    <p>La segona llista és el que fa la tortuga si la condició no es compleix.</p>
+    <p>Les condicions es fan amb els signes <code>&lt;</code>, <code>&gt;</code> i <code>=</code>. Prova <code>ESCRIU 3 &gt; 5</code>: escriu <code>FALS</code>. I <code>ESCRIU 3 = 3</code> escriu <code>CERT</code>.</p>
+    <p>Ara, la moneda. Al panell hi ha <code>MONEDA</code>: la tortuga avança 8 i, si surt cara, gira a la dreta; si surt creu, a l'esquerra.</p>
+    <pre class="codi">PROC MONEDA
+  AVANÇA 8
+  SI (ATZAR 2) = 0 [GIRA.D 90] [GIRA.E 90]
+FI</pre>
+    <p>Els parèntesis fan que primer es tiri la moneda, <code>(ATZAR 2)</code>, i després es compari amb 0. Prova <code>REPETEIX 200 [MONEDA]</code>.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC MONEDA
+  AVANÇA 8
+  SI (ATZAR 2) = 0 [GIRA.D 90] [GIRA.E 90]
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>La tortuga és al centre i mira amunt. Sense executar res, tria què dibuixarà aquesta línia.</p>
+    <div class="prediu" data-id="cap11-prediu">
+      <pre class="codi">SI 3 &gt; 5 [AVANÇA 50] [GIRA.D 90 AVANÇA 50]</pre>
+      <script type="text/logo" data-correcta data-perque="3 no és més gran que 5: la tortuga fa la segona llista.">
+GIRA.D 90 AVANÇA 50
+</script>
+      <script type="text/logo" data-perque="Aquesta és la primera llista, però 3 no és més gran que 5.">
+AVANÇA 50
+</script>
+      <script type="text/logo" data-perque="La tortuga no fa mai les dues llistes: o l'una o l'altra.">
+AVANÇA 50 GIRA.D 90 AVANÇA 50
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El cercle que no hi cap</h2>
+    <p>Al capítol 8, <code>CERCLE 2</code> no hi cabia. <code>CERCLE.SEGUR</code> hauria de fer <code>CERCLE 1</code> quan el pas és més gran que 1, però amb <code>CERCLE.SEGUR 2</code> el cercle continua sense cabre. Prova-ho.</p>
+    <p>Troba l'error i corregeix-lo. Quan premis «Comprova», la tortuga farà <code>CERCLE.SEGUR 2</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap11-error" data-panell data-executa="CERCLE.SEGUR 2" data-comprova="dibuix"
+         data-si-falla="Encara no. Quan el pas és més gran que 1, quin signe ha de fer servir SI?">
+      <script type="text/logo-panell">
+PROC CERCLE :PAS
+  REPETEIX 360 [AVANÇA :PAS GIRA.D 1]
+FI
+
+PROC CERCLE.SEGUR :PAS
+  SI :PAS < 1 [CERCLE 1] [CERCLE :PAS]
+FI
+</script>
+      <script type="text/logo">
+PROC CERCLE :PAS
+  REPETEIX 360 [AVANÇA :PAS GIRA.D 1]
+FI
+PROC CERCLE.SEGUR :PAS
+  SI :PAS > 1 [CERCLE 1] [CERCLE :PAS]
+FI
+CERCLE.SEGUR 2
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cares i creus</h2>
+    <p>Al panell hi ha <code>REGLE</code>, una ratlla de 100 passos amb una marca cada 10, i <code>CURSA</code>: la tortuga tira 100 monedes i avança un pas per cada cara. La ratlla que deixa fa tants passos com cares han sortit.</p>
+    <p>Fes <code>REGLE</code>, i després <code>CURSA 10</code>, <code>CURSA 20</code>, <code>CURSA 30</code>… Cada cursa fa una barra al costat de l'anterior.</p>
+    <p>Si tires una moneda moltes vegades, surt cara més o menys la meitat de les vegades. Però no saps mai quantes exactament.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC MARCA
+  GIRA.E 90 AVANÇA 5 RECULA 5 GIRA.D 90
+FI
+
+PROC REGLE
+  REPETEIX 10 [AVANÇA 10 MARCA]
+  RECULA 100
+FI
+
+PROC CURSA :LLOC
+  NO.LLAPIS GIRA.D 90 AVANÇA :LLOC GIRA.E 90 LLAPIS
+  REPETEIX 100 [SI (ATZAR 2) = 0 [AVANÇA 1]]
+  CENTRE
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap11-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. Quins nombres pot donar ATZAR 6?</legend>
+        <label><input type="radio"> De l'1 al 6</label>
+        <label><input type="radio"> Del 0 al 5</label>
+        <label><input type="radio"> Del 0 al 6</label>
+        <p class="explicacio" hidden>Sis resultats possibles, començant pel 0: 0, 1, 2, 3, 4 i 5. El 6 no surt mai.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="0">
+        <legend>2. Què fa SI 5 &gt; 3 [AVANÇA 50] [RECULA 50]?</legend>
+        <label><input type="radio"> Avança 50</label>
+        <label><input type="radio"> Recula 50</label>
+        <label><input type="radio"> Avança 50 i després recula 50</label>
+        <p class="explicacio" hidden>5 és més gran que 3: la condició es compleix i la tortuga fa la primera llista.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. Tires una moneda 100 vegades. Quantes cares surten?</legend>
+        <label><input type="radio"> Exactament 50</label>
+        <label><input type="radio"> Unes 50, però cada vegada un nombre diferent</label>
+        <label><input type="radio"> Cap a 100</label>
+        <p class="explicacio" hidden>Com a les barres de la cursa: totes fan unes 50, i cap no és igual.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El quadrat que hi cap</h2>
+    <p>Al panell ja hi ha <code>QUADRAT</code>. Defineix <code>QUADRAT.SEGUR</code> amb una variable, el costat: si el costat és més gran que 100, ha de fer un quadrat de 100; si no, un quadrat del costat que li diguis.</p>
+    <p><code>QUADRAT.SEGUR</code> ha de fer servir <code>SI</code> i ha de deixar la tortuga com l'ha trobada. Quan premis «Comprova», la tortuga farà <code>QUADRAT.SEGUR 150</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap11-quadrat" data-clau data-panell data-executa="QUADRAT.SEGUR 150" data-comprova="dibuix+tortuga" data-exigeix="SI"
+         data-si-falla="Mira quins traços sobren i quins falten. Amb 150, el costat és més gran que 100: quin quadrat ha de fer?">
+      <script type="text/logo-panell">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+</script>
+      <script type="text/logo">
+PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI
+PROC QUADRAT.SEGUR :COSTAT
+  SI :COSTAT > 100 [QUADRAT 100] [QUADRAT :COSTAT]
+FI
+QUADRAT.SEGUR 150
+</script>
+      <script type="text/logo">
+PROC QE :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.E 90]
+FI
+PROC QUADRAT.SEGUR :COSTAT
+  SI :COSTAT > 100 [QE 100] [QE :COSTAT]
+FI
+QUADRAT.SEGUR 150
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>ATZAR N dona un nombre a l'atzar del 0 al N − 1: hi ha N resultats possibles.</li>
+      <li>SI fa la primera llista si la condició es compleix, i la segona si no.</li>
+      <li>Si tires una moneda moltes vegades, surt cara més o menys la meitat de les vegades.</li>
+    </ul>
+    <p>Al capítol següent, un procediment que es fa servir a si mateix. I amb SI, sabrà quan s'ha d'aturar.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-10.html">← Capítol 10 · Quadrilàters</a> · Capítol 12: en preparació.</p>
+
+</main>
+</body>
+</html>

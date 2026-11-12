@@ -245,7 +245,8 @@ export class Interpreter {
       }
       case 'rp': throw new LogoError('stray_paren');
       case 'op': {
-        if (tok.v !== '-') throw new LogoError('unused', { value: tok.v });
+        // «3 >= 5», «3 == 5», «3 <> 5»: dos signes seguits (owner, cap. 11).
+        if (tok.v !== '-') { const prev = cur.toks[cur.pos - 2]; throw new LogoError('unused', { value: tok.v, sign: '<>='.includes(tok.v) && prev && prev.t === 'op' && '<>='.includes(prev.v) }); }
         if (cur.pos >= cur.toks.length) throw new LogoError('unused', { value: '-' });
         const v = yield* this.primary(cur);
         if (typeof v !== 'number') throw new LogoError('bad_input', { word: '-', value: fmtValue(v, true), isList: !!(v && v.list) });
@@ -272,9 +273,11 @@ export class Interpreter {
 
   *args(word, n, cur, onMissing) {
     const out = [];
+    out.starts = [];
     for (let k = 0; k < n; k++) {
       const next = cur.toks[cur.pos];
       if (!next || next.t === 'rp') throw onMissing(k, out);
+      out.starts.push(cur.pos);
       const v = yield* this.expr(cur, 0);
       if (v === undefined) throw new LogoError('no_output', { word: cur.last });
       out.push(v);
@@ -303,7 +306,16 @@ export class Interpreter {
       const argv = yield* this.args(word, types.length, cur, (k) => new LogoError('missing_input', {
         word, want: types[k], example: prim.example || `${word} 50`,
       }));
-      argv.forEach((v, k) => check(word, types[k], v));
+      argv.forEach((v, k) => {
+        // «ATZAR 2 = 0»: la paraula s'ha quedat amb la comparació sencera (owner, cap. 11).
+        if (types[k] === 'n' && typeof v === 'boolean') {
+          const t = cur.toks, s = argv.starts[k], show = (x) => x && (x.t === 'num' ? fmtNum(x.v) : x.t === 'var' ? ':' + x.v : null);
+          if (show(t[s]) && t[s + 1] && t[s + 1].t === 'op' && '<>='.includes(t[s + 1].v) && show(t[s + 2])) {
+            throw new LogoError('bad_input', { word, value: fmtValue(v, true), want: 'n', paren: { left: show(t[s]), op: t[s + 1].v, right: show(t[s + 2]) } });
+          }
+        }
+        check(word, types[k], v);
+      });
       if (prim.opt && cur.toks[cur.pos] && cur.toks[cur.pos].t === 'list') {
         argv.push({ list: cur.toks[cur.pos].v, src: cur.toks[cur.pos].src }); cur.pos++;
       }
@@ -459,7 +471,7 @@ function buildPrimitives(I) {
   op('NO', 'b', (p) => !p);
   op('CERTS.TOTS', 'bb', (p, q) => p && q);
   op('CERT.ALGUN', 'bb', (p, q) => p || q);
-  P.ATZAR = { types: 'n', example: 'ATZAR 6', *run([n], w) { if (n < 1) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n' }); return Math.floor(I.rng() * Math.floor(n)); } };
+  P.ATZAR = { types: 'n', example: 'ATZAR 6', *run([n], w) { if (n < 1) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n', min1: true }); return Math.floor(I.rng() * Math.floor(n)); } };
   P.ARREL2 = { types: 'n', example: 'ARREL2 25', *run([n], w) { if (n < 0) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n', root: true }); return Math.sqrt(n); } };
   op('SIN', 'n', (a) => Math.sin(a * Math.PI / 180));
   op('COS', 'n', (a) => Math.cos(a * Math.PI / 180));

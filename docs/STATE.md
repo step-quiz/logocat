@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-12 (v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
+> Last update: 2026-11-12 (v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -121,7 +121,18 @@
   solution listed), find-the-bug "El romboide que no tanca" (both turns 60; `ROMBOIDE 80
   50`, drawing), key exercise "El rombe de 70 graus" (`ROMBE 60`; the second turn, 110, must
   be computed; drawing + pose, mirrored solution listed).
-- **Version label**: `index.html` shows `v0.14` fixed at the bottom-right (`.versio`); a
+- **Chapter 11** (`curs/capitol-11.html`, «Decisions i atzar»): approved script (review
+  13), 6 simulators with panel (4 for examples, 2 exercises), "Què dibuixarà?", quiz. New
+  words `ATZAR` and `SI` (with optional second list), signs `<`, `>`, `=`, and the words
+  `CERT`/`FALS` shown by `ESCRIU 3 > 5`. `ATZAR N` is explained FIRST, before `SI`: the set
+  {0, 1, …, N − 1}, N possible results, N never comes out, `ATZAR 2` gives only 0 or 1
+  (0 = heads). Coin flips are taught with parentheses: `SI (ATZAR 2) = 0 [...]`. Sections:
+  a die, a random walk, decisions (`MONEDA`), "Cares i creus" (`REGLE` + `CURSA :LLOC`:
+  a bar chart of heads in 100 flips). Exercises never use `ATZAR` (Comprova cannot compare
+  random drawings): find-the-bug "El cercle que no hi cap" (`CERCLE.SEGUR 2`, sign reversed;
+  drawing) and key exercise "El quadrat que hi cap" (`QUADRAT.SEGUR 150`, must use `SI`;
+  drawing + pose; mirrored solution listed).
+- **Version label**: `index.html` shows `v0.15` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -149,7 +160,7 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 103 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+- **Tests**: 110 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
   headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
   console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
   (every verdict of the three exercises, chapter tick, the new messages, the flower), and
@@ -159,7 +170,9 @@
   chapter tick, the new hints at the `?` line) and every reference solution of chapters
   1–9 re-checked through Comprova after the engine changes. v0.14: same for chapter 10
   (every verdict, chapter tick, `ARREL2` and the new hints at the `?` line) and for every
-  reference solution of chapters 1–10. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+  reference solution of chapters 1–10. v0.15: same for chapter 11 (both exercises, every
+  verdict, chapter tick, the new hints, the random walk, the coin and the bar chart) and
+  for every reference solution of chapters 1–11. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
@@ -167,7 +180,7 @@
 
 ## Not built yet
 
-- **Chapters 11–12**, a final challenges chapter (nested `REPETEIX`, mosaics), glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
+- **Chapter 12**, a final challenges chapter (nested `REPETEIX`, mosaics; maybe `POSA.A`, `RETORNA`), glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
   go there, not in a chapter), teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
