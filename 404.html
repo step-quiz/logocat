@@ -6,8 +6,27 @@
 <title>Pàgina no trobada — LogoCat</title>
 <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/css/logocat.css">
+<script>
+(function () {
+  var t = null;
+  try { t = localStorage.getItem("logocat-tema"); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="/js/curs/tema-pagina.js"></script>
 </head>
 <body>
+<header class="barra">
+  <a class="barra-logo" href="/index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <span class="barra-espai"></span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
 <main class="portada">
   <h1>NO SÉ COM ARRIBAR A AQUESTA PÀGINA</h1>
   <p>L'adreça no existeix. <a href="/index.html">Torna a la portada de LogoCat</a>.</p>

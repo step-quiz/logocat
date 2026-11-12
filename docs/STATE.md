@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-12 (v0.19: challenges «Reptes», 3 levels; v0.18: Step Quiz family integration; v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
+> Last update: 2026-11-12 (v0.20: final review (review 18): engine fixes, new messages, tablet key bar, saved exercise panels, files in the Editor lliure, browser tests; v0.19: challenges «Reptes», 3 levels; v0.18: Step Quiz family integration; v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -161,7 +161,8 @@
   before «Glossari») and the footer are on the index, the chapters and the glossary; the
   Editor lliure has neither (its bar has only ~100 px free at 1366 px; footer would add a
   scrollbar). No certificate and no shared `progress.js` (owner: LogoCat, like HTMLCat, is
-  outside the KarelCat → PyCat → JSCat chain); no touch key bar. The workflow
+  outside the KarelCat → PyCat → JSCat chain); commons' key bar is not used (LogoCat has its
+  own, `js/ui/tecles.js`, review 18). The workflow
   `.github/workflows/comuns.yml` must be created by the owner from the GitHub web (ZIPs ignore
   `.github/`). Pending outside this repo: HTMLCat has its own ES-module `family.js` and
   must add LogoCat there by hand (it already receives `logocat.svg`).
@@ -172,7 +173,19 @@
   the engine). Index section `#reptes` with per-level counters (`js/curs/portada.js`).
   Tests: `tests/unit/reptes.test.mjs` (reference solutions, empty panel fails, typical
   mistakes fail, a mirrored `FLOR` and a nested-`REPETEIX` `MOSAIC` pass).
-- **Version label**: `index.html` shows `v0.19` fixed at the bottom-right (`.versio`); a
+- **Final review** (review 18, DECISIONS §8p, v0.20): bracket/brace/duplicate-PROC/
+  setter/glued-number/comma/colour-name messages (LANGUAGE-SPEC §8, block "review 18");
+  every `REPETEIX` iteration counts as a step; wrap moves capped at 500 pieces; retraced
+  ink compared once (a 4 000-segment retrace now compares in milliseconds); accent hint at
+  «Comprova»; compact Editor lliure bar below 1340 px; theme button on every page; index
+  «✓ fet» per chapter; quiz options shuffled; chapter 7 key exercise with three variables
+  (`ESTRELLA 7 3 60`); «Ja pots fer els reptes del nivell N →» in chapters 7, 9 and 12;
+  exercise panels saved per `data-id` with «Torna a començar»; Editor lliure «Desa en un
+  fitxer», «Obre un fitxer», «Desa el dibuix»; touch key bar (`js/ui/tecles.js`).
+  Tests: `tests/unit/revisio18.test.mjs` and the browser suite `tests/navegador/prova.mjs`
+  (150 checks: 19 pages × 4 screen sizes, every exercise and challenge through
+  «Comprova», the review-18 behaviours).
+- **Version label**: `index.html` shows `v0.20` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -200,7 +213,7 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 131 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+- **Tests**: 139 passing (`node --test tests/unit/*.test.mjs`), plus the browser suite (`node tests/navegador/prova.mjs`, 150 checks, all passing on 2026-11-12). Manual browser runs in
   headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
   console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
   (every verdict of the three exercises, chapter tick, the new messages, the flower), and
@@ -224,11 +237,16 @@
 
 ## Not built yet
 
-- Teacher guide (only when the owner asks). No certificate (owner, review 16).
-- **Browser tests in CI.** Only Node unit tests run in CI.
-- **Workspace autosave** (spec §4) is partial: the Editor lliure keeps its procedures;
-  drawings, variables and command history are lost on reload everywhere, and embedded
-  simulators keep nothing.
+- **Review 19** (published, waiting for the owner; DECISIONS §9): «Una pista» / «Una altra
+  pista» for the 34 chapter exercises (68 texts, P6 B), the extended list of hints for
+  frequent mistakes (P5), the new texts of v0.20. Build after the owner's answers.
+- **Teacher guide**: draft Claude doc (DECISIONS §8p, M4); final form after the owner's
+  review. No certificate (owner, review 16).
+- **Browser tests in CI**: the suite exists; the CI job runs once the owner replaces
+  `.github/workflows/ci.yml` on github.com with the version given in the v0.20 delivery
+  (ZIPs cannot change `.github/`).
+- **Workspace autosave** (spec §4) is partial: the Editor lliure and every exercise panel
+  keep their procedures; drawings, variables and command history are lost on reload.
 
 ## Known deviations and open points
 
@@ -242,6 +260,10 @@
 - References to the 1980s: the two approved earlier stay (`curs/capitol-1.html`, history
   sentence; `index.html`, intro and meta description) — owner, 2026-11-11. Do not add new
   ones in chapter text (owner rejected one in chapter 3).
+- Touch key bar and the tablet focus rule (review 18, U4/U5) were tested only with Chrome's
+  touch emulation, never on a real tablet: the virtual keyboard cannot be emulated.
+- Chapter 7 key exercise: with a third variable called `:COSTAT` the `REPETEIX` line is 56
+  characters; the panel shows 54, so it scrolls 2 characters sideways.
 - "El carrer" (chapter 4): the complete answer is 19 panel lines, so the panel shows its
   thin vertical scrollbar at 1366 × 625 (about 14 lines fit).
 - Nested `REPETEIX` is taught in no regular chapter (rejected for chapters 2, 3 and 5). The

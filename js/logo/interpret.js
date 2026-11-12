@@ -22,6 +22,7 @@ class StopSignal { constructor(value) { this.value = value; } }
 
 const PREC = { '=': 1, '<': 1, '>': 1, '+': 2, '-': 2, '*': 3, '/': 3 };
 const OPPOSITE = { 'AVANÇA': 'RECULA', 'RECULA': 'AVANÇA', 'GIRA.D': 'GIRA.E', 'GIRA.E': 'GIRA.D' };
+const SETTERS = { 'COLOR': true, 'FONS': true, 'ORIENTACIÓ': true };
 
 export class Interpreter {
   constructor({ rng = Math.random } = {}) {
@@ -153,6 +154,8 @@ export class Interpreter {
         cur = { ...this._title(tokens, false), lines: [], source: [raw.trim().toUpperCase()], span: [n, n], lineNos: [] };
       } else if (tokens.length === 1 && first.t === 'word' && first.v === 'FI') {
         if (!cur) throw new LogoError('stray_fi');
+        // Dos PROC amb el mateix nom: abans valia l'últim sense avisar (revisió 18, B2).
+        if (procs.has(cur.name)) throw new LogoError('duplicate_proc', { word: cur.name });
         cur.source.push('FI'); cur.span[1] = n; procs.set(cur.name, cur); cur = null;
       } else {
         if (!cur) throw new LogoError('outside_proc', { text: raw.trim().toUpperCase() });
@@ -174,6 +177,7 @@ export class Interpreter {
         const between = !!(a && a.t === 'num' && b && b.t === 'num');
         if (t.v === ':' && b && b.t === 'word') throw new LogoError('unknown', { word: ':', colonName: b.v });   // «: COSTAT»
         if (/[:÷·×]/.test(t.v) || /^\d+(\.\d+)?X\d+(\.\d+)?$/.test(t.v) || (t.v === 'X' && between)) throw new LogoError('unknown', { word: t.v, between });
+        if (/[{}]/.test(t.v)) throw new LogoError('unknown', { word: t.v, brace: true });   // «REPETEIX 4 {AVANÇA 50}» (revisió 18, B1)
       }
     });
     this._scanned.add(tokens);
@@ -190,7 +194,9 @@ export class Interpreter {
         const m = tokens[start], before = tokens[start - 1], after = tokens[start + 1];
         const show = (t) => t && (t.t === 'num' ? fmtNum(t.v) : t.t === 'var' ? ':' + t.v : t.t === 'word' ? t.v : null);
         const minus = m && m.t === 'op' && m.v === '-' && m.unary && show(before) && show(after) ? { left: show(before), right: show(after) } : null;
-        throw new LogoError('unused', { value: fmtValue(v, true), minus });
+        // «COLOR 2»: COLOR diu el color que hi ha ara; per canviar-lo, FES.COLOR (revisió 18, B4).
+        const setter = m && m.t === 'word' && SETTERS[m.v] ? { word: m.v, value: after && after.t === 'num' ? fmtNum(after.v) : null } : null;
+        throw new LogoError('unused', { value: fmtValue(v, true), minus, setter });
       }
     }
   }
@@ -289,7 +295,22 @@ export class Interpreter {
     return { recursive: name, input: proc && proc.inputs.length ? proc.inputs[0] : null };
   }
 
-  *args(word, n, cur, onMissing) {
+  /** La paraula és una ordre de LOGO o un procediment, i no una operació que dona un valor? */
+  _isCommand(word) {
+    const p = this.prims[word];
+    return p ? 'step' in p : this.procs.has(word);
+  }
+
+  /** «REPETEIX 4 AVANÇA 50» → «REPETEIX 4 [AVANÇA 50]»: la línia de l'alumne amb els claudàtors al seu lloc. */
+  _bracketed(cur, wordAt, listAt) {
+    const src = cur.src || '', toks = cur.toks;
+    const head = src.slice(toks[wordAt].pos[0], toks[listAt].pos[0]).trim();
+    let rest = src.slice(toks[listAt].pos[0], toks[toks.length - 1].pos[1]).trim();
+    if (rest.startsWith('(') && rest.endsWith(')')) rest = rest.slice(1, -1).trim();
+    return (head + ' [' + rest + ']').replace(/\s+/g, ' ').toUpperCase();
+  }
+
+  *args(word, n, cur, onMissing, types = '') {
     const out = [];
     out.starts = [];
     const from = cur.pos;
@@ -303,6 +324,11 @@ export class Interpreter {
         const cond = cur.toks.slice(from, cur.pos).map(show);
         if (e.params && !cond.includes(null)) e.params.bareStop = cond.join(' ');
         throw e;
+      }
+      // «REPETEIX 4 AVANÇA 50», «REPETEIX 4 (AVANÇA 50)», «SI 3 > 2 AVANÇA 50»: abans es feia
+      // la primera ordre i després sortia un missatge que no s'entenia (revisió 18, B1).
+      if (types[k] === 'l' && (next.t === 'lp' || (next.t === 'word' && this._isCommand(next.v)))) {
+        throw new LogoError('missing_input', { word, want: 'l', brackets: this._bracketed(cur, from - 1, cur.pos) });
       }
       out.starts.push(cur.pos);
       const v = yield* this.expr(cur, 0);
@@ -332,7 +358,7 @@ export class Interpreter {
       const types = prim.types || '';
       const argv = yield* this.args(word, types.length, cur, (k) => new LogoError('missing_input', {
         word, want: types[k], example: prim.example || `${word} 50`,
-      }));
+      }), types);
       argv.forEach((v, k) => {
         // «ATZAR 2 = 0»: la paraula s'ha quedat amb la comparació sencera (owner, cap. 11).
         if (types[k] === 'n' && typeof v === 'boolean') {
@@ -478,7 +504,10 @@ function buildPrimitives(I) {
     I.trail.push(entry);
     const mark = I.trail.length;
     try {
-      for (let k = 0; k < times; k++) { entry.k = k + 1; yield* I.runList(body.list); }
+      for (let k = 0; k < times; k++) {
+        if (++I.steps > MAX_STEPS) throw I._limit();     // també les voltes buides: «REPETEIX 1000000000 []» (revisió 18, B5)
+        entry.k = k + 1; yield* I.runList(body.list);
+      }
     } finally { I.trail.length = mark - 1; }
   }, { step: false, example: 'REPETEIX 4 [AVANÇA 50 GIRA.D 90]' });
   cmd('SI', 'bl', function* ([cond, yes, no]) {

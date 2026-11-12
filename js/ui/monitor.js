@@ -3,7 +3,7 @@
 // A partir del capítol 3, els simuladors porten també el panell de procediments (opts.panel).
 // Disseny aprovat: docs/DECISIONS.md §7.
 import { Interpreter } from '../logo/interpret.js';
-import { LogoError, describe } from '../logo/missatges.js';
+import { LogoError, describe, sameLetters } from '../logo/missatges.js';
 import { FIELD } from '../logo/tortuga.js';
 import { compareDrawings, comparePose } from '../logo/compara.js';
 import { ProcPanel } from './panell.js';
@@ -21,6 +21,8 @@ const el = (tag, cls, text) => {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const frame = () => new Promise((r) => requestAnimationFrame(r));
 const DIRS = { 0: 'amunt', 90: 'cap a la dreta', 180: 'avall', 270: 'cap a l\'esquerra' };
+// Pantalla tàctil: el cursor no torna a «?» després d'un botó, perquè el teclat no tapi el resultat (revisió 18, U4).
+const TOUCH = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
 
 /** Executa un text de LOGO en net i en retorna el dibuix i l'estat final. */
 export function drawingOf(code) {
@@ -34,7 +36,8 @@ export class Monitor {
    * opts: { exercise, solutions: [text], checkPose, failText, okText, onSolved }
    *   require: 'REPETEIX'   l'exercici només es dona per fet si s'ha fet servir aquesta paraula
    *   preload: 'text'       línia que surt ja escrita a «?» (activitat «troba l'error»)
-   *   panel: { initial }    simulador amb panell de procediments a l'esquerra (capítol 3 endavant)
+   *   panel: { initial, storageKey, resettable }   simulador amb panell de procediments a l'esquerra (capítol 3 endavant);
+   *                         amb storageKey el panell es desa al navegador, i amb resettable porta «Torna a començar»
    *   run: 'GRAÓ'           «Comprova» executa aquest procediment en una pantalla neta i en compara el resultat;
    *                         pot portar valors ('TRIANGLE 70'): llavors el procediment ha de tenir tantes variables;
    *                         amb `require`, el procediment `run` ha de fer servir aquesta paraula
@@ -94,7 +97,8 @@ export class Monitor {
     const side = el('div', 'sim-panell');
     const block = el('div', 'panell-bloc');
     side.appendChild(block);
-    this.panel = new ProcPanel(block, { initial: this.opts.panel.initial || '' });
+    const { initial = '', storageKey, resettable } = this.opts.panel;
+    this.panel = new ProcPanel(block, { initial, storageKey, resettable });
     const box = el('div', 'pas-info'); box.hidden = true;
     box.appendChild(el('h2', null, 'Pas a pas'));
     const dl = el('dl');
@@ -170,6 +174,7 @@ export class Monitor {
     this.input.autocomplete = 'off'; this.input.spellcheck = false;
     this.input.setAttribute('autocapitalize', 'characters'); this.input.setAttribute('autocorrect', 'off');
     this.input.setAttribute('aria-label', 'Línia d\'ordres');
+    this.input.logocatMonitor = this;               // la barra de tecles de les tauletes en fa servir historyBack()
     this.input.addEventListener('keydown', (e) => this.onKey(e));
     if (this.opts.preload) this.input.value = this.opts.preload;
     row.appendChild(this.promptLabel); row.appendChild(this.input);
@@ -207,12 +212,19 @@ export class Monitor {
       const text = this.input.value;
       if (!text.trim() || this.busy) return;
       this.input.value = '';
+      this.fromInput = true;
       this.submit(text, false);
     } else if (e.key === 'ArrowUp') {
       if (this.histPos > 0) { this.histPos--; this.input.value = this.history[this.histPos]; e.preventDefault(); }
     } else if (e.key === 'ArrowDown') {
       if (this.histPos < this.history.length) { this.histPos++; this.input.value = this.history[this.histPos] || ''; e.preventDefault(); }
     }
+  }
+
+  /** La línia anterior de l'historial (fletxa amunt; a les tauletes, la tecla ↑ de la barra). */
+  historyBack() {
+    if (this.busy || this.histPos <= 0) return;
+    this.histPos--; this.input.value = this.history[this.histPos];
   }
 
   setBusy(on) {
@@ -226,7 +238,10 @@ export class Monitor {
     if (this.opts.onBusy) this.opts.onBusy(on, this.stepping);
     this.input.disabled = on;
     this.input.placeholder = on ? (this.stepping ? 'prem Pas o Continua' : 'la tortuga està treballant…') : '';
-    if (!on) this.input.focus({ preventScroll: true });
+    if (!on) {
+      if (!TOUCH || this.fromInput) this.input.focus({ preventScroll: true });
+      this.fromInput = false;
+    }
   }
 
   /** Executa una línia. Retorna una promesa que es resol quan acaba. */
@@ -354,7 +369,12 @@ export class Monitor {
     const [name, ...given] = this.opts.run.trim().split(/\s+/);      // 'TRIANGLE 70' → TRIANGLE, amb un valor
     this.panel.flush();
     if (!this.panel.warn.hidden) { this.say('no', 'Encara no.', 'Al panell hi ha un error. Llegeix l\'avís de sota dels procediments i corregeix-lo.'); return false; }
-    if (!this.I.procs.has(name)) { this.say('no', 'Encara no.', `Encara no has definit ${name}.`); return false; }
+    if (!this.I.procs.has(name)) {
+      // POLIGON per POLÍGON: el nom sense l'accent és un altre nom (owner, revisió 18, B3).
+      const near = [...this.I.procs.keys()].find((k) => sameLetters(k, name));
+      this.say('no', 'Encara no.', near ? `Has definit ${near}, però el nom en català és ${name}, amb accent.` : `Encara no has definit ${name}.`);
+      return false;
+    }
     if (this.I.procs.get(name).inputs.length !== given.length) {
       const want = given.length === 0 ? 'no ha de tenir variables' : given.length === 1 ? 'ha de tenir una variable' : `ha de tenir ${given.length} variables`;
       this.say('no', 'Encara no.', `${name} ${want}. Mira la línia PROC.`); return false;
@@ -408,7 +428,7 @@ export class Monitor {
         say('si', 'Molt bé!', `El dibuix és correcte. Ara fes que ${procName} faci servir ${need}.`);
         return false;
       }
-    } else if (need && !this.lines.some((l) => l.split(/[\s\[\]()]+/).includes(need))) {
+    } else if (need && !this.lines.some((l) => l.split(/[\s[\]()]+/).includes(need))) {
       say('si', 'Molt bé!', `El dibuix és correcte. Ara prova de fer-lo amb ${need}: amb una sola línia n'hi ha prou.`);
       return false;
     }

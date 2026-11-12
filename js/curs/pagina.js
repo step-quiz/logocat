@@ -3,6 +3,7 @@ import { Monitor } from '../ui/monitor.js';
 import { mountPredict, mountQuiz } from '../ui/activitats.js';
 import { isDone, markDone } from './progres.js';
 import { initTheme } from '../ui/tema.js';
+import { initKeyBar } from '../ui/tecles.js';
 
 function tick(host, id) {
   const mark = () => host.classList.toggle('es-fet', isDone(id));
@@ -26,14 +27,19 @@ function mountHints(box) {
 
 function init() {
   initTheme();
+  initKeyBar();
 
   document.querySelectorAll('.simulador').forEach((node) => {
     const id = node.dataset.id;
     const solutions = [...node.querySelectorAll('script[type="text/logo"]')].map((s) => s.textContent);
     // Amb data-panell, el simulador porta el panell de procediments; el text inicial és opcional.
     const given = node.querySelector('script[type="text/logo-panell"]');
-    const panel = node.hasAttribute('data-panell') ? { initial: given ? given.textContent.replace(/^\n+|\s+$/g, '') + '\n' : '' } : null;
     const exercise = solutions.length > 0;
+    // Als exercicis, el panell es desa al navegador i porta «Torna a començar» (owner, revisió 18, M1).
+    const panel = node.hasAttribute('data-panell') ? {
+      initial: given ? given.textContent.replace(/^\n+|\s+$/g, '') + '\n' : '',
+      storageKey: exercise && id ? 'logocat-panell-' + id : null, resettable: exercise && !!id,
+    } : null;
     const host = node.closest('section') || node;
     new Monitor(node, {
       exercise, solutions,

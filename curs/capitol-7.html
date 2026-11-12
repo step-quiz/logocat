@@ -192,21 +192,21 @@ FI</pre>
 
   <section>
     <h2><span class="etiqueta">Exercici</span> L'estrella</h2>
-    <p>Defineix <code>ESTRELLA</code> amb dues variables: primer el nombre de puntes i després el nombre de voltes. Cada costat fa 80 passos. Ha de deixar la tortuga com l'ha trobada.</p>
-    <p>Quan premis «Comprova», la tortuga farà <code>ESTRELLA 7 3</code> en una pantalla neta.</p>
-    <div class="simulador" data-id="cap7-estrella" data-clau data-panell data-executa="ESTRELLA 7 3" data-comprova="dibuix+tortuga"
-         data-si-falla="Mira quins traços sobren i quins falten. El gir surt de les dues variables: les voltes senceres, repartides entre les puntes.">
+    <p>Defineix <code>ESTRELLA</code> amb tres variables: primer el nombre de puntes, després el nombre de voltes i després la mida del costat. Ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>ESTRELLA 7 3 60</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap7-estrella" data-clau data-panell data-executa="ESTRELLA 7 3 60" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. El gir surt de dues de les variables: les voltes senceres, repartides entre les puntes.">
       <script type="text/logo">
-PROC ESTRELLA :N :VOLTES
-  REPETEIX :N [AVANÇA 80 GIRA.D 360 * :VOLTES / :N]
+PROC ESTRELLA :N :VOLTES :C
+  REPETEIX :N [AVANÇA :C GIRA.D 360 * :VOLTES / :N]
 FI
-ESTRELLA 7 3
+ESTRELLA 7 3 60
 </script>
       <script type="text/logo">
-PROC ESTRELLA :N :VOLTES
-  REPETEIX :N [AVANÇA 80 GIRA.E 360 * :VOLTES / :N]
+PROC ESTRELLA :N :VOLTES :C
+  REPETEIX :N [AVANÇA :C GIRA.E 360 * :VOLTES / :N]
 FI
-ESTRELLA 7 3
+ESTRELLA 7 3 60
 </script>
     </div>
   </section>
@@ -219,6 +219,7 @@ ESTRELLA 7 3
       <li>En una estrella, la tortuga fa més d'una volta sencera.</li>
     </ul>
     <p>Al capítol següent dibuixaràs cercles i arcs.</p>
+    <p><a href="reptes-1.html">Ja pots fer els reptes del nivell 1 →</a></p>
   </section>
 
   <p class="peu"><a href="capitol-6.html">← Capítol 6 · Variables</a> · <a href="capitol-8.html">Capítol 8 · Cercles i arcs →</a></p>

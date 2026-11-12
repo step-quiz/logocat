@@ -31,14 +31,14 @@
     <a href="simulador.html" aria-current="page">Editor lliure</a>
   </nav>
   <div class="eines-velocitat">
-    <label for="velocitat">Velocitat:</label>
+    <label for="velocitat" class="etq">Velocitat:</label>
     <input id="velocitat" type="range" min="1" max="6" step="1" value="3">
   </div>
   <span class="barra-espai"></span>
   <div class="eines-estat">
-    <span>Orientació: <strong id="e-orientacio">0°</strong></span>
-    <span>Llapis: <strong id="e-llapis">a baix</strong></span>
-    <span>Color: <strong id="e-color">blanc</strong></span>
+    <span title="Orientació"><span class="etq">Orientació: </span><strong id="e-orientacio">0°</strong></span>
+    <span title="Llapis"><span class="etq">Llapis: </span><strong id="e-llapis">a baix</strong></span>
+    <span title="Color"><span class="etq">Color: </span><strong id="e-color">blanc</strong></span>
   </div>
   <span class="estat" id="estat" data-estat="apunt"><i></i><span>a punt</span></span>
   <nav class="barra-nav" aria-label="Consulta"><a href="glossari.html">Glossari</a></nav>
@@ -68,6 +68,12 @@
     <button class="boto boto--gran" id="b-atura" type="button" aria-disabled="true">Atura</button>
     <button class="boto" id="b-desfes" type="button">Desfés</button>
     <button class="boto" id="b-reinicia" type="button">Reinicia</button>
+    <div class="fitxers">
+      <button class="boto" id="b-desa" type="button">Desa en un fitxer</button>
+      <button class="boto" id="b-obre" type="button">Obre un fitxer</button>
+      <button class="boto" id="b-dibuix" type="button">Desa el dibuix</button>
+      <input type="file" id="fitxer" accept=".txt,.logo,text/plain" hidden>
+    </div>
   </aside>
 </main>
 

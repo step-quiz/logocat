@@ -256,6 +256,43 @@ procedure silently) → `SI NECESSITA UNA LLISTA` / `Posa ACABA entre claudàtor
 100 [ACABA]` (condition rebuilt from the tokens). `ATURA`, `PARA`, `STOP` → `Volies dir
 ACABA?`.
 
+Approved by the owner on 2026-11-12 (final review, review 18; built in v0.20).
+- Commands where a list is expected, detected before anything runs (no stroke is drawn):
+  `REPETEIX 4 AVANÇA 50 GIRA.D 90`, `REPETEIX 4 (AVANÇA 50 GIRA.D 90)`, `REPETEIX 4 QUADRAT
+  20` → `REPETEIX NECESSITA SABER QUÈ HA DE REPETIR` / `Posa les ordres entre claudàtors:
+  REPETEIX 4 [AVANÇA 50 GIRA.D 90]` (the student's own line, upper case, with the rest of
+  the line or list inside brackets; outer parentheses are replaced). For any other word
+  that takes a list (`SI 3 > 2 AVANÇA 50`) → `SI NECESSITA UNA LLISTA` / `Posa les ordres
+  entre claudàtors: SI 3 > 2 [AVANÇA 50]`. It fires only when the next token is `(`, a
+  command primitive or a defined procedure; operations, variables, numbers and unknown
+  words keep their own messages. `ACABA` keeps its own message (review 14).
+- A word with `{` or `}` (`REPETEIX 4 {AVANÇA 50}`), detected when the line is scanned →
+  `NO SÉ COM FER {AVANÇA` / `Els claudàtors són [ i ], no { i }`.
+- Two `PROC` with the same name in the panel → panel warning `QUADRAT JA ESTÀ DEFINIT · Hi ha
+  dos PROC QUADRAT al panell: esborra'n un.` (as every panel error, the previous
+  definitions stay loaded).
+- A value left over from `COLOR`, `FONS` or `ORIENTACIÓ` at the start of an instruction
+  (`COLOR 2`) keeps `NO SÉ QUÈ FER AMB 1` with the hint `Per canviar el color del llapis:
+  FES.COLOR 2` / `Per canviar el color de la pantalla: FES.FONS 1` / `Per canviar cap on
+  mira la tortuga: FES.ORIENTACIÓ 90` (the student's number when there is one).
+- A known word glued to a number (`AVANÇA50`, `GIRA.D90`, `REPETEIX4`, `AVANCA50`, a
+  procedure name too) → `NO SÉ COM FER AVANÇA50` / `Falta un espai entre AVANÇA i 50: AVANÇA
+  50` (the known word is written correctly).
+- A word with `,` or `;` (`AVANÇA 50, GIRA.D 90`) → `Les ordres se separen amb un espai,
+  sense comes.` (`0,5` keeps the decimal message.) A colour name (`NEGRE BLANC VERD VIOLETA
+  TARONJA BLAU VERMELL GROC ROSA LILA MARRÓ GRIS MORAT ROIG`) → `Els colors van del 0 al 5`.
+  `DRETA` → `Volies dir GIRA.D?`; `ESQUERRA` → `Volies dir GIRA.E?`; `ENDAVANT` → `Volies
+  dir AVANÇA?`; `ENRERE`, `ENDARRERE` → `Volies dir RECULA?`; `ESBORRA`, `NETEJA` →
+  `Volies dir INI.DIB?`.
+- Typographic quotes typed by tablets (`“X`, `«X»`) are read as `"X`.
+- «Comprova» (not the engine): when the procedure to run is missing but one with the same
+  letters without accents exists → `Encara no.` / `Has definit POLIGON, però el nom en
+  català és POLÍGON, amb accent.` (owner wording).
+- Robustness (no new message): every `REPETEIX` iteration counts towards `MAX_STEPS`, so
+  `REPETEIX 1000000000 []` ends in `ATURADA!`; one move in wrap mode draws at most 500
+  pieces, then the turtle jumps to its exact final place (`AVANÇA 99999999`); the drawing
+  comparison keeps one copy of retraced ink (the last one, so the eraser rule is kept).
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 

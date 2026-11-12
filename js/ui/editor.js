@@ -3,6 +3,7 @@
 import { Monitor } from './monitor.js';
 import { ProcPanel } from './panell.js';
 import { initTheme } from './tema.js';
+import { initKeyBar } from './tecles.js';
 import { fmtNum } from '../logo/missatges.js';
 
 const KEY = 'logocat-editor-procediments';
@@ -11,8 +12,17 @@ const COLORS = ['negre', 'blanc', 'verd', 'violeta', 'taronja', 'blau'];
 const PENS = { down: 'a baix', up: 'a dalt', erase: 'goma' };
 const $ = (id) => document.getElementById(id);
 
+/** Descarrega un fitxer fet al navegador, sense cap servidor. */
+function download(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
 function init() {
   initTheme();
+  initKeyBar();
   const info = $('pas-info');
   const panel = new ProcPanel($('panell'), {
     storageKey: KEY,
@@ -58,6 +68,28 @@ function init() {
   $('b-atura').addEventListener('click', () => { if (monitor.busy) monitor.onStop(); });
   $('b-desfes').addEventListener('click', () => monitor.onUndo());
   $('b-reinicia').addEventListener('click', () => monitor.onReset());
+
+  // Desar i obrir els procediments en un fitxer, i desar el dibuix (owner, revisió 18, M2 i M3).
+  $('b-desa').addEventListener('click', () => {
+    panel.flush();
+    download(new Blob([panel.value], { type: 'text/plain;charset=utf-8' }), 'logocat-procediments.txt');
+  });
+  const file = $('fitxer');
+  $('b-obre').addEventListener('click', () => { if (!monitor.busy) file.click(); });
+  file.addEventListener('change', () => {
+    const f = file.files && file.files[0];
+    file.value = '';
+    if (!f) return;
+    f.text().then((text) => {
+      if (panel.value.trim() && !window.confirm('Vols canviar els procediments del panell pels del fitxer?')) return;
+      panel.area.value = text.replace(/\r\n?/g, '\n');
+      panel.changed(true);
+    });
+  });
+  $('b-dibuix').addEventListener('click', () => {
+    monitor.draw();
+    monitor.canvas.toBlob((blob) => { if (blob) download(blob, 'logocat-dibuix.png'); }, 'image/png');
+  });
 
   monitor.draw();
   // «Prova-ho» del glossari: la línia surt ja escrita a «?», a punt de prémer Retorn (owner, revisió 15, G4).

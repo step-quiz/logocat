@@ -523,11 +523,66 @@ Review artifact "Revisió 17: el capítol de reptes" (slug
   `AVANÇ`, `AVAÇA` → `NO SÉ COM FER …` / `Volies dir AVANÇA?`. Owner: keep it as a hint and
   stop; never auto-correct and run.
 
+## 8p. Final review (review 18, approved 2026-11-12; built in v0.20)
+
+Review artifact "Revisió 18: revisió final de LogoCat" (slug
+`efab7680-6413-4d2b-85e5-f34316bbd7cb`): 23 points, all approved.
+- **Engine and messages (B1, B2, B4, B5, P4, P5, U4):** see LANGUAGE-SPEC §8, block
+  "review 18". P5: the owner asked to extend the list further; the extension goes to
+  review 19.
+- **Accent at «Comprova» (B3, owner wording):** `Has definit POLIGON, però el nom en català
+  és POLÍGON, amb accent.`
+- **Editor lliure bar (U1 A):** below 1340 px the label «Velocitat:» is visually hidden and
+  the status reads `0° · a baix · blanc` (titles «Orientació», «Llapis», «Color»). Reptes
+  pages: the bar title is «Nivell N». One row from 1024 px up (tested).
+- **Theme button (U2)** on the index, the glossary and the 404 page (which now has a
+  minimal bar: logo + theme). Module `js/curs/tema-pagina.js` for pages without simulators.
+- **Index (U3):** «✓ fet» on each chapter whose key exercise is done (`data-clau` on the
+  chapter link = the key exercise id).
+- **Tablets (U4):** `autocorrect="off"` on the panel; typographic quotes accepted;
+  `touch-action: manipulation` on buttons; on coarse pointers the `?` input is refocused
+  only after a run started from it (Enter), never after a button.
+- **Key bar (U5):** own module `js/ui/tecles.js` (not commons' kbd-accessory.js, which
+  handles one editor per page). Only with `(pointer: coarse)`, while the `?` input or a
+  panel textarea has focus. Keys `[ ] : . + - * / = < >` and `↑` (previous line; only for
+  `?`). No words (owner gave none). Positioned with `visualViewport` at the edge of the
+  visible area farther from the field. Not tested on a real tablet.
+- **Quiz (P1):** options shuffled on every visit.
+- **Chapter 7 key exercise (P2 A):** `ESTRELLA` with three variables (points, turns, side);
+  «Comprova» runs `ESTRELLA 7 3 60`. Statement and fail text adapted minimally (owner
+  sentence kept: «El gir surt de dues de les variables: …»). A student who names the third
+  variable `:COSTAT` writes a 56-character line: the panel (54 visible) scrolls 2 characters.
+- **Challenges announced (P3):** «Ja pots fer els reptes del nivell N →» at the end of
+  chapters 7, 9 and 12; chapter 12 footer adds «Reptes · Nivell 3 →».
+- **Exercise panels saved (M1):** `logocat-panell-<data-id>` in `localStorage`; «Torna a
+  començar» in the panel header restores the initial text (confirm dialog if the panel
+  changed: «Vols tornar a començar? Es perdrà el que has escrit al panell.»).
+- **Editor lliure files (M2, M3):** «Desa en un fitxer» (`logocat-procediments.txt`), «Obre
+  un fitxer» (replaces the panel; confirm «Vols canviar els procediments del panell pels del
+  fitxer?» if it is not empty), «Desa el dibuix» (`logocat-dibuix.png`, the canvas as
+  shown). Bottom of the button column.
+- **Teacher guide (M4 A):** first a draft as a Claude doc, outside the web: "LogoCat · Guia
+  del professorat (esborrany)", https://claude.ai/artifact/WwFkLzukCyvPffHVWDVGcN .
+- **Code (C1):** `aria-label` removed from the version label; three useless regex escapes
+  removed; `ProcPanel.resetText()` is now used by M1.
+- **Browser tests (C2):** `tests/navegador/prova.mjs` (Playwright; own static server):
+  every page at 1366×625, 1280×585 and two tablet sizes (no errors, no external requests,
+  no horizontal scroll, one-row top bar), every exercise and challenge solved through
+  «Comprova», and the review-18 behaviours. CI job `navegador` in `ci.yml` (the owner
+  edits `.github/` on github.com).
+- **HANDOUT.md (C3)** at the repo root for a future session.
+
 ## 9. Next step
 
-Chapters 1–12, the challenges (3 levels), the Editor lliure, the glossary and the family
-integration are delivered. Only when the owner asks: the teacher guide; more challenges.
-No open questions are pending for the owner as of v0.19.
+Review 19 "Revisió 19: pistes dels exercicis i textos nous" (slug
+`c4ea3382-a0f7-456a-9b07-22c79f33b1e3`, 47 points, published 2026-11-12, waiting for the
+owner): A1–A34 the hints «Una pista» / «Una altra pista» for the 34 chapter exercises (P6 B;
+34, not 30: the «Troba l'error» exercises count too); E1–E8 the extended hints for frequent
+mistakes (P5: English and Spanish Logo words, other Catalan words, a letter inside a number,
+two lists after REPETEIX, a two-word procedure name, ESCRIU with a word, a fallback hint
+that would change rule 1 of the catalogue); T1–T4 the new texts of v0.20 (two confirm
+dialogs, the chapter 7 statement, `( )` and `"` on the key bar); G1 the teacher guide
+draft. Build what he approves (the challenge pages show the hint markup to reuse).
 
 ## 10. Sources and records
 

@@ -342,8 +342,48 @@ a.gl-capitol { color: var(--accent); }
 .estrategia { margin: 0; }
 .portada .reptes { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 .portada .reptes h2 { font-size: 22px; margin: 0; }
-.llista-reptes .comptador { border: 0; min-height: 0; padding: 0; margin-left: auto; color: var(--muted); font-size: 13px; }
-.llista-reptes .comptador.tot { color: var(--ok); font-weight: 700; }
+.llista-capitols .comptador { border: 0; min-height: 0; padding: 0; margin-left: auto; color: var(--muted); font-size: 13px; }
+.llista-capitols .comptador.tot { color: var(--ok); font-weight: 700; }
 .nivells { display: flex; flex-wrap: wrap; gap: 16px; }
 .nivells figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .nivells svg { width: 110px; height: auto; color: var(--text); }
+
+/* ── Revisió 18 ── */
+/* Tauletes: un doble toc ràpid a «Pas» no ha de fer zoom (U4). */
+button, .boto, .prediu-opcio { touch-action: manipulation; }
+
+/* Panell dels exercicis: «Torna a començar» (M1). */
+.panell-cap .panell-titol { margin-right: auto; }
+.panell-torna { min-height: 34px; padding: 0 10px; font-size: 13px; }
+
+/* Editor lliure: desar i obrir un fitxer, i desar el dibuix (M2, M3). */
+.botons .fitxers { margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.botons .fitxers .boto { width: 100%; font-size: 14px; }
+@media (max-width: 860px) {
+  .botons .fitxers { margin-top: 0; flex-direction: row; flex-wrap: wrap; }
+  .botons .fitxers .boto { width: auto; flex: 1 1 auto; }
+}
+
+/* Editor lliure en portàtils de 1280 px i tauletes: la barra en una sola fila (U1). Es treu el text
+   «Velocitat:» i l'estat queda «0° · a baix · blanc»; els noms sencers són al title. */
+@media (max-width: 1339px) {
+  .pagina-editor .etq { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .pagina-editor .eines-velocitat { margin-left: 0; }
+  .pagina-editor .eines-estat { gap: 4px 0; }
+  .pagina-editor .eines-estat > span + span::before { content: '·'; margin: 0 8px; color: var(--muted); }
+}
+
+/* Barra de tecles de les tauletes (U5). */
+.tecles {
+  position: fixed; left: 0; top: 0; z-index: 400; box-sizing: border-box; width: 100%;
+  display: flex; gap: 6px; padding: 6px 8px; overflow-x: auto; scrollbar-width: none;
+  background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.tecles[hidden] { display: none; }
+.tecles::-webkit-scrollbar { display: none; }
+.tecla {
+  flex: 0 0 auto; min-width: 44px; height: 44px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 18px; font-weight: 700;
+  -webkit-tap-highlight-color: transparent; user-select: none;
+}
+.tecla:active { background: var(--accent-dim); border-color: var(--accent); }

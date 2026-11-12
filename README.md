@@ -17,7 +17,9 @@ requests.
 | `glossari.html` | Glossary: every word the engine knows except the coordinate words, in two parts (course words with their chapter; other words), by theme, alphabetical within a theme. Static HTML, generated once from a word list; edit it by hand from now on and keep `tests/unit/glossari.test.mjs` passing |
 | `curs/capitol-N.html` | One page per chapter; text, simulators and activities |
 | `curs/reptes-N.html` | Challenges, levels 1–3 (3 each): strategy text, grid (`data-quadricula`), two hints (`.pistes`), every challenge `data-clau`. See DECISIONS §8o |
-| `js/curs/portada.js` | Index: per-level challenge counters |
+| `js/curs/portada.js` | Index: theme button, «✓ fet» per chapter, per-level challenge counters |
+| `js/curs/tema-pagina.js` | Theme button for pages without simulators (glossary, 404) |
+| `js/ui/tecles.js` | Touch key bar (`[ ] : . + - * / = < >` and ↑), only on coarse pointers |
 | `js/logo/` | The language: `lexer.js`, `interpret.js` (generator-based interpreter and primitives), `tortuga.js` (turtle and field), `missatges.js` (Catalan messages), `compara.js` (drawing validation) |
 | `js/ui/monitor.js` | The "monitor": turtle canvas, text lines, `?` prompt, toolbar, exercise checking; with `panel`, the simulator with procedures panel |
 | `js/ui/panell.js` | Procedures panel component (`ProcPanel`): colouring, line numbers, parsing, step and error marks |
@@ -28,6 +30,8 @@ requests.
 | `css/logocat.css` | All styles, light and dark themes |
 | `fonts/` | Space Mono (OFL), self-hosted |
 | `tests/unit/` | Node test files |
+| `tests/navegador/prova.mjs` | Browser suite (Playwright): pages at four screen sizes, every exercise through «Comprova», review-18 behaviours |
+| `HANDOUT.md` | Hand-over notes for a new session (start here) |
 | `docs/` | `STATE.md`, `DECISIONS.md`, `LANGUAGE-SPEC.md` |
 
 ## Run and test
@@ -35,6 +39,8 @@ requests.
 ```
 python3 -m http.server 8000        # then open http://localhost:8000
 node --test tests/unit/*.test.mjs
+npm install --no-save playwright && npx playwright install chromium
+node tests/navegador/prova.mjs     # CHROME_PATH=/path/to/chrome to use an installed Chrome
 ```
 
 ES modules need a web server: opening the files with `file://` does not work.

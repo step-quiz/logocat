@@ -26,6 +26,9 @@ export function fmtValue(v, brackets = false) {
 
 const strip = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/·/g, '.');
 
+/** Les dues paraules són iguals si no es miren els accents ni la ç (POLIGON i POLÍGON). */
+export const sameLetters = (a, b) => strip(a) === strip(b);
+
 function distance(a, b) {
   const m = a.length, n = b.length;
   if (Math.abs(m - n) > 2) return 3;
@@ -54,6 +57,16 @@ export function nearest(word, known) {
   return best;
 }
 
+// Colors escrits amb el nom (revisió 18, P5).
+const COLOR_NAMES = new Set(['NEGRE', 'BLANC', 'VERD', 'VIOLETA', 'TARONJA', 'BLAU', 'VERMELL', 'GROC', 'ROSA', 'LILA', 'MARRÓ', 'GRIS', 'MORAT', 'ROIG']);
+
+// «COLOR 2», «FONS 1», «ORIENTACIÓ 90»: el valor que sobra ve d'una paraula que diu com està la tortuga (owner, revisió 18, B4).
+const SETTER_HINT = {
+  'COLOR': (n) => `Per canviar el color del llapis: FES.COLOR ${n || 2}`,
+  'FONS': (n) => `Per canviar el color de la pantalla: FES.FONS ${n || 1}`,
+  'ORIENTACIÓ': (n) => `Per canviar cap on mira la tortuga: FES.ORIENTACIÓ ${n || 90}`,
+};
+
 // Un procediment que es crida a si mateix sense parar (owner, cap. 12).
 const recursionHint = (p) => `${p.recursive} es fa servir a si mateix i no s'atura mai. ` +
   (p.input ? `Li cal una regla, com ara SI :${p.input} > 100 [ACABA]` : 'Li cal una regla amb SI i ACABA.');
@@ -70,6 +83,11 @@ export function describe(err, known = []) {
       line1 = `NO SÉ COM FER ${p.word}`;
       // Variables sense els dos punts, o amb un espai després dels dos punts (owner, 2026-11-11).
       if (p.isVar) { hints = [`Volies dir :${p.word}? Les variables s'escriuen amb dos punts al davant.`]; break; }
+      // Revisió 18 (owner): claus en lloc de claudàtors (B1), i comes entre ordres (P5).
+      if (p.brace || /[{}]/.test(p.word)) { hints = ['Els claudàtors són [ i ], no { i }']; break; }
+      if (/[,;]/.test(p.word)) { hints = ['Les ordres se separen amb un espai, sense comes.']; break; }
+      // Colors amb nom: FES.COLOR VERD (revisió 18, P5; la pista és la del capítol 4).
+      if (COLOR_NAMES.has(p.word)) { hints = ['Els colors van del 0 al 5']; break; }
       if (p.colonName) { hints = [`Els dos punts van enganxats al nom, sense espai: :${p.colonName}`]; break; }
       // Els signes de classe per dividir i multiplicar (owner, 2026-11-11).
       const N = '(\\d+(\\.\\d+)?)?';
@@ -88,25 +106,37 @@ export function describe(err, known = []) {
         'SI.NO': "No cal escriure SINO: la segona llista ja és el que es fa si no es compleix.",
         '≥': 'LOGO només coneix els signes <, > i =', '≤': 'LOGO només coneix els signes <, > i =', '≠': 'LOGO només coneix els signes <, > i =',
         'IF': 'Volies dir SI?', 'ALEATORI': 'Volies dir ATZAR?',
-        'ATURA': 'Volies dir ACABA?', 'PARA': 'Volies dir ACABA?', 'STOP': 'Volies dir ACABA?' }[p.word];
+        'ATURA': 'Volies dir ACABA?', 'PARA': 'Volies dir ACABA?', 'STOP': 'Volies dir ACABA?',
+        // Revisió 18 (owner, P5): paraules del català de cada dia.
+        'DRETA': 'Volies dir GIRA.D?', 'ESQUERRA': 'Volies dir GIRA.E?', 'ENDAVANT': 'Volies dir AVANÇA?',
+        'ENRERE': 'Volies dir RECULA?', 'ENDARRERE': 'Volies dir RECULA?',
+        'ESBORRA': 'Volies dir INI.DIB?', 'NETEJA': 'Volies dir INI.DIB?' }[p.word];
       if (turn) { hints = [turn]; break; }
       // BANDERA.E quan només hi ha BANDERA.D (o al revés): cap pista, que no faci dubtar (owner, cap. 9).
       const de = /^(.+)\.([DE])$/.exec(p.word);
       if (de && known.includes(de[1] + '.' + (de[2] === 'D' ? 'E' : 'D'))) break;
+      // «AVANÇA50», «GIRA.D90»: una paraula que LOGO coneix, enganxada a un nombre (revisió 18, P4).
+      const glued = /^(.*[^\d.])(\d+(?:\.\d+)?)$/.exec(p.word);
+      const w = glued && known.find((k) => sameLetters(k, glued[1]));
+      if (w) { hints = [`Falta un espai entre ${w} i ${glued[2]}: ${w} ${glued[2]}`]; break; }
       const y = nearest(p.word, known);
       if (y) hints = [`Volies dir ${y}?`];
       break;
     }
     case 'spaced': line1 = `NO SÉ COM FER ${p.text}`; hints = [`Volies dir ${p.word}? S'escriu amb un punt i sense espai.`]; break;   // (owner)
     case 'missing_input':
-      if (p.bareStop != null && p.want === 'l') { line1 = `${p.word} NECESSITA UNA LLISTA`; hints = [`Posa ACABA entre claudàtors: ${p.word} ${p.bareStop}${p.bareStop ? ' ' : ''}[ACABA]`]; }   // (owner, cap. 12)
+      if (p.brackets) {      // «REPETEIX 4 AVANÇA 50» (revisió 18, B1; la primera línia de REPETEIX és la de l'owner)
+        line1 = p.word === 'REPETEIX' ? 'REPETEIX NECESSITA SABER QUÈ HA DE REPETIR' : `${p.word} NECESSITA UNA LLISTA`;
+        hints = [`Posa les ordres entre claudàtors: ${p.brackets}`];
+      } else if (p.bareStop != null && p.want === 'l') { line1 = `${p.word} NECESSITA UNA LLISTA`; hints = [`Posa ACABA entre claudàtors: ${p.word} ${p.bareStop}${p.bareStop ? ' ' : ''}[ACABA]`]; }   // (owner, cap. 12)
       else if (p.want === 'l' && p.word === 'REPETEIX') { line1 = 'REPETEIX NECESSITA SABER QUÈ HA DE REPETIR'; hints = [`Per exemple: ${p.example}`]; }   // (owner)
       else if (p.want === 'l') { line1 = `${p.word} NECESSITA UNA LLISTA`; hints = [`Per exemple: ${p.example}`]; }
       else { line1 = `${p.word} NECESSITA UN NOMBRE`; hints = [`Per exemple: ${p.example}`]; }
       break;
     case 'unused':
       line1 = `NO SÉ QUÈ FER AMB ${p.value}`;
-      hints = [p.minus ? `Per restar, posa un espai a cada costat del signe menys: ${p.minus.left} - ${p.minus.right}`   // (owner, cap. 10)
+      hints = [p.setter ? SETTER_HINT[p.setter.word](p.setter.value)                       // (owner, revisió 18, B4)
+        : p.minus ? `Per restar, posa un espai a cada costat del signe menys: ${p.minus.left} - ${p.minus.right}`   // (owner, cap. 10)
         : p.sign ? 'LOGO només coneix els signes <, > i ='                               // «>=», «==», «<>» (owner, cap. 11)
         : 'Escriu una ordre, com per exemple AVANÇA 50'];
       break;
@@ -129,6 +159,7 @@ export function describe(err, known = []) {
     case 'no_output': line1 = `${p.word} NO HA RETORNAT RES`; hints = [`${p.word} fa una acció, però no dona cap valor`]; break;
     case 'only_in_proc': line1 = `${p.word} NOMÉS ES POT FER DINS D'UN PROCEDIMENT`; break;
     case 'already_defined': line1 = `${p.word} JA ESTÀ DEFINIT`; hints = ['El pots canviar al panell de procediments']; break;
+    case 'duplicate_proc': line1 = `${p.word} JA ESTÀ DEFINIT`; hints = [`Hi ha dos PROC ${p.word} al panell: esborra'n un.`]; break;   // (owner, revisió 18, B2)
     case 'is_primitive': line1 = `${p.word} ÉS UNA ORDRE DE LOGO`; hints = ['Tria un altre nom per al teu procediment']; break;
     case 'proc_inputs':
       line1 = `EL PROCEDIMENT '${p.word}' NECESSITA ${p.n} ${p.n === 1 ? 'VALOR' : 'VALORS'}`;

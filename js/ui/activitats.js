@@ -70,17 +70,22 @@ export function mountQuiz(root, { onSolved } = {}) {
   const questions = [...root.querySelectorAll('.pregunta')];
   const solved = new Set();
   questions.forEach((q, qi) => {
-    const right = Number(q.dataset.correcta);
     const labels = [...q.querySelectorAll('label')];
+    const good = labels[Number(q.dataset.correcta)];
+    // Les opcions es barregen a cada visita, com a «Què dibuixarà?»: la bona no és sempre la del mig (revisió 18, P1).
+    for (let i = labels.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); [labels[i], labels[j]] = [labels[j], labels[i]];
+    }
     const why = q.querySelector('.explicacio');
+    labels.forEach((lab) => q.insertBefore(lab, why));
     const verdict = document.createElement('p'); verdict.className = 'veredicte'; verdict.setAttribute('role', 'status'); verdict.hidden = true;
     q.insertBefore(verdict, why);
-    labels.forEach((lab, i) => {
+    labels.forEach((lab) => {
       const input = lab.querySelector('input');
       input.name = (root.dataset.id || 'quiz') + '-' + qi;
       input.addEventListener('change', () => {
         labels.forEach((x) => x.classList.remove('es-bona', 'es-dolenta'));
-        const ok = i === right;
+        const ok = lab === good;
         lab.classList.add(ok ? 'es-bona' : 'es-dolenta');
         verdict.hidden = false;
         verdict.className = 'veredicte ' + (ok ? 'es-bona' : 'es-dolenta');

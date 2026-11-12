@@ -45,19 +45,33 @@ function grid(segs, tol) {
 }
 const near = (m, x, y) => m.get(Math.floor(x / CELL) + ',' + Math.floor(y / CELL)) || [];
 
+/** Clau d'un traç sense sentit: els dos extrems arrodonits, en ordre. */
+const key = (x1, y1, x2, y2) => {
+  const a = Math.round(x1 * 1e4) + ',' + Math.round(y1 * 1e4), b = Math.round(x2 * 1e4) + ',' + Math.round(y2 * 1e4);
+  return a < b ? a + ';' + b : b + ';' + a;
+};
+
 /** Tinta neta en trossos: [{ x1, y1, x2, y2, ux, uy, len, src }]. */
 function inkPieces(segments) {
   const erasers = segments.map((s, i) => ({ ...s, i })).filter((s) => s.erase && len(s) > 1e-9);
   const m = grid(erasers, ERASE_TOL), out = [];
+  // Un traç repassat compta una vegada (revisió 18, B5): de cada traç repetit es fa servir
+  // només l'últim, que és el que mana si pel mig hi ha passat la goma. Sense això, un dibuix
+  // repassat moltes vegades (REPETEIX 1000 [QUADRAT 50]) feia que «Comprova» trigués minuts.
+  const last = new Map();
+  segments.forEach((s, i) => { if (!s.erase) last.set(key(s.x1, s.y1, s.x2, s.y2), i); });
+  const seen = new Set();
   segments.forEach((s, i) => {
     const L = len(s);
-    if (s.erase || L < 1e-9) return;
+    if (s.erase || L < 1e-9 || last.get(key(s.x1, s.y1, s.x2, s.y2)) !== i) return;
     const n = Math.ceil(L / STEP), ux = (s.x2 - s.x1) / L, uy = (s.y2 - s.y1) / L;
     for (let k = 0; k < n; k++) {
       const a = k / n, b = (k + 1) / n;
       const q = { x1: s.x1 + (s.x2 - s.x1) * a, y1: s.y1 + (s.y2 - s.y1) * a, x2: s.x1 + (s.x2 - s.x1) * b, y2: s.y1 + (s.y2 - s.y1) * b, ux, uy, len: L / n, src: i };
       const mx = (q.x1 + q.x2) / 2, my = (q.y1 + q.y2) / 2;
-      if (!near(m, mx, my).some((e) => e.i > i && dist(mx, my, e) <= ERASE_TOL)) out.push(q);
+      if (near(m, mx, my).some((e) => e.i > i && dist(mx, my, e) <= ERASE_TOL)) continue;
+      const pk = key(q.x1, q.y1, q.x2, q.y2);
+      if (!seen.has(pk)) { seen.add(pk); out.push(q); }
     }
   });
   return out;

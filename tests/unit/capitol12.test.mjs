@@ -48,7 +48,9 @@ test('capítol 12: 2 simuladors d\'exemple i 3 exercicis; decisions de la revisi
     'Cada branca és un arbre més petit. Una figura així es diu fractal.',
     "Has acabat el curs. Ara ja pots inventar els teus dibuixos a l' Editor lliure"]) assert.ok(text.replace(/\s+/g, ' ').includes(w), w);
   assert.ok(!/progressió|diferència|capítol 13/i.test(text), 'G3 A i G6 A');
-  assert.ok(!/reptes/i.test(html.slice(html.indexOf('<main'))), 'el capítol 12 no parla dels reptes (només la barra de dalt)');
+  // Revisió 18 (P3): el capítol 12 avisa que ja es poden fer els reptes del nivell 3.
+  assert.ok(html.includes('<p><a href="reptes-3.html">Ja pots fer els reptes del nivell 3 →</a></p>'));
+  assert.ok(html.includes('· <a href="reptes-3.html">Reptes · Nivell 3 →</a> · <a href="../simulador.html">Editor lliure →</a></p>'));
   assert.ok(!/\bentrad|\bcaps[ae]/i.test(text));
   assert.ok(!/anys 80|1985|198\d/.test(text));
   assert.ok(html.includes('href="../simulador.html"'));

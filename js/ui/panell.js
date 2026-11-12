@@ -8,7 +8,8 @@ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls)
 
 export class ProcPanel {
   /**
-   * opts: { initial, storageKey, placeholder, ids: { area, layer, gutter, warn, saved } }
+   * opts: { initial, storageKey, resettable, placeholder, ids: { area, layer, gutter, warn, saved } }
+   *   resettable: botó «Torna a començar», que torna al text inicial (exercicis, revisió 18, M1)
    * Després de crear el Monitor amb `panel.hooks()`, cal fer `panel.monitor = monitor`.
    */
   constructor(root, opts = {}) {
@@ -22,6 +23,14 @@ export class ProcPanel {
     cap.appendChild(el('span', 'panell-titol', 'Procediments'));
     this.saved = el('span', null, opts.storageKey ? 'desat' : ''); if (ids.saved) this.saved.id = ids.saved;
     cap.appendChild(this.saved);
+    if (opts.resettable) {
+      const again = el('button', 'boto panell-torna', 'Torna a començar'); again.type = 'button';
+      again.addEventListener('click', () => {
+        if (this.monitor && this.monitor.busy) return;
+        if (this.area.value === (opts.initial || '') || window.confirm('Vols tornar a començar? Es perdrà el que has escrit al panell.')) this.resetText();
+      });
+      cap.appendChild(again);
+    }
     const code = el('div', 'panell-codi');
     this.gutter = el('pre', 'numeros', '1'); this.gutter.setAttribute('aria-hidden', 'true'); if (ids.gutter) this.gutter.id = ids.gutter;
     const stack = el('div', 'pila');
@@ -29,6 +38,7 @@ export class ProcPanel {
     this.area = el('textarea'); if (ids.area) this.area.id = ids.area;
     this.area.spellcheck = false; this.area.autocomplete = 'off'; this.area.wrap = 'off';
     this.area.setAttribute('autocapitalize', 'characters');
+    this.area.setAttribute('autocorrect', 'off');          // l'iPad no ha de «corregir» les paraules de LOGO (revisió 18, U4)
     this.area.setAttribute('aria-label', 'Procediments: escriu-hi els teus PROC … FI');
     if (opts.placeholder) this.area.placeholder = opts.placeholder;
     stack.appendChild(this.layer); stack.appendChild(this.area);
@@ -92,7 +102,7 @@ export class ProcPanel {
 
   // ── Colors ──
   paint(text) {
-    return text.split(/(\s+|[\[\]()+*\/=<>])/).map((chunk) => {
+    return text.split(/(\s+|[[\]()+*/=<>])/).map((chunk) => {
       if (!chunk) return '';
       const up = chunk.toUpperCase();
       let cls = '';

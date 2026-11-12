@@ -56,7 +56,10 @@ the document in the same change.
 - **No build step.** Native ES modules, plain CSS. `package.json` exists only so Node
   treats `.js` as modules and to name the test command; the site has no dependencies.
 - **Tests.** `node --test tests/unit/*.test.mjs` must pass before every delivery; say the
-  result. Every reference solution inside a chapter page is executed by the tests.
+  result. Every reference solution inside a chapter page is executed by the tests. When a
+  page or the UI changes, also run `node tests/navegador/prova.mjs` (Playwright; drives
+  every exercise through «Comprova» at four screen sizes).
+- **Hand-over.** `HANDOUT.md` is the entry point for a new session; keep it current.
 - **Solutions live in the page.** Exercises carry their reference solution(s) in
   `<script type="text/logo">` inside the `.simulador` element (family convention).
 - **Delivery.** ZIP for `_uploads/` with repo-root paths. `.github/` inside a ZIP is

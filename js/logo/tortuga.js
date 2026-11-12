@@ -4,6 +4,10 @@ import { LogoError } from './missatges.js';
 
 export const FIELD = { w: 280, h: 240, xmin: -140, xmax: 140, ymin: -120, ymax: 120 };
 const EPS = 1e-9;
+// Un moviment llarguíssim a la pantalla que dona la volta (AVANÇA 99999999): passades aquestes
+// voltes la pantalla ja és plena, i la tortuga va directament on ha d'acabar (revisió 18, B5).
+const MAX_WRAPS = 500;
+const wrapTo = (v, min, size) => (((v - min) % size) + size) % size + min;
 
 export class Turtle {
   constructor() { this.reset(); }
@@ -59,8 +63,13 @@ export class Turtle {
       this.x = nx; this.y = ny;
       return out;
     }
-    let guard = 0;
-    while (left > EPS && guard++ < 100000) {
+    let wraps = 0;
+    while (left > EPS) {
+      if (wraps++ >= MAX_WRAPS) {
+        this.x = wrapTo(this.x + dx * left, FIELD.xmin, FIELD.w);
+        this.y = wrapTo(this.y + dy * left, FIELD.ymin, FIELD.h);
+        break;
+      }
       let tx = Infinity, ty = Infinity;
       if (dx > EPS) tx = (FIELD.xmax - this.x) / dx; else if (dx < -EPS) tx = (FIELD.xmin - this.x) / dx;
       if (dy > EPS) ty = (FIELD.ymax - this.y) / dy; else if (dy < -EPS) ty = (FIELD.ymin - this.y) / dy;
