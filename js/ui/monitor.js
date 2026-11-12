@@ -244,7 +244,7 @@ export class Monitor {
     try {
       const gen = this.I.runLine(text);
       for (;;) {
-        if (this.abort) throw new LogoError('stopped');
+        if (this.abort) throw new LogoError('stopped', this.I.recursion(2, true) || {});   // «Atura» enmig d'una recursivitat sense fi (owner, cap. 12)
         const { value: ev, done } = gen.next();
         if (done) break;
         if (ev.type === 'before') {

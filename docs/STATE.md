@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-12 (v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
+> Last update: 2026-11-12 (v0.17: glossary; v0.16: chapter 12 «Recursivitat», the course plan is complete; v0.15: chapter 11 «Decisions i atzar»; v0.14: chapter 10 «Quadrilàters»; v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -132,7 +132,28 @@
   random drawings): find-the-bug "El cercle que no hi cap" (`CERCLE.SEGUR 2`, sign reversed;
   drawing) and key exercise "El quadrat que hi cap" (`QUADRAT.SEGUR 150`, must use `SI`;
   drawing + pose; mirrored solution listed).
-- **Version label**: `index.html` shows `v0.15` fixed at the bottom-right (`.versio`); a
+- **Chapter 12** (`curs/capitol-12.html`, «Recursivitat», last chapter of the plan):
+  approved script (review 14), 5 simulators with panel (2 for examples, 3 exercises),
+  "Què dibuixarà?" (`CAMÍ 1`), quiz. New word `ACABA`. `ESPIRAL :COSTAT` (stop rule
+  `SI :COSTAT > 100 [ACABA]`, then `ESPIRAL :COSTAT + 5`); the student deletes the rule to see
+  ATURADA!; successions («cada nombre s'obté sumant 5 al nombre anterior»); the fractal
+  tree `ARBRE` (section without exercise, `ARBRE 60` / `ARBRE 40`). Exercises: find-the-bug
+  "L'espiral que no surt" (`<` instead of `>`; `ESPIRAL 5`, drawing), "L'espiral triangular"
+  (`ESPIRAL.TRI 5`, drawing; mirrored solution listed), key exercise "L'espiral que
+  s'encongeix" (`ESPIRAL.IN 100`, drawing; mirrored solution listed). Recursive exercises
+  check the drawing only (the turtle ends far away). The closing says the course is over
+  and links to the Editor lliure; the footer links to the Editor lliure.
+- **Glossary** (`glossari.html`, review 15): 54 entries. Part 1 «Paraules del curs» (26,
+  each with a link to the chapter where it first appears), part 2 «Altres paraules que
+  LOGO entén» (28, «No surt al curs»); the coordinate words (`FES.XY`, `FES.X`, `FES.Y`,
+  `COOR.X`, `COOR.Y`, `ORIENTACIÓ`, `FES.ORIENTACIÓ`, `VERS.A`) are left out. Themes in the
+  approved order, alphabetical inside each theme. Each entry: word, one sentence, an
+  example; one-line examples (46) have «Prova-ho», which opens the Editor lliure in a new
+  tab with the line typed at `?` (`simulador.html?prova=`). Examples that need several lines
+  or a procedure in the panel (`PROC`, `FI`, `:NOM`, `ACABA`, `LOCAL`, `RETORNA`, `PROC?`,
+  `OBLIDA.PROC`) have no button. No "ideas" section (owner). «Glossari» is in the top bar of
+  every page except 404, on the right before the theme toggle, as in the mockup.
+- **Version label**: `index.html` shows `v0.17` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -160,7 +181,7 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 110 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+- **Tests**: 123 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
   headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
   console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
   (every verdict of the three exercises, chapter tick, the new messages, the flower), and
@@ -172,7 +193,11 @@
   (every verdict, chapter tick, `ARREL2` and the new hints at the `?` line) and for every
   reference solution of chapters 1–10. v0.15: same for chapter 11 (both exercises, every
   verdict, chapter tick, the new hints, the random walk, the coin and the bar chart) and
-  for every reference solution of chapters 1–11. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+  for every reference solution of chapters 1–11. v0.16: same for chapter 12 (every
+  verdict, chapter tick, runaway recursion stopped with «Atura» and its hint, the tree)
+  and for every reference solution of chapters 1–12. Note: runaway recursion in the UI
+  reaches the 500-call limit only after about 28 s of animation; most students will
+  press «Atura» first, which now also gives the recursion hint. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
@@ -180,8 +205,7 @@
 
 ## Not built yet
 
-- **Chapter 12**, a final challenges chapter (nested `REPETEIX`, mosaics; maybe `POSA.A`, `RETORNA`), glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
-  go there, not in a chapter), teacher guide, certificate.
+- A possible final challenges chapter (nested `REPETEIX`, mosaics; maybe `POSA.A`, `RETORNA`): to be decided by the owner in its own review (owner, review 14, G6 A); teacher guide; certificate (comes with the family integration, see below).
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
   seen; LogoCat must be registered there first.
@@ -189,7 +213,7 @@
 - **Workspace autosave** (spec §4) is partial: the Editor lliure keeps its procedures;
   drawings, variables and command history are lost on reload everywhere, and embedded
   simulators keep nothing.
-- Top-bar entries of the mockup that have no page yet (Reptes, Glossari) are not shown.
+- Top-bar entries of the mockup that have no page yet (Reptes) are not shown.
 
 ## Known deviations and open points
 

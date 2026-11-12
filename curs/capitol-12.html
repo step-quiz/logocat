@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 12 · Recursivitat — LogoCat</title>
+<meta name="description" content="Dotzè capítol de LogoCat: un procediment que es fa servir a si mateix, espirals i un arbre fractal.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 12</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <nav class="barra-nav" aria-label="Consulta"><a href="../glossari.html">Glossari</a></nav>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 12</p>
+    <h1>Recursivitat</h1>
+  </div>
+
+  <section>
+    <h2>Un procediment que es fa servir a si mateix</h2>
+    <p>Mira aquest procediment:</p>
+    <pre class="codi">PROC ESPIRAL :COSTAT
+  SI :COSTAT > 100 [ACABA]
+  AVANÇA :COSTAT GIRA.D 90
+  ESPIRAL :COSTAT + 5
+FI</pre>
+    <p><code>ESPIRAL</code> fa un costat, gira 90 i torna a fer <code>ESPIRAL</code>, però amb el costat 5 passos més llarg. Un procediment pot fer servir el seu propi nom!</p>
+    <p>La primera línia és la regla per aturar-se. Quan el costat passa de 100, <code>ACABA</code> fa que el procediment s'acabi en aquell moment. <code>ACABA</code> va entre claudàtors, com tot el que fa <code>SI</code>.</p>
+    <p>Prova <code>ESPIRAL 5</code> i <code>ESPIRAL 50</code>. Els costats fan 5, 10, 15, 20… Els costats formen una successió: cada nombre s'obté sumant 5 al nombre anterior.</p>
+    <p><strong>La regla per aturar-se.</strong> Ara esborra la primera línia de <code>ESPIRAL</code> i torna a provar <code>ESPIRAL 5</code>. La tortuga no s'atura mai, i LOGO l'ha d'aturar.</p>
+    <p>Un procediment que es fa servir a si mateix necessita una regla per aturar-se. Sense la regla, no acabaria mai.</p>
+    <p>Quan ho hagis vist, torna a escriure la primera línia.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC ESPIRAL :COSTAT
+  SI :COSTAT > 100 [ACABA]
+  AVANÇA :COSTAT GIRA.D 90
+  ESPIRAL :COSTAT + 5
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>Amb aquest procediment, i sense executar res, tria què dibuixarà <code>CAMÍ 1</code>.</p>
+    <div class="prediu" data-id="cap12-prediu">
+      <pre class="codi">PROC CAMÍ :N
+  SI :N &gt; 3 [ACABA]
+  AVANÇA 20 * :N GIRA.D 90
+  CAMÍ :N + 1
+FI</pre>
+      <script type="text/logo" data-correcta data-perque="Tres costats, de 20, 40 i 60. Amb CAMÍ 4, la regla ja l'atura.">
+AVANÇA 20 GIRA.D 90 AVANÇA 40 GIRA.D 90 AVANÇA 60 GIRA.D 90
+</script>
+      <script type="text/logo" data-perque="Això són quatre costats. Però 4 ja és més gran que 3: CAMÍ 4 s'atura sense dibuixar.">
+AVANÇA 20 GIRA.D 90 AVANÇA 40 GIRA.D 90 AVANÇA 60 GIRA.D 90 AVANÇA 80 GIRA.D 90
+</script>
+      <script type="text/logo" data-perque="Això són dos costats. Però 3 no és més gran que 3: CAMÍ 3 encara dibuixa.">
+AVANÇA 20 GIRA.D 90 AVANÇA 40 GIRA.D 90
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> L'espiral que no surt</h2>
+    <p><code>ESPIRAL 5</code> hauria de fer una espiral, però no dibuixa res. Prova-ho.</p>
+    <p>Troba l'error i corregeix-lo. Quan premis «Comprova», la tortuga farà <code>ESPIRAL 5</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap12-error" data-panell data-executa="ESPIRAL 5" data-comprova="dibuix"
+         data-si-falla="ESPIRAL s'acaba abans de començar. Mira la regla: quan s'ha d'aturar?">
+      <script type="text/logo-panell">
+PROC ESPIRAL :COSTAT
+  SI :COSTAT < 100 [ACABA]
+  AVANÇA :COSTAT GIRA.D 90
+  ESPIRAL :COSTAT + 5
+FI
+</script>
+      <script type="text/logo">
+PROC ESPIRAL :COSTAT
+  SI :COSTAT > 100 [ACABA]
+  AVANÇA :COSTAT GIRA.D 90
+  ESPIRAL :COSTAT + 5
+FI
+ESPIRAL 5
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> L'espiral triangular</h2>
+    <p>Defineix <code>ESPIRAL.TRI</code> amb una variable, el costat: com <code>ESPIRAL</code>, però girant 120 en lloc de 90. Cada costat fa 5 més que l'anterior, i s'atura quan el costat passa de 100.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>ESPIRAL.TRI 5</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap12-tri" data-panell data-executa="ESPIRAL.TRI 5" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten. Fixa't en el gir i en la regla per aturar-se.">
+      <script type="text/logo">
+PROC ESPIRAL.TRI :COSTAT
+  SI :COSTAT > 100 [ACABA]
+  AVANÇA :COSTAT GIRA.D 120
+  ESPIRAL.TRI :COSTAT + 5
+FI
+ESPIRAL.TRI 5
+</script>
+      <script type="text/logo">
+PROC ESPIRAL.TRI :COSTAT
+  SI :COSTAT > 100 [ACABA]
+  AVANÇA :COSTAT GIRA.E 120
+  ESPIRAL.TRI :COSTAT + 5
+FI
+ESPIRAL.TRI 5
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Un arbre</h2>
+    <p>Al panell hi ha <code>ARBRE</code>. Fa el tronc, gira i fa un arbre de la meitat de mida; després gira cap a l'altre costat i en fa un altre; i torna on havia començat.</p>
+    <p>Prova <code>ARBRE 60</code> i <code>ARBRE 40</code>.</p>
+    <p>Cada branca és un arbre més petit. Una figura així es diu fractal.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC ARBRE :MIDA
+  SI :MIDA < 5 [ACABA]
+  AVANÇA :MIDA
+  GIRA.E 30 ARBRE :MIDA / 2
+  GIRA.D 60 ARBRE :MIDA / 2
+  GIRA.E 30 RECULA :MIDA
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap12-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. Què passa si ESPIRAL no té la regla per aturar-se?</legend>
+        <label><input type="radio"> Dibuixa un sol costat</label>
+        <label><input type="radio"> No s'atura mai, i LOGO l'ha d'aturar</label>
+        <label><input type="radio"> S'atura quan arriba a la vora</label>
+        <p class="explicacio" hidden>Sense la regla, ESPIRAL es torna a fer servir a si mateixa una vegada i una altra.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>2. Quin és el nombre que va després a la successió 5, 10, 15, 20…?</legend>
+        <label><input type="radio"> 21</label>
+        <label><input type="radio"> 25</label>
+        <label><input type="radio"> 40</label>
+        <p class="explicacio" hidden>Cada nombre s'obté sumant 5 al nombre anterior: 20 + 5 = 25.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. ESPIRAL.IN fa cada costat 5 més curt que l'anterior, i s'atura quan el costat és més petit que 5. Quants costats dibuixa ESPIRAL.IN 20?</legend>
+        <label><input type="radio"> 3</label>
+        <label><input type="radio"> 4</label>
+        <label><input type="radio"> 5</label>
+        <p class="explicacio" hidden>Dibuixa costats de 20, 15, 10 i 5. Amb 0, que és més petit que 5, s'atura.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> L'espiral que s'encongeix</h2>
+    <p>Defineix <code>ESPIRAL.IN</code> amb una variable, el costat: cada costat fa 5 menys que l'anterior, i s'ha d'aturar quan el costat és més petit que 5.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>ESPIRAL.IN 100</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap12-in" data-clau data-panell data-executa="ESPIRAL.IN 100" data-comprova="dibuix"
+         data-si-falla="Mira quins traços sobren i quins falten. Cada costat fa 5 menys: quan s'ha d'aturar?">
+      <script type="text/logo">
+PROC ESPIRAL.IN :COSTAT
+  SI :COSTAT < 5 [ACABA]
+  AVANÇA :COSTAT GIRA.D 90
+  ESPIRAL.IN :COSTAT - 5
+FI
+ESPIRAL.IN 100
+</script>
+      <script type="text/logo">
+PROC ESPIRAL.IN :COSTAT
+  SI :COSTAT < 5 [ACABA]
+  AVANÇA :COSTAT GIRA.E 90
+  ESPIRAL.IN :COSTAT - 5
+FI
+ESPIRAL.IN 100
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>Un procediment es pot fer servir a si mateix, amb un valor diferent.</li>
+      <li>Li cal una regla per aturar-se: SI ... [ACABA].</li>
+      <li>Els costats d'una espiral formen una successió.</li>
+    </ul>
+    <p>Has acabat el curs. Ara ja pots inventar els teus dibuixos a l'<a href="../simulador.html">Editor lliure</a>.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-11.html">← Capítol 11 · Decisions i atzar</a> · <a href="../simulador.html">Editor lliure →</a></p>
+
+</main>
+</body>
+</html>

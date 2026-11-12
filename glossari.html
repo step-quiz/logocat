@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossari — LogoCat</title>
+<meta name="description" content="Glossari de LogoCat: totes les paraules que entén la tortuga, què fan i on surten al curs.">
+<link rel="icon" href="img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/logocat.css">
+<script>
+(function () {
+  var t = null;
+  try { t = localStorage.getItem("logocat-tema"); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+</head>
+<body>
+<header class="barra">
+  <a class="barra-logo" href="index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="index.html">Capítols</a>
+    <a href="simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-espai"></span>
+  <nav class="barra-nav" aria-label="Consulta"><a href="glossari.html" aria-current="page">Glossari</a></nav>
+</header>
+<main class="glossari">
+  <h1>Glossari</h1>
+  <p>Totes les paraules que entén la tortuga. Prem «Prova-ho» i l'exemple s'obrirà a l'Editor lliure, a punt de prémer Retorn.</p>
+  <nav class="gl-index" aria-label="Temes">
+    <p><strong>Paraules del curs:</strong> <a href="#curs-moure">Moure la tortuga</a> · <a href="#curs-llapis">El llapis i els colors</a> · <a href="#curs-repetir">Repetir</a> · <a href="#curs-procediments">Procediments i variables</a> · <a href="#curs-nombres">Nombres i càlculs</a> · <a href="#curs-decisions">Atzar i decisions</a> · <a href="#curs-pantalla">La pantalla i els modes</a></p>
+    <p><strong>Altres paraules que LOGO entén:</strong> <a href="#altres-llapis">El llapis i els colors</a> · <a href="#altres-procediments">Procediments i variables</a> · <a href="#altres-nombres">Nombres i càlculs</a> · <a href="#altres-decisions">Atzar i decisions</a> · <a href="#altres-pantalla">La pantalla i els modes</a> · <a href="#altres-veure">Veure i esborrar procediments</a></p>
+  </nav>
+
+  <div class="gl-part" id="curs">
+    <h2 class="gl-part-titol">Paraules del curs</h2>
+    <section class="gl-tema" id="curs-moure">
+      <h2>Moure la tortuga</h2>
+      <article class="gl-entrada" id="p-avanca">
+        <div class="gl-cap"><h3><code>AVANÇA</code></h3><a class="gl-capitol" href="curs/capitol-1.html">Capítol 1 →</a></div>
+        <p>La tortuga avança tants passos com li diguis, en la direcció cap on mira. Si té el llapis avall, deixa ratlla.</p>
+        <pre class="codi">AVANÇA 50</pre>
+        <a class="gl-prova" href="simulador.html?prova=AVAN%C3%87A%2050" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-centre">
+        <div class="gl-cap"><h3><code>CENTRE</code></h3><a class="gl-capitol" href="curs/capitol-1.html">Capítol 1 →</a></div>
+        <p>La tortuga torna al centre i mira amunt. No dibuixa res pel camí.</p>
+        <pre class="codi">AVANÇA 50 GIRA.D 90 CENTRE</pre>
+        <a class="gl-prova" href="simulador.html?prova=AVAN%C3%87A%2050%20GIRA.D%2090%20CENTRE" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-gira-d">
+        <div class="gl-cap"><h3><code>GIRA.D</code></h3><a class="gl-capitol" href="curs/capitol-1.html">Capítol 1 →</a></div>
+        <p>La tortuga gira cap a la dreta tants graus com li diguis. No es mou del lloc.</p>
+        <pre class="codi">GIRA.D 90</pre>
+        <a class="gl-prova" href="simulador.html?prova=GIRA.D%2090" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-gira-e">
+        <div class="gl-cap"><h3><code>GIRA.E</code></h3><a class="gl-capitol" href="curs/capitol-1.html">Capítol 1 →</a></div>
+        <p>La tortuga gira cap a l&#x27;esquerra tants graus com li diguis. No es mou del lloc.</p>
+        <pre class="codi">GIRA.E 90</pre>
+        <a class="gl-prova" href="simulador.html?prova=GIRA.E%2090" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-recula">
+        <div class="gl-cap"><h3><code>RECULA</code></h3><a class="gl-capitol" href="curs/capitol-1.html">Capítol 1 →</a></div>
+        <p>La tortuga va enrere tants passos com li diguis, sense girar-se.</p>
+        <pre class="codi">RECULA 50</pre>
+        <a class="gl-prova" href="simulador.html?prova=RECULA%2050" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="curs-llapis">
+      <h2>El llapis i els colors</h2>
+      <article class="gl-entrada" id="p-fes-color">
+        <div class="gl-cap"><h3><code>FES.COLOR</code></h3><a class="gl-capitol" href="curs/capitol-4.html">Capítol 4 →</a></div>
+        <p>Canvia el color del llapis. Hi ha sis colors: 0 negre, 1 blanc, 2 verd, 3 violeta, 4 taronja i 5 blau.</p>
+        <pre class="codi">FES.COLOR 2 AVANÇA 50</pre>
+        <a class="gl-prova" href="simulador.html?prova=FES.COLOR%202%20AVAN%C3%87A%2050" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-fes-fons">
+        <div class="gl-cap"><h3><code>FES.FONS</code></h3><a class="gl-capitol" href="curs/capitol-4.html">Capítol 4 →</a></div>
+        <p>Canvia el color de la pantalla, amb els mateixos sis nombres que FES.COLOR. El que ja està dibuixat no canvia.</p>
+        <pre class="codi">FES.FONS 5</pre>
+        <a class="gl-prova" href="simulador.html?prova=FES.FONS%205" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-goma">
+        <div class="gl-cap"><h3><code>GOMA</code></h3><a class="gl-capitol" href="curs/capitol-4.html">Capítol 4 →</a></div>
+        <p>Des d&#x27;ara, la tortuga esborra per on passa en lloc de dibuixar. Per tornar a dibuixar, LLAPIS.</p>
+        <pre class="codi">AVANÇA 60 GOMA RECULA 30</pre>
+        <a class="gl-prova" href="simulador.html?prova=AVAN%C3%87A%2060%20GOMA%20RECULA%2030" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-llapis">
+        <div class="gl-cap"><h3><code>LLAPIS</code></h3><a class="gl-capitol" href="curs/capitol-4.html">Capítol 4 →</a></div>
+        <p>Des d&#x27;ara, la tortuga dibuixa per on passa. És com comença sempre.</p>
+        <pre class="codi">NO.LLAPIS AVANÇA 30 LLAPIS AVANÇA 30</pre>
+        <a class="gl-prova" href="simulador.html?prova=NO.LLAPIS%20AVAN%C3%87A%2030%20LLAPIS%20AVAN%C3%87A%2030" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-no-llapis">
+        <div class="gl-cap"><h3><code>NO.LLAPIS</code></h3><a class="gl-capitol" href="curs/capitol-4.html">Capítol 4 →</a></div>
+        <p>Des d&#x27;ara, la tortuga es mou sense dibuixar. Per tornar a dibuixar, LLAPIS.</p>
+        <pre class="codi">NO.LLAPIS AVANÇA 50</pre>
+        <a class="gl-prova" href="simulador.html?prova=NO.LLAPIS%20AVAN%C3%87A%2050" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="curs-repetir">
+      <h2>Repetir</h2>
+      <article class="gl-entrada" id="p-repeteix">
+        <div class="gl-cap"><h3><code>REPETEIX</code></h3><a class="gl-capitol" href="curs/capitol-2.html">Capítol 2 →</a></div>
+        <p>Fa el que hi ha entre claudàtors tantes vegades com li diguis.</p>
+        <pre class="codi">REPETEIX 4 [AVANÇA 50 GIRA.D 90]</pre>
+        <a class="gl-prova" href="simulador.html?prova=REPETEIX%204%20%5BAVAN%C3%87A%2050%20GIRA.D%2090%5D" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="curs-procediments">
+      <h2>Procediments i variables</h2>
+      <article class="gl-entrada" id="p-acaba">
+        <div class="gl-cap"><h3><code>ACABA</code></h3><a class="gl-capitol" href="curs/capitol-12.html">Capítol 12 →</a></div>
+        <p>Atura el procediment en aquell moment. Va entre claudàtors, dins d&#x27;un SI: és la regla per aturar-se.</p>
+        <pre class="codi">PROC ESPIRAL :COSTAT
+  SI :COSTAT &gt; 100 [ACABA]
+  AVANÇA :COSTAT GIRA.D 90
+  ESPIRAL :COSTAT + 5
+FI</pre>
+      </article>
+      <article class="gl-entrada" id="p-fi">
+        <div class="gl-cap"><h3><code>FI</code></h3><a class="gl-capitol" href="curs/capitol-3.html">Capítol 3 →</a></div>
+        <p>Acaba la definició d&#x27;un procediment. Va sola a l&#x27;última línia.</p>
+        <pre class="codi">PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI</pre>
+      </article>
+      <article class="gl-entrada" id="p-variable">
+        <div class="gl-cap"><h3><code>:NOM</code></h3><a class="gl-capitol" href="curs/capitol-6.html">Capítol 6 →</a></div>
+        <p>Una variable: un nom amb dos punts al davant. Quan fas servir el procediment, li dones un valor (QUADRAT 50), i el procediment el fa servir on hi ha la variable.</p>
+        <pre class="codi">PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI</pre>
+      </article>
+      <article class="gl-entrada" id="p-proc">
+        <div class="gl-cap"><h3><code>PROC</code></h3><a class="gl-capitol" href="curs/capitol-3.html">Capítol 3 →</a></div>
+        <p>Comença la definició d&#x27;un procediment: una paraula nova que fa el que li ensenyes. Després del nom hi poden anar variables, i s&#x27;acaba amb FI.</p>
+        <pre class="codi">PROC QUADRAT :COSTAT
+  REPETEIX 4 [AVANÇA :COSTAT GIRA.D 90]
+FI</pre>
+      </article>
+    </section>
+    <section class="gl-tema" id="curs-nombres">
+      <h2>Nombres i càlculs</h2>
+      <article class="gl-entrada" id="p-arrel2">
+        <div class="gl-cap"><h3><code>ARREL2</code></h3><a class="gl-capitol" href="curs/capitol-10.html">Capítol 10 →</a></div>
+        <p>Dona l&#x27;arrel quadrada d&#x27;un nombre.</p>
+        <pre class="codi">ESCRIU ARREL2 25</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20ARREL2%2025" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-escriu">
+        <div class="gl-cap"><h3><code>ESCRIU</code></h3><a class="gl-capitol" href="curs/capitol-5.html">Capítol 5 →</a></div>
+        <p>Escriu un nombre, o el resultat d&#x27;un càlcul, a la zona de text.</p>
+        <pre class="codi">ESCRIU 360 / 5</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20360%20/%205" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-parentesis">
+        <div class="gl-cap"><h3><code>( )</code></h3><a class="gl-capitol" href="curs/capitol-10.html">Capítol 10 →</a></div>
+        <p>Els parèntesis diuen a LOGO que primer faci el càlcul de dins.</p>
+        <pre class="codi">ESCRIU (3 + 4) * 2</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20%283%20%2B%204%29%20%2A%202" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-operacions">
+        <div class="gl-cap"><h3><code>+ - * /</code></h3><a class="gl-capitol" href="curs/capitol-5.html">Capítol 5 →</a></div>
+        <p>Sumar, restar, multiplicar i dividir. Per restar, posa un espai a cada costat del signe menys.</p>
+        <pre class="codi">ESCRIU 3 + 4 * 2</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%203%20%2B%204%20%2A%202" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="curs-decisions">
+      <h2>Atzar i decisions</h2>
+      <article class="gl-entrada" id="p-atzar">
+        <div class="gl-cap"><h3><code>ATZAR</code></h3><a class="gl-capitol" href="curs/capitol-11.html">Capítol 11 →</a></div>
+        <p>Dona un nombre a l&#x27;atzar del 0 al N − 1: ATZAR 6 dona 0, 1, 2, 3, 4 o 5. Hi ha N resultats possibles, i el N no surt mai.</p>
+        <pre class="codi">ESCRIU ATZAR 6</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20ATZAR%206" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-cert-fals">
+        <div class="gl-cap"><h3><code>CERT / FALS</code></h3><a class="gl-capitol" href="curs/capitol-11.html">Capítol 11 →</a></div>
+        <p>Les dues respostes d&#x27;una condició: CERT si es compleix, FALS si no.</p>
+        <pre class="codi">ESCRIU 3 = 3</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%203%20%3D%203" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-si">
+        <div class="gl-cap"><h3><code>SI</code></h3><a class="gl-capitol" href="curs/capitol-11.html">Capítol 11 →</a></div>
+        <p>Mira una condició. Si es compleix, fa la primera llista; si no, la segona, si n&#x27;hi ha.</p>
+        <pre class="codi">SI 3 &gt; 5 [AVANÇA 50] [GIRA.D 90 AVANÇA 50]</pre>
+        <a class="gl-prova" href="simulador.html?prova=SI%203%20%3E%205%20%5BAVAN%C3%87A%2050%5D%20%5BGIRA.D%2090%20AVAN%C3%87A%2050%5D" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-comparacions">
+        <div class="gl-cap"><h3><code>&lt; &gt; =</code></h3><a class="gl-capitol" href="curs/capitol-11.html">Capítol 11 →</a></div>
+        <p>Comparen dos nombres: més petit, més gran, igual. LOGO només coneix aquests tres signes.</p>
+        <pre class="codi">ESCRIU 3 &lt; 5</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%203%20%3C%205" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="curs-pantalla">
+      <h2>La pantalla i els modes</h2>
+      <article class="gl-entrada" id="p-apareix">
+        <div class="gl-cap"><h3><code>APAREIX</code></h3><a class="gl-capitol" href="curs/capitol-4.html">Capítol 4 →</a></div>
+        <p>Torna a fer veure la tortuga, si l&#x27;havies amagat.</p>
+        <pre class="codi">DESAPAREIX AVANÇA 50 APAREIX</pre>
+        <a class="gl-prova" href="simulador.html?prova=DESAPAREIX%20AVAN%C3%87A%2050%20APAREIX" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-desapareix">
+        <div class="gl-cap"><h3><code>DESAPAREIX</code></h3><a class="gl-capitol" href="curs/capitol-4.html">Capítol 4 →</a></div>
+        <p>Amaga la tortuga. Continua dibuixant igual, però no la veus.</p>
+        <pre class="codi">DESAPAREIX AVANÇA 50</pre>
+        <a class="gl-prova" href="simulador.html?prova=DESAPAREIX%20AVAN%C3%87A%2050" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-ini-dib">
+        <div class="gl-cap"><h3><code>INI.DIB</code></h3><a class="gl-capitol" href="curs/capitol-1.html">Capítol 1 →</a></div>
+        <p>Esborra tota la pantalla i porta la tortuga al centre, mirant amunt.</p>
+        <pre class="codi">AVANÇA 50 INI.DIB</pre>
+        <a class="gl-prova" href="simulador.html?prova=AVAN%C3%87A%2050%20INI.DIB" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+
+  </div>
+
+  <div class="gl-part" id="altres">
+    <h2 class="gl-part-titol">Altres paraules que LOGO entén</h2>
+    <p>No surten a cap capítol, però la tortuga les entén. Les pots provar a l'Editor lliure.</p>
+
+    <section class="gl-tema" id="altres-llapis">
+      <h2>El llapis i els colors</h2>
+      <article class="gl-entrada" id="p-color">
+        <div class="gl-cap"><h3><code>COLOR</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona el nombre del color del llapis.</p>
+        <pre class="codi">ESCRIU COLOR</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20COLOR" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-fons">
+        <div class="gl-cap"><h3><code>FONS</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona el nombre del color de la pantalla.</p>
+        <pre class="codi">ESCRIU FONS</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20FONS" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+
+    <section class="gl-tema" id="altres-procediments">
+      <h2>Procediments i variables</h2>
+      <article class="gl-entrada" id="p-contingut">
+        <div class="gl-cap"><h3><code>CONTINGUT</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona el valor d&#x27;una variable: CONTINGUT &quot;MIDA és el mateix que :MIDA.</p>
+        <pre class="codi">POSA.A &quot;MIDA 40 ESCRIU CONTINGUT &quot;MIDA</pre>
+        <a class="gl-prova" href="simulador.html?prova=POSA.A%20%22MIDA%2040%20ESCRIU%20CONTINGUT%20%22MIDA" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-local">
+        <div class="gl-cap"><h3><code>LOCAL</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dins d&#x27;un procediment, fa que una variable sigui només d&#x27;aquell procediment.</p>
+        <pre class="codi">PROC TRES
+  LOCAL &quot;X
+  POSA.A &quot;X 3
+  ESCRIU :X
+FI</pre>
+      </article>
+      <article class="gl-entrada" id="p-posa-a">
+        <div class="gl-cap"><h3><code>POSA.A</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona un valor a una variable. El nom de la variable va amb cometes al davant: &quot;MIDA.</p>
+        <pre class="codi">POSA.A &quot;MIDA 40 AVANÇA :MIDA</pre>
+        <a class="gl-prova" href="simulador.html?prova=POSA.A%20%22MIDA%2040%20AVAN%C3%87A%20%3AMIDA" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-retorna">
+        <div class="gl-cap"><h3><code>RETORNA</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Fa que un procediment doni un valor, com fan ATZAR o ARREL2.</p>
+        <pre class="codi">PROC DAU
+  RETORNA 1 + ATZAR 6
+FI</pre>
+      </article>
+    </section>
+    <section class="gl-tema" id="altres-nombres">
+      <h2>Nombres i càlculs</h2>
+      <article class="gl-entrada" id="p-aprox">
+        <div class="gl-cap"><h3><code>APROX</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Arrodoneix un nombre a l&#x27;enter més proper.</p>
+        <pre class="codi">ESCRIU APROX 3.7</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20APROX%203.7" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-atan">
+        <div class="gl-cap"><h3><code>ATAN</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona l&#x27;angle, en graus, que té aquesta tangent.</p>
+        <pre class="codi">ESCRIU ATAN 1</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20ATAN%201" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-cos">
+        <div class="gl-cap"><h3><code>COS</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona el cosinus d&#x27;un angle en graus.</p>
+        <pre class="codi">ESCRIU COS 60</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20COS%2060" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-enter">
+        <div class="gl-cap"><h3><code>ENTER</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Treu els decimals d&#x27;un nombre, sense arrodonir.</p>
+        <pre class="codi">ESCRIU ENTER 3.7</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20ENTER%203.7" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-escriu-s">
+        <div class="gl-cap"><h3><code>ESCRIU.S</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Com ESCRIU, però sense canviar de línia.</p>
+        <pre class="codi">ESCRIU.S 1 ESCRIU.S 2 ESCRIU 3</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU.S%201%20ESCRIU.S%202%20ESCRIU%203" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-mostra">
+        <div class="gl-cap"><h3><code>MOSTRA</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Com ESCRIU, però si escrius una llista, se&#x27;n veuen els claudàtors.</p>
+        <pre class="codi">MOSTRA [HOLA A TOTHOM]</pre>
+        <a class="gl-prova" href="simulador.html?prova=MOSTRA%20%5BHOLA%20A%20TOTHOM%5D" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-quocient">
+        <div class="gl-cap"><h3><code>QUOCIENT</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona el quocient de la divisió entera.</p>
+        <pre class="codi">ESCRIU QUOCIENT 17 5</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20QUOCIENT%2017%205" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-resta-div">
+        <div class="gl-cap"><h3><code>RESTA.DIV</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona la resta de la divisió entera.</p>
+        <pre class="codi">ESCRIU RESTA.DIV 17 5</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20RESTA.DIV%2017%205" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-sin">
+        <div class="gl-cap"><h3><code>SIN</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona el sinus d&#x27;un angle en graus.</p>
+        <pre class="codi">ESCRIU SIN 30</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20SIN%2030" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="altres-decisions">
+      <h2>Atzar i decisions</h2>
+      <article class="gl-entrada" id="p-cert-algun">
+        <div class="gl-cap"><h3><code>CERT.ALGUN</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona CERT si es compleix almenys una de les dues condicions.</p>
+        <pre class="codi">ESCRIU CERT.ALGUN (3 &lt; 5) (2 &lt; 1)</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20CERT.ALGUN%20%283%20%3C%205%29%20%282%20%3C%201%29" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-certs-tots">
+        <div class="gl-cap"><h3><code>CERTS.TOTS</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona CERT si es compleixen totes dues condicions.</p>
+        <pre class="codi">ESCRIU CERTS.TOTS (3 &lt; 5) (2 &lt; 1)</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20CERTS.TOTS%20%283%20%3C%205%29%20%282%20%3C%201%29" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-no">
+        <div class="gl-cap"><h3><code>NO</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Dona la condició contrària: NO CERT és FALS.</p>
+        <pre class="codi">ESCRIU NO 3 &gt; 5</pre>
+        <a class="gl-prova" href="simulador.html?prova=ESCRIU%20NO%203%20%3E%205" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="altres-pantalla">
+      <h2>La pantalla i els modes</h2>
+      <article class="gl-entrada" id="p-esb-dib">
+        <div class="gl-cap"><h3><code>ESB.DIB</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Esborra la pantalla, però la tortuga es queda on és.</p>
+        <pre class="codi">AVANÇA 50 ESB.DIB</pre>
+        <a class="gl-prova" href="simulador.html?prova=AVAN%C3%87A%2050%20ESB.DIB" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-espera">
+        <div class="gl-cap"><h3><code>ESPERA</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Fa que la tortuga s&#x27;esperi una estona: ESPERA 60 és un segon.</p>
+        <pre class="codi">AVANÇA 50 ESPERA 60 GIRA.D 90</pre>
+        <a class="gl-prova" href="simulador.html?prova=AVAN%C3%87A%2050%20ESPERA%2060%20GIRA.D%2090" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-m-barrera">
+        <div class="gl-cap"><h3><code>M.BARRERA</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Des d&#x27;ara, la tortuga no pot sortir de la pantalla: si ho intenta, s&#x27;atura i surt un missatge. Per tornar a com era, M.CÍCLIC.</p>
+        <pre class="codi">M.BARRERA AVANÇA 200</pre>
+        <a class="gl-prova" href="simulador.html?prova=M.BARRERA%20AVAN%C3%87A%20200" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-m-ciclic">
+        <div class="gl-cap"><h3><code>M.CÍCLIC</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>La tortuga que surt per una vora entra per la del davant. És com funciona sempre, si no dius res.</p>
+        <pre class="codi">M.CÍCLIC AVANÇA 200</pre>
+        <a class="gl-prova" href="simulador.html?prova=M.C%C3%8DCLIC%20AVAN%C3%87A%20200" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-m-finestra">
+        <div class="gl-cap"><h3><code>M.FINESTRA</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Des d&#x27;ara, la tortuga pot sortir de la pantalla i continuar per fora, on no la veus. Per tornar a com era, M.CÍCLIC.</p>
+        <pre class="codi">M.FINESTRA AVANÇA 200</pre>
+        <a class="gl-prova" href="simulador.html?prova=M.FINESTRA%20AVAN%C3%87A%20200" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+    <section class="gl-tema" id="altres-veure">
+      <h2>Veure i esborrar procediments</h2>
+      <article class="gl-entrada" id="p-edita">
+        <div class="gl-cap"><h3><code>EDITA</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Porta el cursor del panell a un procediment. Si no existeix, el crea buit.</p>
+        <pre class="codi">EDITA &quot;CASA</pre>
+        <a class="gl-prova" href="simulador.html?prova=EDITA%20%22CASA" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-n-procs-q">
+        <div class="gl-cap"><h3><code>N.PROCS?</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Escriu la primera línia (PROC i el nom) de cada procediment del panell.</p>
+        <pre class="codi">N.PROCS?</pre>
+        <a class="gl-prova" href="simulador.html?prova=N.PROCS%3F" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+      <article class="gl-entrada" id="p-oblida-proc">
+        <div class="gl-cap"><h3><code>OBLIDA.PROC</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Esborra un procediment, també del panell.</p>
+        <pre class="codi">OBLIDA.PROC &quot;QUADRAT</pre>
+      </article>
+      <article class="gl-entrada" id="p-proc-q">
+        <div class="gl-cap"><h3><code>PROC?</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Escriu un sol procediment.</p>
+        <pre class="codi">PROC? &quot;QUADRAT</pre>
+      </article>
+      <article class="gl-entrada" id="p-procs-q">
+        <div class="gl-cap"><h3><code>PROCS?</code></h3><span class="gl-capitol">No surt al curs</span></div>
+        <p>Escriu tots els procediments del panell.</p>
+        <pre class="codi">PROCS?</pre>
+        <a class="gl-prova" href="simulador.html?prova=PROCS%3F" target="_blank" rel="noopener">Prova-ho</a>
+      </article>
+    </section>
+  </div>
+</main>
+</body>
+</html>

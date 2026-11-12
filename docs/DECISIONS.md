@@ -433,12 +433,52 @@ dibuixarà?" → find-the-bug "El cercle que no hi cap" → Cares i creus → qu
   mai quantes exactament.»
 - Messages: see `LANGUAGE-SPEC.md` §8 (chapter 11 block).
 
+## 8l. Chapter 12 «Recursivitat» (script approved 2026-11-12; built)
+
+Review artifact "Revisió 14 del guió del capítol 12" (slug
+`4ed0ce99-f152-4442-97fc-9d77f851b0b5`; 15 points, all approved with the recommended
+options). Order: Un procediment que es fa servir a si mateix (with "La regla per
+aturar-se" in the same section and simulator) → "Què dibuixarà?" → find-the-bug
+"L'espiral que no surt" → exercise "L'espiral triangular" → Un arbre → quiz → key
+exercise "L'espiral que s'encongeix" → summary and end of the course.
+
+- **Scope (owner, G2 A):** spirals with exercises; the fractal tree as a section without
+  exercise. Frozen: «Cada branca és un arbre més petit. Una figura així es diu fractal.»
+- **Maths words (owner, G3 A, with his wording):** «Els costats formen una successió: cada
+  nombre s'obté sumant 5 al nombre anterior.» No "progressió aritmètica".
+- **Frozen:** «Un procediment que es fa servir a si mateix necessita una regla per
+  aturar-se. Sense la regla, no acabaria mai.»
+- **End of the course (owner, G6 A):** «Has acabat el curs. Ara ja pots inventar els teus
+  dibuixos a l'Editor lliure.» The challenges chapter is decided later in its own review;
+  if it is built, chapter 12's closing and footer change.
+- Messages: see `LANGUAGE-SPEC.md` §8 (chapter 12 block).
+
+## 8m. Glossary (review 15, approved 2026-11-12; built)
+
+Review artifact "Revisió 15: el glossari" (slug `e5fac928-a3d0-42b1-a8a4-641f46561600`).
+- **Which words (G1 A):** two parts, course words (with chapter) and other words the
+  engine knows, without the coordinate words (D1: no coordinate geometry).
+- **Order (G2 A):** by theme, in this order: Moure la tortuga · El llapis i els colors ·
+  Repetir · Procediments i variables · Nombres i càlculs · Atzar i decisions · La pantalla
+  i els modes · Veure i esborrar procediments; alphabetical inside a theme; theme index on
+  top.
+- **Entry (G3):** word, one sentence to the student, a one-line example, chapter link or
+  «No surt al curs». Deviation: entries that cannot be shown in one line (`PROC`, `FI`,
+  `:NOM`, `ACABA`, `LOCAL`, `RETORNA`) have a short multi-line example instead.
+- **«Prova-ho» (G4 A):** opens the Editor lliure in a new tab with the example typed at
+  `?`. Only for one-line examples that run in an empty Editor lliure (and `M.BARRERA
+  AVANÇA 200`, which shows the fence message on purpose).
+- **No ideas section (G5: no).**
+- **Access (G6):** «Glossari» in the top bar of every page.
+- **Edge modes (G7):** the three approved sentences, frozen.
+
 ## 9. Next step
 
-Chapters 1–11 and the Editor lliure are delivered. Next: the script of chapter 12
-(«Recursivitat», with `ACABA`), same review flow; then the final challenges chapter if the
-owner wants it, and family integration once `step-quiz-commons` is available. No open
-questions are pending for the owner as of v0.15.
+Chapters 1–12 (the whole plan) and the Editor lliure are delivered. Pending, each through
+the same review flow and only when the owner asks: a final challenges chapter (nested
+`REPETEIX`, mosaics, maybe `POSA.A`/`RETORNA`), the glossary, the teacher guide, the
+certificate, and family integration once `step-quiz-commons` is available. No open
+questions are pending for the owner as of v0.16.
 
 ## 10. Sources and records
 

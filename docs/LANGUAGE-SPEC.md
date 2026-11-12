@@ -245,6 +245,17 @@ the tokens; any prefix word). `ATZAR 0` (or less) → `ATZAR vol un nombre més 
 compleix.` Signs Logo does not have (`>=`, `=>`, `==`, `<>`, `≥`, `≤`, `≠`) → `LOGO només
 coneix els signes <, > i =`. `IF` → `Volies dir SI?`; `ALEATORI` → `Volies dir ATZAR?`.
 
+Approved by the owner on 2026-11-12 (chapter 12, review 14). `ATURADA!` because of the
+500-call limit, when one procedure is at least 10 times on the call stack, gets a second
+hint: `ESPIRAL es fa servir a si mateix i no s'atura mai. Li cal una regla, com ara SI
+:COSTAT > 100 [ACABA]` (first variable of the procedure; with no variable: `Li cal una
+regla amb SI i ACABA.`). The same hint is given when the student presses «Atura» while a
+procedure that calls itself and contains no `ACABA` is running (two or more calls on the
+stack). `ACABA` used as an input (`SI :COSTAT > 100 ACABA`, which would otherwise end the
+procedure silently) → `SI NECESSITA UNA LLISTA` / `Posa ACABA entre claudàtors: SI :COSTAT >
+100 [ACABA]` (condition rebuilt from the tokens). `ATURA`, `PARA`, `STOP` → `Volies dir
+ACABA?`.
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 

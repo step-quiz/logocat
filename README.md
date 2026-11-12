@@ -12,7 +12,8 @@ requests.
 | Path | What |
 |---|---|
 | `index.html` | Landing page with the chapter list |
-| `simulador.html` | Editor lliure: procedures panel + monitor, step mode |
+| `simulador.html` | Editor lliure: procedures panel + monitor, step mode. `simulador.html?prova=TEXT` opens it with TEXT already typed at the `?` line (the glossary's «Prova-ho») |
+| `glossari.html` | Glossary: every word the engine knows except the coordinate words, in two parts (course words with their chapter; other words), by theme, alphabetical within a theme. Static HTML, generated once from a word list; edit it by hand from now on and keep `tests/unit/glossari.test.mjs` passing |
 | `curs/capitol-N.html` | One page per chapter; text, simulators and activities |
 | `js/logo/` | The language: `lexer.js`, `interpret.js` (generator-based interpreter and primitives), `tortuga.js` (turtle and field), `missatges.js` (Catalan messages), `compara.js` (drawing validation) |
 | `js/ui/monitor.js` | The "monitor": turtle canvas, text lines, `?` prompt, toolbar, exercise checking; with `panel`, the simulator with procedures panel |

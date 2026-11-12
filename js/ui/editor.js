@@ -60,6 +60,11 @@ function init() {
   $('b-reinicia').addEventListener('click', () => monitor.onReset());
 
   monitor.draw();
+  // «Prova-ho» del glossari: la línia surt ja escrita a «?», a punt de prémer Retorn (owner, revisió 15, G4).
+  try {
+    const prova = new URLSearchParams(location.search).get('prova');
+    if (prova) { monitor.input.value = prova; monitor.input.focus(); }
+  } catch (e) { /* sense paràmetres */ }
   window.logocatEditor = { monitor, panel };      // per a les proves al navegador
 }
 

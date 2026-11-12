@@ -271,12 +271,39 @@ export class Interpreter {
     this.globals.set(name, value);
   }
 
+  /** «ATURADA!» per massa passos o massa crides; diu si és un procediment que es crida a si mateix (owner, cap. 12). */
+  _limit() { return new LogoError('limit', this.recursion(10) || {}); }
+
+  /**
+   * El procediment que més vegades és a la pila, si hi és almenys `min` vegades: { recursive, input } o null.
+   * Amb `noStop`, només si el procediment no té cap ACABA (llavors segur que no s'aturaria mai).
+   */
+  recursion(min, noStop = false) {
+    const count = new Map();
+    for (const f of this.frames) count.set(f.proc, (count.get(f.proc) || 0) + 1);
+    let name = null, best = 0;
+    for (const [k, v] of count) if (v > best) { name = k; best = v; }
+    if (best < min) return null;
+    const proc = this.procs.get(name);
+    if (noStop && (!proc || (proc.source || []).some((l) => /\bACABA\b/.test(String(l).toUpperCase())))) return null;
+    return { recursive: name, input: proc && proc.inputs.length ? proc.inputs[0] : null };
+  }
+
   *args(word, n, cur, onMissing) {
     const out = [];
     out.starts = [];
+    const from = cur.pos;
     for (let k = 0; k < n; k++) {
       const next = cur.toks[cur.pos];
       if (!next || next.t === 'rp') throw onMissing(k, out);
+      // «SI :COSTAT > 100 ACABA»: ACABA no és un valor; sense claudàtors s'executaria en silenci (owner, cap. 12).
+      if (next.t === 'word' && next.v === 'ACABA') {
+        const e = onMissing(k, out);
+        const show = (t) => t.t === 'num' ? fmtNum(t.v) : t.t === 'var' ? ':' + t.v : t.t === 'op' ? t.v : t.t === 'word' ? t.v : null;
+        const cond = cur.toks.slice(from, cur.pos).map(show);
+        if (e.params && !cond.includes(null)) e.params.bareStop = cond.join(' ');
+        throw e;
+      }
       out.starts.push(cur.pos);
       const v = yield* this.expr(cur, 0);
       if (v === undefined) throw new LogoError('no_output', { word: cur.last });
@@ -319,7 +346,7 @@ export class Interpreter {
       if (prim.opt && cur.toks[cur.pos] && cur.toks[cur.pos].t === 'list') {
         argv.push({ list: cur.toks[cur.pos].v, src: cur.toks[cur.pos].src }); cur.pos++;
       }
-      if (++this.steps > MAX_STEPS) throw new LogoError('limit');
+      if (++this.steps > MAX_STEPS) throw this._limit();
       if (prim.step) yield this._before(word, cur, startTok);
       const result = yield* prim.run(argv, word);
       cur.last = word;
@@ -336,7 +363,7 @@ export class Interpreter {
     }
     const argv = yield* this.args(word, proc.inputs.length, cur,
       (k, got) => new LogoError('proc_inputs', { word, n: proc.inputs.length, inputs: proc.inputs.slice(), given: got.map((v) => fmtValue(v)) }));
-    if (this.frames.length >= MAX_DEPTH) throw new LogoError('limit');
+    if (this.frames.length >= MAX_DEPTH) throw this._limit();
     const caller = this.frames[this.frames.length - 1];
     const endTok = cur.toks[cur.pos - 1];
     const frame = {

@@ -54,6 +54,10 @@ export function nearest(word, known) {
   return best;
 }
 
+// Un procediment que es crida a si mateix sense parar (owner, cap. 12).
+const recursionHint = (p) => `${p.recursive} es fa servir a si mateix i no s'atura mai. ` +
+  (p.input ? `Li cal una regla, com ara SI :${p.input} > 100 [ACABA]` : 'Li cal una regla amb SI i ACABA.');
+
 /**
  * Converteix un LogoError en { line1, hints }.
  * `known`: paraules que LOGO coneix ara (primitives + procediments), per a «Volies dir…?».
@@ -83,7 +87,8 @@ export function describe(err, known = []) {
         'SINO': "No cal escriure SINO: la segona llista ja és el que es fa si no es compleix.",
         'SI.NO': "No cal escriure SINO: la segona llista ja és el que es fa si no es compleix.",
         '≥': 'LOGO només coneix els signes <, > i =', '≤': 'LOGO només coneix els signes <, > i =', '≠': 'LOGO només coneix els signes <, > i =',
-        'IF': 'Volies dir SI?', 'ALEATORI': 'Volies dir ATZAR?' }[p.word];
+        'IF': 'Volies dir SI?', 'ALEATORI': 'Volies dir ATZAR?',
+        'ATURA': 'Volies dir ACABA?', 'PARA': 'Volies dir ACABA?', 'STOP': 'Volies dir ACABA?' }[p.word];
       if (turn) { hints = [turn]; break; }
       // BANDERA.E quan només hi ha BANDERA.D (o al revés): cap pista, que no faci dubtar (owner, cap. 9).
       const de = /^(.+)\.([DE])$/.exec(p.word);
@@ -94,7 +99,8 @@ export function describe(err, known = []) {
     }
     case 'spaced': line1 = `NO SÉ COM FER ${p.text}`; hints = [`Volies dir ${p.word}? S'escriu amb un punt i sense espai.`]; break;   // (owner)
     case 'missing_input':
-      if (p.want === 'l' && p.word === 'REPETEIX') { line1 = 'REPETEIX NECESSITA SABER QUÈ HA DE REPETIR'; hints = [`Per exemple: ${p.example}`]; }   // (owner)
+      if (p.bareStop != null && p.want === 'l') { line1 = `${p.word} NECESSITA UNA LLISTA`; hints = [`Posa ACABA entre claudàtors: ${p.word} ${p.bareStop}${p.bareStop ? ' ' : ''}[ACABA]`]; }   // (owner, cap. 12)
+      else if (p.want === 'l' && p.word === 'REPETEIX') { line1 = 'REPETEIX NECESSITA SABER QUÈ HA DE REPETIR'; hints = [`Per exemple: ${p.example}`]; }   // (owner)
       else if (p.want === 'l') { line1 = `${p.word} NECESSITA UNA LLISTA`; hints = [`Per exemple: ${p.example}`]; }
       else { line1 = `${p.word} NECESSITA UN NOMBRE`; hints = [`Per exemple: ${p.example}`]; }
       break;
@@ -140,10 +146,14 @@ export function describe(err, known = []) {
       line1 = 'LA TORTUGA NO POT SORTIR DE LA PANTALLA';
       hints = ['Estàs en mode barrera.', 'Si vols suprimir el mode barrera, fes servir M.CÍCLIC'];
       break;
-    case 'stopped': line1 = 'ATURADA!'; break;
+    case 'stopped':
+      line1 = 'ATURADA!';
+      if (p.recursive) hints = [recursionHint(p)];
+      break;
     case 'limit':
       line1 = 'ATURADA!';
       hints = ['Hem hagut d\'aturar el programa perquè sembla que no acaba mai. Revisa les teves ordres.'];
+      if (p.recursive) hints.push(recursionHint(p));
       break;
     case 'comma_decimal': line1 = `NO ENTENC ${p.text}`; hints = [`Els decimals s'escriuen amb punt: ${p.text.replace(/[,'’]/, '.')}`]; break;
     case 'missing_fi': line1 = 'FALTA FI'; hints = ['Cada PROC acaba amb FI']; break;

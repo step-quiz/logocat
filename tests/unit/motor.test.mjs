@@ -165,7 +165,8 @@ test('recursivitat amb regla d\'aturada, i límits', () => {
   assert.equal(r.error, null); assert.equal(r.T.segments.length, 6);
   const e = run('PROC BUCLE\nBUCLE\nFI\nBUCLE');
   assert.equal(e.msg.line1, 'ATURADA!');
-  assert.deepEqual(e.msg.hints, ['Hem hagut d\'aturar el programa perquè sembla que no acaba mai. Revisa les teves ordres.']);
+  assert.deepEqual(e.msg.hints, ['Hem hagut d\'aturar el programa perquè sembla que no acaba mai. Revisa les teves ordres.', 'BUCLE es fa servir a si mateix i no s\'atura mai. Li cal una regla amb SI i ACABA.']);   // (owner, cap. 12)
+  assert.deepEqual(run('REPETEIX 100000 [REPETEIX 100000 [GIRA.D 1]]').msg.hints, ['Hem hagut d\'aturar el programa perquè sembla que no acaba mai. Revisa les teves ordres.'], 'sense recursivitat, una sola pista');
 });
 
 test('ATZAR amb generador fixat i espai de treball', () => {
