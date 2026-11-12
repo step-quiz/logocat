@@ -74,6 +74,9 @@ export function describe(err, known = []) {
         hints = ['Per multiplicar, fes servir el signe *. Per exemple: 3 * 120']; break;
       }
       // Girs (owner, cap. 9): GIRA.I (castellà «izquierda»), GIRA sol, GIRA.DRETA, GIRA.ESQUERRA.
+      // «50²»: per elevar al quadrat, es multiplica (owner, cap. 10).
+      const sq = /^(\d+(?:\.\d+)?)²$/.exec(p.word);
+      if (sq) { hints = [`Per elevar al quadrat, multiplica: ${sq[1]} * ${sq[1]}`]; break; }
       const turn = { 'GIRA.I': "Volies dir GIRA.E? E d'esquerra.", 'GIRA': 'Volies dir GIRA.D o GIRA.E?',
         'GIRA.DRETA': 'Volies dir GIRA.D?', 'GIRA.ESQUERRA': 'Volies dir GIRA.E?' }[p.word];
       if (turn) { hints = [turn]; break; }
@@ -92,12 +95,14 @@ export function describe(err, known = []) {
       break;
     case 'unused':
       line1 = `NO SÉ QUÈ FER AMB ${p.value}`;
-      hints = ['Escriu una ordre, com per exemple AVANÇA 50'];
+      hints = [p.minus ? `Per restar, posa un espai a cada costat del signe menys: ${p.minus.left} - ${p.minus.right}`   // (owner, cap. 10)
+        : 'Escriu una ordre, com per exemple AVANÇA 50'];
       break;
     case 'bad_input':
       line1 = `A ${p.word} NO LI AGRADA ${p.value}`;
       hints = [p.want === 'c' ? 'Els colors van del 0 al 5'                    // (owner)
         : p.negative ? `${p.word} no pot repetir un nombre negatiu de vegades`   // (owner, cap. 8)
+        : p.root ? "ARREL2 no pot fer l'arrel d'un nombre negatiu"                 // (owner, cap. 10)
         : p.want === 'l' ? `${p.word} vol una llista entre claudàtors`
         : p.want === 'b' ? `${p.word} vol una condició, com ara :N > 10`
           : p.isList ? `${p.word} vol un nombre, sense claudàtor` : `${p.word} vol un nombre`];

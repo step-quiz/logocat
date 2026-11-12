@@ -55,7 +55,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 7 | Dues variables | `PROC POLÍGON :N :COSTAT` | Generalising with 360 / N; stars as more than one full turn (no divisor theory: owner) |
 | 8 | Cercles i arcs | Student-built `CERCLE :PAS`, `ARC :PAS :GRAUS` (the 1985 vocabulary has no circle primitive) | The turtle walks round (tiny step, tiny turn); full turn = circle, part of it = arc. NOT a many-sided polygon, NO π (owner, review 10) |
 | 9 | Simetria | No new words; swap `GIRA.D`/`GIRA.E`; student names with a dot (`BANDERA.D`/`BANDERA.E`) | Turning a figure (gir) and mirror symmetry (simetria, eix de simetria). Tessellations moved to the final challenges chapter (owner, review 11) |
-| 10 | Triangles i quadrilàters | `ARREL2` | Classify and construct: isosceles, right triangle, parallelogram, rhombus, trapezoid, kite; opposite/supplementary angles; Pythagoras for the diagonal |
+| 10 | Quadrilàters (renamed by the owner, review 12) | `ARREL2` | Parallelograms only (square, rectangle, rhombus, rhomboid): consecutive angles add to 180, opposite angles equal; the trapezoid in one sentence; Pythagoras for the square's diagonal. Isosceles/right triangles and the kite were dropped (owner) |
 | 11 | Decisions i atzar | `SI [ ... ]`, `ACABA`, `POSA.A`, `ATZAR`, `RETORNA`, `ESCRIU` | Conditions, random walk, frequencies |
 | 12 | Recursivitat | Self-calling procedure with a stop rule | Spirals (sequences), fractals (self-similarity) |
 
@@ -384,11 +384,36 @@ del mirall" → quiz → key exercise "El molinet" → summary, bridge to chapte
   72 typed by hand also passes (owner informed, accepted).
 - Messages: see `LANGUAGE-SPEC.md` §8 (chapter 9 block).
 
+## 8j. Chapter 10 «Quadrilàters» (script approved 2026-11-12; built)
+
+Review artifact "Revisió 12 del guió del capítol 10" (slug
+`b4776efc-359f-421c-9412-d49ed735c373`; 15 points, all approved with the recommended
+options). Order: El romboide (line at `?`) → "Què dibuixarà?" → exercise "El romboide" →
+La família dels paral·lelograms → find-the-bug "El romboide que no tanca" → La diagonal
+del quadrat → quiz → key exercise "El rombe de 70 graus" → summary, bridge to chapter 11.
+
+- **Scope (owner, G2 A):** parallelograms only; title «Quadrilàters». Chapter 9's bridge
+  sentence was changed accordingly to «Al capítol següent: quadrilàters de tota mena.»
+- **Half-turn rule:** in each half of a parallelogram the turtle turns twice, and the two
+  turns add up to 180; with chapter 5's frozen sentence, consecutive interior angles add
+  to 180 and opposite ones are equal. Frozen sentences: «El quadrat és alhora un
+  rectangle i un rombe.», «El trapezi només té dos costats paral·lels: no és un
+  paral·lelogram.»
+- **ARREL2 and Pythagoras (owner, G3 A):** section without exercise; frozen sentence «És
+  el teorema de Pitàgores: la diagonal al quadrat és igual a la suma dels dos costats al
+  quadrat.» Parentheses appear here for the first time, with one sentence: «Els parèntesis
+  diuen a LOGO que primer faci el càlcul de dins.»
+- **No angle variable (owner, G4 A):** chapter 6's rule (variables go to lengths) holds.
+  `ROMBOIDE :BASE :COSTAT` with turns 60/120 written inside; the family is shown by
+  editing the turns by hand.
+- **Half on one line, twice (owner, G5):** `REPETEIX 2 [...]` does not fit 52 characters.
+- Messages: see `LANGUAGE-SPEC.md` §8 (chapter 10 block).
+
 ## 9. Next step
 
-Chapters 1–9 and the Editor lliure are delivered. Next: the script of chapter 10
-(«Triangles i quadrilàters»), same review flow; then family integration once
-`step-quiz-commons` is available. No open questions are pending for the owner as of v0.13.
+Chapters 1–10 and the Editor lliure are delivered. Next: the script of chapter 11
+(«Decisions i atzar»), same review flow; then family integration once `step-quiz-commons`
+is available. No open questions are pending for the owner as of v0.14.
 
 ## 10. Sources and records
 

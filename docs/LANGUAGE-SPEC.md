@@ -229,6 +229,14 @@ BANDERA.D? S'escriu amb un punt i sense espai.`). An unknown word `X.D` when `X.
 known (or the reverse) gets no hint at all (`NO SÉ COM FER BANDERA.E`), so that the mirror
 exercise does not point the student to the other flag.
 
+Approved by the owner on 2026-11-12 (chapter 10, review 12). A minus glued to what follows
+it, right after a value (`GIRA.D 180 -:GIR`), is read as a negative number, as in Logo;
+the resulting `NO SÉ QUÈ FER AMB -60` now has the hint `Per restar, posa un espai a cada
+costat del signe menys: 180 - :GIR` (built from the tokens on each side). `ARREL2` of a
+negative keeps `A ARREL2 NO LI AGRADA -4` with the hint `ARREL2 no pot fer l'arrel d'un
+nombre negatiu`. A number with `²` (`50²`) → `NO SÉ COM FER 50²` / `Per elevar al quadrat,
+multiplica: 50 * 50`.
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 

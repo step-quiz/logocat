@@ -183,8 +183,15 @@ export class Interpreter {
     this._schoolSigns(tokens);
     const cur = { toks: tokens, pos: 0, last: null, src: tokens.src || '' };
     while (cur.pos < tokens.length) {
+      const start = cur.pos;
       const v = yield* this.expr(cur, 0);
-      if (v !== undefined) throw new LogoError('unused', { value: fmtValue(v, true) });
+      if (v !== undefined) {
+        // «GIRA.D 180 -:GIR»: un menys enganxat al que ve darrere es llegeix com a negatiu (owner, cap. 10).
+        const m = tokens[start], before = tokens[start - 1], after = tokens[start + 1];
+        const show = (t) => t && (t.t === 'num' ? fmtNum(t.v) : t.t === 'var' ? ':' + t.v : t.t === 'word' ? t.v : null);
+        const minus = m && m.t === 'op' && m.v === '-' && m.unary && show(before) && show(after) ? { left: show(before), right: show(after) } : null;
+        throw new LogoError('unused', { value: fmtValue(v, true), minus });
+      }
     }
   }
 
@@ -453,7 +460,7 @@ function buildPrimitives(I) {
   op('CERTS.TOTS', 'bb', (p, q) => p && q);
   op('CERT.ALGUN', 'bb', (p, q) => p || q);
   P.ATZAR = { types: 'n', example: 'ATZAR 6', *run([n], w) { if (n < 1) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n' }); return Math.floor(I.rng() * Math.floor(n)); } };
-  P.ARREL2 = { types: 'n', example: 'ARREL2 25', *run([n], w) { if (n < 0) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n' }); return Math.sqrt(n); } };
+  P.ARREL2 = { types: 'n', example: 'ARREL2 25', *run([n], w) { if (n < 0) throw new LogoError('bad_input', { word: w, value: fmtNum(n), want: 'n', root: true }); return Math.sqrt(n); } };
   op('SIN', 'n', (a) => Math.sin(a * Math.PI / 180));
   op('COS', 'n', (a) => Math.cos(a * Math.PI / 180));
   op('ATAN', 'n', (n) => Math.atan(n) * 180 / Math.PI);

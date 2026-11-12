@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 10 · Quadrilàters — LogoCat</title>
+<meta name="description" content="Desè capítol de LogoCat: els paral·lelograms, la regla de la mitja volta i la diagonal del quadrat.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 10</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 10</p>
+    <h1>Quadrilàters</h1>
+  </div>
+
+  <section>
+    <h2>El romboide</h2>
+    <p>Prova aquesta línia:</p>
+    <pre class="codi">REPETEIX 2 [AVANÇA 80 GIRA.D 60 AVANÇA 50 GIRA.D 120]</pre>
+    <p>Els costats oposats són iguals i paral·lels: la figura és un <strong>paral·lelogram</strong>. Aquest, amb els costats de dues mides i sense angles rectes, es diu <strong>romboide</strong>.</p>
+    <p>Per què 120? A cada meitat de la figura, la tortuga fa mitja volta: 60 + 120 = 180. Dues meitats fan una volta sencera.</p>
+    <p>I els angles de dins? L'angle exterior i l'angle interior sempre sumen 180°. Per tant, els angles de dins fan 120 i 60. Els angles del costat sumen 180, i els oposats són iguals.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>La tortuga és al centre i mira amunt. Sense executar res, tria què dibuixarà aquesta línia.</p>
+    <div class="prediu" data-id="cap10-prediu">
+      <pre class="codi">REPETEIX 2 [AVANÇA 60 GIRA.D 45 AVANÇA 60 GIRA.D 135]</pre>
+      <script type="text/logo" data-correcta data-perque="Quatre costats iguals i angles de 135 i 45: un rombe.">
+REPETEIX 2 [AVANÇA 60 GIRA.D 45 AVANÇA 60 GIRA.D 135]
+</script>
+      <script type="text/logo" data-perque="Això és un quadrat: tots els girs són de 90. Aquí són de 45 i 135.">
+REPETEIX 4 [AVANÇA 60 GIRA.D 90]
+</script>
+      <script type="text/logo" data-perque="Això és un rombe amb girs de 60 i 120. Aquí són de 45 i 135.">
+REPETEIX 2 [AVANÇA 60 GIRA.D 60 AVANÇA 60 GIRA.D 120]
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El romboide</h2>
+    <p>Defineix <code>ROMBOIDE</code> amb dues variables: primer la base i després el costat. Els girs, 60 i 120, com a la línia d'abans. Ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>ROMBOIDE 70 40</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap10-romboide" data-panell data-executa="ROMBOIDE 70 40" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. A cada meitat, la tortuga gira 60 i després 120.">
+      <script type="text/logo">
+PROC ROMBOIDE :BASE :COSTAT
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 120
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 120
+FI
+ROMBOIDE 70 40
+</script>
+      <script type="text/logo">
+PROC ROMBOIDE :BASE :COSTAT
+  AVANÇA :BASE GIRA.E 60 AVANÇA :COSTAT GIRA.E 120
+  AVANÇA :BASE GIRA.E 60 AVANÇA :COSTAT GIRA.E 120
+FI
+ROMBOIDE 70 40
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>La família dels paral·lelograms</h2>
+    <p>Al panell hi ha <code>ROMBOIDE</code>. Prova <code>ROMBOIDE 60 60</code>: els quatre costats són iguals. És un <strong>rombe</strong>.</p>
+    <p>Ara canvia els girs 60 i 120 per 90 i 90. Amb <code>ROMBOIDE 80 50</code> surt un <strong>rectangle</strong>, i amb <code>ROMBOIDE 60 60</code>, un <strong>quadrat</strong>.</p>
+    <p>El quadrat és alhora un rectangle i un rombe.</p>
+    <p>El trapezi només té dos costats paral·lels: no és un paral·lelogram.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC ROMBOIDE :BASE :COSTAT
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 120
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 120
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El romboide que no tanca</h2>
+    <p><code>ROMBOIDE 80 50</code> hauria de fer un romboide, però la figura no tanca. Prova-ho.</p>
+    <p>Troba l'error i corregeix-lo. Quan premis «Comprova», la tortuga farà <code>ROMBOIDE 80 50</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap10-error" data-panell data-executa="ROMBOIDE 80 50" data-comprova="dibuix"
+         data-si-falla="Encara no tanca. A cada meitat la tortuga ha de fer mitja volta: quant han de sumar els dos girs?">
+      <script type="text/logo-panell">
+PROC ROMBOIDE :BASE :COSTAT
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 60
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 60
+FI
+</script>
+      <script type="text/logo">
+PROC ROMBOIDE :BASE :COSTAT
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 120
+  AVANÇA :BASE GIRA.D 60 AVANÇA :COSTAT GIRA.D 120
+FI
+ROMBOIDE 80 50
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>La diagonal del quadrat</h2>
+    <p>Fes un quadrat de costat 50 i gira 45 graus:</p>
+    <pre class="codi">REPETEIX 4 [AVANÇA 50 GIRA.D 90]
+GIRA.D 45</pre>
+    <p>Ara la tortuga mira cap a la cantonada del davant. Quant ha d'avançar per arribar-hi? Prova <code>AVANÇA 70</code> i <code>AVANÇA 71</code>, amb «Desfés» entre prova i prova.</p>
+    <p><code>ARREL2</code> fa l'arrel quadrada d'un nombre. Prova:</p>
+    <pre class="codi">ESCRIU ARREL2 (50 * 50 + 50 * 50)</pre>
+    <p>Els parèntesis diuen a LOGO que primer faci el càlcul de dins. Surt 70.7107. Amb aquest nombre, la tortuga arriba just a la cantonada:</p>
+    <pre class="codi">AVANÇA ARREL2 (50 * 50 + 50 * 50)</pre>
+    <p>És el teorema de Pitàgores: la diagonal al quadrat és igual a la suma dels dos costats al quadrat.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap10-quiz">
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>1. En un romboide, la tortuga gira 70 a una cantonada. Quant ha de girar a la cantonada següent?</legend>
+        <label><input type="radio"> 70</label>
+        <label><input type="radio"> 110</label>
+        <label><input type="radio"> 290</label>
+        <p class="explicacio" hidden>A cada meitat la tortuga fa mitja volta: 70 + 110 = 180.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="0">
+        <legend>2. Un quadrat és un rombe?</legend>
+        <label><input type="radio"> Sí: té els quatre costats iguals</label>
+        <label><input type="radio"> No: el rombe no té angles rectes</label>
+        <label><input type="radio"> Només si és petit</label>
+        <p class="explicacio" hidden>El rombe té els quatre costats iguals. El quadrat també, i a més té els angles rectes.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="2">
+        <legend>3. Quina d'aquestes figures no és un paral·lelogram?</legend>
+        <label><input type="radio"> El rectangle</label>
+        <label><input type="radio"> El rombe</label>
+        <label><input type="radio"> El trapezi</label>
+        <p class="explicacio" hidden>El trapezi només té dos costats paral·lels.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El rombe de 70 graus</h2>
+    <p>Defineix <code>ROMBE</code> amb una variable, el costat. A la primera cantonada la tortuga gira 70. A la segona, gira el que calgui perquè la figura tanqui.</p>
+    <p>Ha de deixar la tortuga com l'ha trobada. Quan premis «Comprova», la tortuga farà <code>ROMBE 60</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap10-rombe" data-clau data-panell data-executa="ROMBE 60" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. Els dos girs de cada meitat han de sumar 180.">
+      <script type="text/logo">
+PROC ROMBE :COSTAT
+  AVANÇA :COSTAT GIRA.D 70 AVANÇA :COSTAT GIRA.D 110
+  AVANÇA :COSTAT GIRA.D 70 AVANÇA :COSTAT GIRA.D 110
+FI
+ROMBE 60
+</script>
+      <script type="text/logo">
+PROC ROMBE :COSTAT
+  AVANÇA :COSTAT GIRA.E 70 AVANÇA :COSTAT GIRA.E 110
+  AVANÇA :COSTAT GIRA.E 70 AVANÇA :COSTAT GIRA.E 110
+FI
+ROMBE 60
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>En un paral·lelogram, a cada meitat la tortuga fa mitja volta: els dos girs sumen 180.</li>
+      <li>Per això els angles del costat sumen 180 i els oposats són iguals.</li>
+      <li>El quadrat, el rectangle, el rombe i el romboide són paral·lelograms.</li>
+      <li>La diagonal del quadrat surt amb ARREL2: és el teorema de Pitàgores.</li>
+    </ul>
+    <p>Fins ara la tortuga sempre ha fet el mateix. Al capítol següent prendrà decisions, i de vegades ho farà a l'atzar.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-9.html">← Capítol 9 · Simetria</a> · Capítol 11: en preparació.</p>
+
+</main>
+</body>
+</html>
