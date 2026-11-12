@@ -54,7 +54,7 @@ dialogs; 5+ decision points go into a review artifact with per-point buttons.
 | 6 | Variables | `PROC QUADRAT :COSTAT` | Variable, similar figures, perimeter as a function of side |
 | 7 | Dues variables | `PROC POLÍGON :N :COSTAT` | Generalising with 360 / N; stars as more than one full turn (no divisor theory: owner) |
 | 8 | Cercles i arcs | Student-built `CERCLE :PAS`, `ARC :PAS :GRAUS` (the 1985 vocabulary has no circle primitive) | The turtle walks round (tiny step, tiny turn); full turn = circle, part of it = arc. NOT a many-sided polygon, NO π (owner, review 10) |
-| 9 | Simetria | No new words; swap `GIRA.D`/`GIRA.E` | Rotational and mirror symmetry, tessellations |
+| 9 | Simetria | No new words; swap `GIRA.D`/`GIRA.E`; student names with a dot (`BANDERA.D`/`BANDERA.E`) | Turning a figure (gir) and mirror symmetry (simetria, eix de simetria). Tessellations moved to the final challenges chapter (owner, review 11) |
 | 10 | Triangles i quadrilàters | `ARREL2` | Classify and construct: isosceles, right triangle, parallelogram, rhombus, trapezoid, kite; opposite/supplementary angles; Pythagoras for the diagonal |
 | 11 | Decisions i atzar | `SI [ ... ]`, `ACABA`, `POSA.A`, `ATZAR`, `RETORNA`, `ESCRIU` | Conditions, random walk, frequencies |
 | 12 | Recursivitat | Self-calling procedure with a stop rule | Spirals (sequences), fractals (self-similarity) |
@@ -363,11 +363,32 @@ cercle" → find-the-bug "El cercle que no tanca" → Arcs → quiz → key exer
   also removed the «Per exemple: QUADRAT 50» line quoted in chapter 6's text, so that the
   page shows the real message.
 
+## 8i. Chapter 9 «Simetria» (script approved 2026-11-12; built)
+
+Review artifact "Revisió 11 del guió del capítol 9" (slug
+`4c32f8e9-baf6-4de3-b8b1-70c2d3963b5a`; 14 points, all approved). Order: Girar una figura
+(the chapter 8 flower, then `REPETEIX 4 [BANDERA.D GIRA.D 90]`) → "Què dibuixarà?"
+(`REPETEIX 3 [BANDERA.D GIRA.D 120]`) → find-the-bug "El molinet torçat" → El mirall (a
+staircase and its mirror at the `?` line, `CENTRE` in between) → exercise "La bandera
+del mirall" → quiz → key exercise "El molinet" → summary, bridge to chapter 10.
+
+- **Maths words (owner, option A).** "gir" (turning a figure about a point), "simetria",
+  "eix de simetria" (the line the turtle faced at the start). Frozen sentence: «La
+  translació, el gir i la simetria mouen una figura sense canviar-ne la forma ni la mida.»
+- **Mosaics (owner, option A):** not in chapter 9; they go to the final challenges
+  chapter, with nested `REPETEIX`. A test forbids "mosaic" in chapter 9.
+- **Names with a dot (owner):** `BANDERA.D` / `BANDERA.E`, mirroring `GIRA.D` / `GIRA.E`.
+- The mirror rule taught: change every `GIRA.D` into `GIRA.E` AND every `GIRA.E` into
+  `GIRA.D`. The flag contains one `GIRA.E` so that the naive D→E replacement fails.
+- "El molinet": `MOLINET 5` is checked with one value (chapter 6 rule); a `MOLINET` with
+  72 typed by hand also passes (owner informed, accepted).
+- Messages: see `LANGUAGE-SPEC.md` §8 (chapter 9 block).
+
 ## 9. Next step
 
-Chapters 1–8 and the Editor lliure are delivered. Next: the script of chapter 9
-(«Simetria»), same review flow; then family integration once `step-quiz-commons` is
-available. No open questions are pending for the owner as of v0.12.
+Chapters 1–9 and the Editor lliure are delivered. Next: the script of chapter 10
+(«Triangles i quadrilàters»), same review flow; then family integration once
+`step-quiz-commons` is available. No open questions are pending for the owner as of v0.13.
 
 ## 10. Sources and records
 

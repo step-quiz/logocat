@@ -284,9 +284,11 @@ export class Interpreter {
 
     const startTok = cur.toks[cur.pos - 1];
     const prim = this.prims[word];
-    // «NO LLAPIS», «GIRA D 90»: una paraula amb punt escrita amb un espai al mig.
+    // «NO LLAPIS», «GIRA D 90», «BANDERA D»: una paraula amb punt (ordre de LOGO o procediment
+    // de l'alumne, owner cap. 9) escrita amb un espai al mig.
     const next = cur.toks[cur.pos];
-    if (next && next.t === 'word' && this.prims[word + '.' + next.v] && (word === 'NO' || (!prim && !this.procs.has(word)))) {
+    const dotted = next && next.t === 'word' ? word + '.' + next.v : null;
+    if (dotted && (this.prims[dotted] || this.procs.has(dotted)) && (word === 'NO' || (!prim && !this.procs.has(word)))) {
       throw new LogoError('spaced', { text: word + ' ' + next.v, word: word + '.' + next.v });
     }
     if (prim) {

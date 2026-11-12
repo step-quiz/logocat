@@ -220,6 +220,15 @@ apostrophe, as in exercise books (`0'5`, also `0’5`), is treated like the comm
 `REPETEIX` keeps `A REPETEIX NO LI AGRADA -90` and gets the hint `REPETEIX no pot repetir
 un nombre negatiu de vegades` (the generic `REPETEIX vol un nombre` was false).
 
+Approved by the owner on 2026-11-12 (chapter 9, review 11). Turn hints, checked before the
+nearest-word hint: `GIRA.I` (Spanish «izquierda») → `Volies dir GIRA.E? E d'esquerra.`;
+`GIRA` alone → `Volies dir GIRA.D o GIRA.E?`; `GIRA.DRETA` → `Volies dir GIRA.D?`;
+`GIRA.ESQUERRA` → `Volies dir GIRA.E?`. The spaced-word message also covers the
+student's own procedures with a dot (`BANDERA D` → `NO SÉ COM FER BANDERA D` / `Volies dir
+BANDERA.D? S'escriu amb un punt i sense espai.`). An unknown word `X.D` when `X.E` is
+known (or the reverse) gets no hint at all (`NO SÉ COM FER BANDERA.E`), so that the mirror
+exercise does not point the student to the other flag.
+
 Messages inside a procedure append the location (owner wording):
 `NO SÉ COM FER AVANSA A LA LÍNIA 2 DEL PROCEDIMENT 'QUADRAT'`.
 

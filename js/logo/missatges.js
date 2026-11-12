@@ -73,6 +73,13 @@ export function describe(err, known = []) {
       if (new RegExp(`^${N}[·×]${N}$`).test(p.word) || /^\d+(\.\d+)?X\d+(\.\d+)?$/.test(p.word) || (p.word === 'X' && p.between)) {
         hints = ['Per multiplicar, fes servir el signe *. Per exemple: 3 * 120']; break;
       }
+      // Girs (owner, cap. 9): GIRA.I (castellà «izquierda»), GIRA sol, GIRA.DRETA, GIRA.ESQUERRA.
+      const turn = { 'GIRA.I': "Volies dir GIRA.E? E d'esquerra.", 'GIRA': 'Volies dir GIRA.D o GIRA.E?',
+        'GIRA.DRETA': 'Volies dir GIRA.D?', 'GIRA.ESQUERRA': 'Volies dir GIRA.E?' }[p.word];
+      if (turn) { hints = [turn]; break; }
+      // BANDERA.E quan només hi ha BANDERA.D (o al revés): cap pista, que no faci dubtar (owner, cap. 9).
+      const de = /^(.+)\.([DE])$/.exec(p.word);
+      if (de && known.includes(de[1] + '.' + (de[2] === 'D' ? 'E' : 'D'))) break;
       const y = nearest(p.word, known);
       if (y) hints = [`Volies dir ${y}?`];
       break;

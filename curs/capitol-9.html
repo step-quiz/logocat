@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capítol 9 · Simetria — LogoCat</title>
+<meta name="description" content="Novè capítol de LogoCat: girar una figura i fer-ne el mirall, amb la regla de la volta sencera.">
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/logocat.css">
+<script>
+// Tema abans de pintar, per evitar el parpelleig.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('logocat-tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<script type="module" src="../js/curs/pagina.js"></script>
+</head>
+<body>
+
+<header class="barra">
+  <a class="barra-logo" href="../index.html">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="4" fill="#2b2d31"/><polygon points="12,5 6,18 18,18" fill="none" stroke="#f2f2ee" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    LogoCat
+  </a>
+  <nav class="barra-nav" aria-label="Seccions">
+    <a href="../index.html" aria-current="page">Capítols</a>
+    <a href="../simulador.html">Editor lliure</a>
+  </nav>
+  <span class="barra-titol">Capítol 9</span>
+  <span class="barra-espai"></span>
+  <span class="fet" id="capitol-fet" hidden>✓ Capítol fet</span>
+  <button class="boto boto--icona" id="boto-tema" type="button" aria-label="Canvia el tema">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+  </button>
+</header>
+
+<main class="capitol">
+
+  <div>
+    <p class="capitol-num">Capítol 9</p>
+    <h1>Simetria</h1>
+  </div>
+
+  <section>
+    <h2>Girar una figura</h2>
+    <p>Recordes la flor del capítol 8? Són sis pètals, i entre pètal i pètal la tortuga gira 60 graus. Si gires la flor 60 graus, queda igual.</p>
+    <pre class="codi">REPETEIX 6 [PÈTAL 1 GIRA.D 60]</pre>
+    <p>Això funciona amb qualsevol figura que deixi la tortuga com l'ha trobada. Amb aquesta bandera, per exemple:</p>
+    <pre class="codi">PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI</pre>
+    <p>Prova <code>REPETEIX 4 [BANDERA.D GIRA.D 90]</code> i <code>REPETEIX 8 [BANDERA.D GIRA.D 45]</code>. Per què 90 i 45? Per la regla de la volta sencera: 4 × 90 = 360, i 8 × 45 = 360.</p>
+    <p>Girar una figura al voltant d'un punt és fer-ne un <strong>gir</strong>.</p>
+    <div class="simulador" data-panell>
+      <script type="text/logo-panell">
+PROC ARC :PAS :GRAUS
+  REPETEIX :GRAUS [AVANÇA :PAS GIRA.D 1]
+FI
+
+PROC PÈTAL :PAS
+  REPETEIX 2 [ARC :PAS 90 GIRA.D 90]
+FI
+
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Activitat</span> Què dibuixarà?</h2>
+    <p>Amb la <code>BANDERA.D</code> d'abans, i sense executar res, tria què dibuixarà aquesta línia.</p>
+    <div class="prediu" data-id="cap9-prediu">
+      <pre class="codi">REPETEIX 3 [BANDERA.D GIRA.D 120]</pre>
+      <script type="text/logo" data-correcta data-perque="3 × 120 = 360: tres banderes repartides en una volta sencera.">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+REPETEIX 3 [BANDERA.D GIRA.D 120]
+</script>
+      <script type="text/logo" data-perque="Això són quatre banderes, amb GIRA.D 90. Aquí n'hi ha tres.">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+REPETEIX 4 [BANDERA.D GIRA.D 90]
+</script>
+      <script type="text/logo" data-perque="Això és amb GIRA.D 60: les tres banderes només fan mitja volta.">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+REPETEIX 3 [BANDERA.D GIRA.D 60]
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Troba l'error</span> El molinet torçat</h2>
+    <p><code>MOLINET</code> hauria de fer quatre banderes al voltant del centre, però surt torçat. Prova-ho.</p>
+    <p>Troba l'error i corregeix-lo. Quan premis «Comprova», la tortuga farà <code>MOLINET</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap9-error" data-panell data-executa="MOLINET" data-comprova="dibuix"
+         data-si-falla="Fes BANDERA.D tota sola i mira on acaba la tortuga.">
+      <script type="text/logo-panell">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+FI
+
+PROC MOLINET
+  REPETEIX 4 [BANDERA.D GIRA.D 90]
+FI
+</script>
+      <script type="text/logo">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+PROC MOLINET
+  REPETEIX 4 [BANDERA.D GIRA.D 90]
+FI
+MOLINET
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>El mirall</h2>
+    <p>La tortuga puja una escala cap a la dreta:</p>
+    <pre class="codi">REPETEIX 4 [AVANÇA 20 GIRA.D 90 AVANÇA 20 GIRA.E 90]</pre>
+    <p>Ara canvia cada <code>GIRA.D</code> per <code>GIRA.E</code>, i cada <code>GIRA.E</code> per <code>GIRA.D</code>:</p>
+    <pre class="codi">REPETEIX 4 [AVANÇA 20 GIRA.E 90 AVANÇA 20 GIRA.D 90]</pre>
+    <p>L'escala puja cap a l'esquerra, com en un mirall. Fes la primera, després <code>CENTRE</code>, i després la segona: les dues escales formen una figura simètrica. La línia per on mirava la tortuga al principi és l'<strong>eix de simetria</strong>: el mirall.</p>
+    <p>La translació, el gir i la simetria mouen una figura sense canviar-ne la forma ni la mida.</p>
+    <div class="simulador" data-panell></div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> La bandera del mirall</h2>
+    <p>Al panell ja hi ha <code>BANDERA.D</code>. Defineix <code>BANDERA.E</code>: la mateixa bandera, però com en un mirall. Ha de deixar la tortuga com l'ha trobada.</p>
+    <p>Quan premis «Comprova», la tortuga farà <code>BANDERA.E</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap9-mirall" data-panell data-executa="BANDERA.E" data-comprova="dibuix+tortuga"
+         data-si-falla="Mira quins traços sobren i quins falten. Al mirall, el que girava a la dreta gira a l'esquerra, i el que girava a l'esquerra gira a la dreta.">
+      <script type="text/logo-panell">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+</script>
+      <script type="text/logo">
+PROC BANDERA.E
+  AVANÇA 50 GIRA.E 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 15 GIRA.E 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 35 GIRA.E 180
+FI
+BANDERA.E
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Qüestionari</span> Tres preguntes</h2>
+    <div class="quiz" data-id="cap9-quiz">
+      <fieldset class="pregunta" data-correcta="2">
+        <legend>1. Amb un molinet de 6 banderes, quant gira la tortuga entre bandera i bandera?</legend>
+        <label><input type="radio"> 6</label>
+        <label><input type="radio"> 36</label>
+        <label><input type="radio"> 60</label>
+        <p class="explicacio" hidden>Sis girs han de fer una volta sencera: 360 / 6 = 60.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>2. Per fer el mirall d'un procediment, què has de canviar?</legend>
+        <label><input type="radio"> Només les GIRA.D per GIRA.E</label>
+        <label><input type="radio"> Les GIRA.D per GIRA.E, i les GIRA.E per GIRA.D</label>
+        <label><input type="radio"> Les AVANÇA per RECULA</label>
+        <p class="explicacio" hidden>Al mirall, tots els girs van al revés: els de la dreta i els de l'esquerra.</p>
+      </fieldset>
+      <fieldset class="pregunta" data-correcta="1">
+        <legend>3. La flor del capítol 8 té sis pètals. Quants graus l'has de girar perquè quedi igual?</legend>
+        <label><input type="radio"> 30</label>
+        <label><input type="radio"> 60</label>
+        <label><input type="radio"> 90</label>
+        <p class="explicacio" hidden>Entre pètal i pètal la tortuga gira 60: si gires la flor 60 graus, cada pètal va a parar on hi havia el següent.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="etiqueta">Exercici</span> El molinet</h2>
+    <p>Al panell ja hi ha <code>BANDERA.D</code>. Defineix <code>MOLINET</code> amb una variable, el nombre de banderes.</p>
+    <p><code>MOLINET</code> ha de fer servir <code>BANDERA.D</code> i ha de deixar la tortuga com l'ha trobada. Quan premis «Comprova», la tortuga farà <code>MOLINET 5</code> en una pantalla neta.</p>
+    <div class="simulador" data-id="cap9-molinet" data-clau data-panell data-executa="MOLINET 5" data-comprova="dibuix+tortuga" data-exigeix="BANDERA.D"
+         data-si-falla="Mira quins traços sobren i quins falten. Quant ha de girar la tortuga entre bandera i bandera perquè en faci una volta sencera?">
+      <script type="text/logo-panell">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+</script>
+      <script type="text/logo">
+PROC BANDERA.D
+  AVANÇA 50 GIRA.D 90 AVANÇA 25 GIRA.D 90
+  AVANÇA 15 GIRA.D 90 AVANÇA 25 GIRA.E 90
+  AVANÇA 35 GIRA.D 180
+FI
+PROC MOLINET :N
+  REPETEIX :N [BANDERA.D GIRA.D 360 / :N]
+FI
+MOLINET 5
+</script>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resum</h2>
+    <ul>
+      <li>Si una figura deixa la tortuga com l'ha trobada, la pots repetir girant 360 / N, i surt girada N vegades.</li>
+      <li>Per fer el mirall d'un procediment, canvia GIRA.D per GIRA.E i GIRA.E per GIRA.D.</li>
+      <li>La línia per on mirava la tortuga al principi és l'eix de simetria.</li>
+    </ul>
+    <p>Al capítol següent: triangles i quadrilàters de tota mena.</p>
+  </section>
+
+  <p class="peu"><a href="capitol-8.html">← Capítol 8 · Cercles i arcs</a> · Capítol 10: en preparació.</p>
+
+</main>
+</body>
+</html>

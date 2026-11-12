@@ -1,7 +1,7 @@
 # LogoCat — current state
 
 > Single source of truth for what exists. Update it in the same change as the code.
-> Last update: 2026-11-11 (v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
+> Last update: 2026-11-12 (v0.13: chapter 9 «Simetria»; v0.12: chapter 8 «Cercles i arcs», point-sampling drawing comparison).
 
 ## What exists
 
@@ -100,7 +100,17 @@
   key exercise "El pètal" (`PÈTAL 0.8`, must use `ARC`, drawing + pose; the 90° turn is
   left to discovery; no mirrored version since `ARC` turns right). Last simulator: the
   flower `REPETEIX 6 [PÈTAL 1 GIRA.D 60]`, bridge to chapter 9 (symmetry).
-- **Version label**: `index.html` shows `v0.12` fixed at the bottom-right (`.versio`); a
+- **Chapter 9** (`curs/capitol-9.html`, «Simetria»): approved script (review 11), 5
+  simulators with panel (2 for examples, 3 exercises), "Què dibuixarà?", quiz. No new
+  words. Names "gir", "simetria", "eix de simetria", and the sentence linking them to
+  chapter 4's translation. Student procedures with a dot in the name: `BANDERA.D` (a flag
+  that contains one `GIRA.E` on purpose, so that changing only D→E is not a mirror) and
+  its mirror `BANDERA.E`. Exercises: find-the-bug "El molinet torçat" (`BANDERA.D` lacks
+  its last line `AVANÇA 35 GIRA.D 180`; `MOLINET` given; drawing), "La bandera del mirall"
+  (`BANDERA.E`, drawing + pose), key exercise "El molinet" (`MOLINET 5`, must use
+  `BANDERA.D`, drawing + pose; turning left gives the same drawing). Mosaics are NOT in
+  this chapter (owner: final challenges chapter).
+- **Version label**: `index.html` shows `v0.13` fixed at the bottom-right (`.versio`); a
   test keeps it equal to `package.json` `version`. Bump both in EVERY delivery: the owner
   uses it to check that the latest ZIP is live.
 - **Turtle rendering** (`Monitor.draw`, owner decision 2026-11-11, applies everywhere,
@@ -128,12 +138,15 @@
   1280 × 670, 1366 × 625, 1360 × 800 and 1920 × 950.
 - **Landing page**, light/dark theme (stored in `localStorage` as `logocat-tema`),
   progress (`logocat-progres`), one-time negative-number note (`logocat-nota-negatiu`).
-- **Tests**: 88 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
+- **Tests**: 95 passing (`node --test tests/unit/*.test.mjs`). Manual browser runs in
   headless Chrome on 2026-11-11: chapters 1–8, the landing page and the Editor lliure, no
   console errors, no external requests. v0.12: chapter 8 driven end to end at 1366 × 625
   (every verdict of the three exercises, chapter tick, the new messages, the flower), and
   every reference solution of chapters 1–8 re-checked through Comprova with the new
-  comparison (all «Correcte»); no horizontal scrollbar on any page or panel. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
+  comparison (all «Correcte»); no horizontal scrollbar on any page or panel. v0.13:
+  chapter 9 driven end to end at 1366 × 625 (every verdict of the three exercises,
+  chapter tick, the new hints at the `?` line) and every reference solution of chapters
+  1–9 re-checked through Comprova after the engine changes. Chapter 7 was driven end to end at 1366 × 625. Chapter 4 was driven end to end at 1366 × 625 (verdicts of the three
   exercises, both new messages, turtle states and colours, white field). Chapter 3 was driven end to end at 1366 × 625 (every verdict of the
   three exercises, step mode with panel marks, error line, panel warning, chapter tick)
   and checked for horizontal scroll at 390, 1280, 1366 and 1920 px wide: none, and the
@@ -141,7 +154,7 @@
 
 ## Not built yet
 
-- **Chapters 9–12**, glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
+- **Chapters 10–12**, a final challenges chapter (nested `REPETEIX`, mosaics), glossary (the edge-mode words `M.CÍCLIC`, `M.BARRERA`, `M.FINESTRA`
   go there, not in a chapter), teacher guide, certificate.
 - **Family integration**: the shared files from `step-quiz-commons` (EXPLORA selector,
   footer, licence, touch key bar) and the `comuns.yml` workflow. That repo has not been
